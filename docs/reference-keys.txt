@@ -8,3 +8,4 @@ quantile-regression
 최적화-문제-1
 intercept-only
 예측-변수가-존재하는-경우
+예측구간prediction-interval

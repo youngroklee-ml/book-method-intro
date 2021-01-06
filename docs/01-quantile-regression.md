@@ -30,6 +30,29 @@ library(dplyr)
 ```r
 library(tidyr)
 library(rlang)
+library(purrr)
+```
+
+```
+## 
+## Attaching package: 'purrr'
+```
+
+```
+## The following objects are masked from 'package:rlang':
+## 
+##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int,
+##     flatten_lgl, flatten_raw, invoke, list_along, modify, prepend,
+##     splice
+```
+
+```
+## The following object is masked from 'package:extraDistr':
+## 
+##     rdunif
+```
+
+```r
 library(quantreg)
 ```
 
@@ -840,7 +863,7 @@ rq_fit <- rq(y ~ x, data = df, tau = tau_list)
 
 위 그래프에서, 추정된 intercept ($\hat{\beta}_0^{\tau}$) step function의 knots에 해당하는 $\tau$값(0.1, 0.2, ..., 0.9)을 제외하면, 예측변수에 해당하는 회귀계수가 $\tau$값에 상관없이 일정하게 1로 추정되었다.
 
-\BeginKnitrBlock{note}<div class="note">**TO DO**: $\hat{\beta}_0^{\tau}$ step function의 knots에 해당하는 $\tau$값들에 대해서는 예측변수에 해당하는 회귀계수가 예상과 다르게 추정되었다. $\tau$가 step function의 knots에 해당할 때의 quantile regression 추정에 대해서는 저자가 충분히 알지 못하여, 추후 공부한 내용을 보강하고자 한다.</div>\EndKnitrBlock{note}
+\BeginKnitrBlock{note}<div class="note">**TO DO**: $\tau$가 step function의 knots에 해당할 때의 quantile regression 추정에 대해 추후 내용 보충 필요.</div>\EndKnitrBlock{note}
 
 
 위에서 추정된 모형을 토대로, 새로운 데이터에 대해 $\tau$-quantile을 예측하기 위해 `predict()` 함수를 사용한다. 예측의 경우, 학습 데이터에서 관측되지 않았던 숫자형 예측변수 값에 대한 반응변수의 $\tau$-quantile 또한 예측할 수 있다. 아래에서, 학습 데이터에서 관측되었던 $X = 0$, $X = 2$에 더해, 학습데이터에서 관측되지 않았던 $X = 1$인 경우에 대한 $\tau$-quantile을 예측해보자.
@@ -858,4 +881,78 @@ df_predicted <- tibble(
 
 
 위 그래프에서, $X = 2$인 경우의 $\tau$-quantile 예측값은 $X = 0$인 경우보다 2씩 일정하게 높음을 확인할 수 있다. 또한, $X = 1$인 경우의 $\tau$-quantile 예측값은 $X = 0$인 경우보다 1씩 일정하게 높음을 확인할 수 있다.
+
+
+## 예측구간(prediction interval)
+
+$N$개의 관측 데이터가 아래 모델을 통해 얻어졌다고 하자.
+
+\begin{eqnarray*}
+y_i &=& \beta_0 + \beta_1 x_i + \varepsilon_i\\
+\varepsilon_i &\sim& F
+\end{eqnarray*}
+
+
+$(\beta_0, \beta_1) = (1, 2)$라 하고, $x_i \sim U(0, 1)$라 할 때, 아래의 몇 가지 다른 확률분포 $F$를 이용하여 각각 300개의 관측치가 존재하는 데이터를 생성하여 보자.
+
+\begin{eqnarray*}
+F_1(\varepsilon) &=& N(0, 1^2)\\
+F_2(\varepsilon) &=& U(-1, 1)\\
+F_3(\varepsilon) &=& Gumbel(-\gamma, 1)\\
+F_4(\varepsilon; X) &=& N(0, X^2)\\
+F_5(\varepsilon; X) &=& U(-X, X)\\
+F_6(\varepsilon; X) &=& Gumbel(-\gamma(1 + X), 1 + X)
+\end{eqnarray*}
+
+- 분포 $F_1, F_4$는 정규분포를 나타낸다.
+- 분포 $F_2, F_5$는 uniform 분포를 나타낸다.
+- 분포 $F_3, F_6$는 Gumbel 분포를 나타낸다. $\gamma$는 Euler–Mascheroni 상수이다.
+- 분포 $F_1, F_2, F_3$는 $X$값에 상관없이 동일한 분산을 지닌다.
+- 분포 $F_4, F_5, F_6$는 $X$값이 증가함에 따라 분산이 증가한다.
+- 분포 $F_1, \ldots, F_6$는 모든 $X$값에 대해 조건부 평균이 0이다.
+- 분포 $F_1, F_2, F_4, F_5$는 symmetric 분포이며, 분포 $F_3, F_6$은 right-skewed 분포이다.
+
+위에서 분포 $F_1$을 제외한 다른 모든 분포는 최소자승 회귀분석의 가정(등분산 정규분포)을 위배함을 알 수 있다. 따라서, 최소자승 회귀분석으로부터 얻은 예측구간은 실제 예측구간을 추정하기에 적합하지 않을 것을 예상할 수 있다.
+
+
+```r
+beta0 <- 1
+beta1 <- 2
+euler <- - digamma(1)
+
+df <- tibble(x = runif(3e2, 0, 1)) %>%
+  mutate(
+    F1 = rnorm(n(), 0, 1),
+    F2 = runif(n(), - 1, 1),
+    F3 = rgumbel(n(), - euler, 1),
+    F4 = rnorm(n(), 0, x),
+    F5 = runif(n(), - x, x),
+    F6 = rgumbel(n(), - euler * (1 + x), 1 + x)
+  ) %>%
+  pivot_longer(F1:F6, names_to = "distribution", values_to = "epsilon") %>%
+  mutate(y = beta0 + beta1 * x  + epsilon)
+```
+
+
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+
+6개 데이터셋 각각에 대해 일반 회귀분석과 quantile regression 분석을 수행해보자. 이 때, 분석의 목적은 95% 예측구간을 얻는 것이다.
+
+- 일반 회귀분석의 경우, 평균을 추정하는 회귀모형이 분산 또한 추정하므로, 잘 알려진 공식에 따라 임의의 $x$값에 대한 $y$값의 예측구간을 추정할 수 있다.
+- Quantile regression의 경우, 0.025-quantile과 0.975-quantile을 예측하는 모형을 추정한 뒤, 임의의 $x$값에 해당하는 0.025-quantile 예측값과 0.975-quantile의 예측값을 각각 95% 예측구간의 lower bound, upper bound로 간주한다.
+
+
+```r
+nested_df <- df %>% nest(data = - distribution)
+
+lm_fit <- map(nested_df$data, ~ lm(y ~ x, data = .x))
+rq_fit <- map(nested_df$data, ~ rq(y ~ x, tau = c(0.025, 0.975), data = .x))
+```
+
+
+
+
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+
+위 그래프에서 보이는 바와 같이, 일반 회귀분석의 경우 회귀모형 가정을 따르는 첫 번째 데이터셋을 제외하면 실제 95% 구간과 상당한 차이를 보이는 예측구간을 추정한 반면, quantile regression은 대체로 실제 95% 구간에 근접한 예측구간을 추정하였다.
 
