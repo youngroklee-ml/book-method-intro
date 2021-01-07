@@ -278,25 +278,13 @@ quantile_lp <- Vectorize(
 
 
 ```r
-tibble(
+q_solution <- tibble(
   tau = seq(0, 1, by = 0.001),
-  q = quantile_lp(tau, .env$y)
-) %>%
-  ggplot(aes(x = tau, y = q)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.1), minor_breaks = NULL) +
-  scale_y_continuous(breaks = c(1:10), minor_breaks = NULL) +
-  labs(
-    x = NULL,
-    y = NULL,
-    title = expression("Optimal solution of "~xi~"by"~tau)
-  ) +
-  theme(
-    plot.title.position = "plot"
-  )
+  q = quantile_lp(tau, y)
+)
 ```
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 \BeginKnitrBlock{note}<div class="note">**NOTE**: `lpSolve::lp()`는 모든 실수형 변수를 0보다 크거나 같다고 가정한다. 따라서, $\xi \in \mathbb{R}$의 해를 구하기 위해서 $\xi = \xi^{+} - \xi^{-}$, $\xi^{+}, \xi^{-} \geq 0$ 의 방식으로 decision variable을 변환하였다.</div>\EndKnitrBlock{note}
 
@@ -388,25 +376,13 @@ rq_fit <- rq(y ~ 1, data = df, tau = seq(0, 1, by = 0.001))
 ```
 
 ```r
-tibble(
+q_solution1 <- tibble(
   tau = seq(0, 1, by = 0.001),
   q = predict(rq_fit, tibble(.rows = 1L)) %>% drop()
-) %>%
-  ggplot(aes(x = tau, y = q)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.1), minor_breaks = NULL) +
-  scale_y_continuous(breaks = c(1:10), minor_breaks = NULL) +
-  labs(
-    x = NULL,
-    y = NULL,
-    title = "Quantile regression estimates: intercept only"
-  ) +
-  theme(
-    plot.title.position = "plot"
-  )
+)
 ```
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 
 
@@ -859,7 +835,7 @@ rq_fit <- rq(y ~ x, data = df, tau = tau_list)
 
 이 때, 회귀분석 결과 객체의 원소 `rq_fit$coefficients`는 각 열이 $\tau$값, 각 행이 회귀계수를 나타내는 행렬이다.  여기에서 예측변수에 해당하는 회귀계수가 $\tau$값에 상관없이 일정하게 1로 추정됨을 확인해보자.
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 위 그래프에서, 추정된 intercept ($\hat{\beta}_0^{\tau}$) step function의 knots에 해당하는 $\tau$값(0.1, 0.2, ..., 0.9)을 제외하면, 예측변수에 해당하는 회귀계수가 $\tau$값에 상관없이 일정하게 1로 추정되었다.
 
@@ -877,7 +853,7 @@ df_predicted <- tibble(
 )
 ```
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 
 위 그래프에서, $X = 2$인 경우의 $\tau$-quantile 예측값은 $X = 0$인 경우보다 2씩 일정하게 높음을 확인할 수 있다. 또한, $X = 1$인 경우의 $\tau$-quantile 예측값은 $X = 0$인 경우보다 1씩 일정하게 높음을 확인할 수 있다.
@@ -934,7 +910,7 @@ df <- tibble(x = runif(3e2, 0, 1)) %>%
 ```
 
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
 6개 데이터셋 각각에 대해 일반 회귀분석과 quantile regression 분석을 수행해보자. 이 때, 분석의 목적은 95% 예측구간을 얻는 것이다.
 
@@ -998,7 +974,7 @@ rq_interval <- map2_dfr(
 ```
 
 
-<img src="01-quantile-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<img src="01-quantile-regression_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 위 그래프에서 보이는 바와 같이, 일반 회귀분석의 경우 회귀모형 가정을 따르는 첫 번째 데이터셋을 제외하면 실제 95% 구간과 상당한 차이를 보이는 예측구간을 추정한 반면, quantile regression은 대체로 실제 95% 구간에 근접한 예측구간을 추정하였다.
 

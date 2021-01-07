@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-01-06" />
+<meta name="date" content="2021-01-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -341,23 +341,11 @@ Q_Y(\tau) = \inf \{y \, | \, F_Y(y) \geq \tau \}
 <span id="cb20-14"><a href="quantile-linear-regression.html#cb20-14"></a>  },</span>
 <span id="cb20-15"><a href="quantile-linear-regression.html#cb20-15"></a>  <span class="st">&quot;tau&quot;</span></span>
 <span id="cb20-16"><a href="quantile-linear-regression.html#cb20-16"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="quantile-linear-regression.html#cb21-1"></a><span class="kw">tibble</span>(</span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="quantile-linear-regression.html#cb21-1"></a>q_solution &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
 <span id="cb21-2"><a href="quantile-linear-regression.html#cb21-2"></a>  <span class="dt">tau =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>),</span>
-<span id="cb21-3"><a href="quantile-linear-regression.html#cb21-3"></a>  <span class="dt">q =</span> <span class="kw">quantile_lp</span>(tau, .env<span class="op">$</span>y)</span>
-<span id="cb21-4"><a href="quantile-linear-regression.html#cb21-4"></a>) <span class="op">%&gt;%</span></span>
-<span id="cb21-5"><a href="quantile-linear-regression.html#cb21-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tau, <span class="dt">y =</span> q)) <span class="op">+</span></span>
-<span id="cb21-6"><a href="quantile-linear-regression.html#cb21-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb21-7"><a href="quantile-linear-regression.html#cb21-7"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.1</span>), <span class="dt">minor_breaks =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
-<span id="cb21-8"><a href="quantile-linear-regression.html#cb21-8"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="dt">minor_breaks =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
-<span id="cb21-9"><a href="quantile-linear-regression.html#cb21-9"></a><span class="st">  </span><span class="kw">labs</span>(</span>
-<span id="cb21-10"><a href="quantile-linear-regression.html#cb21-10"></a>    <span class="dt">x =</span> <span class="ot">NULL</span>,</span>
-<span id="cb21-11"><a href="quantile-linear-regression.html#cb21-11"></a>    <span class="dt">y =</span> <span class="ot">NULL</span>,</span>
-<span id="cb21-12"><a href="quantile-linear-regression.html#cb21-12"></a>    <span class="dt">title =</span> <span class="kw">expression</span>(<span class="st">&quot;Optimal solution of &quot;</span><span class="op">~</span>xi<span class="op">~</span><span class="st">&quot;by&quot;</span><span class="op">~</span>tau)</span>
-<span id="cb21-13"><a href="quantile-linear-regression.html#cb21-13"></a>  ) <span class="op">+</span></span>
-<span id="cb21-14"><a href="quantile-linear-regression.html#cb21-14"></a><span class="st">  </span><span class="kw">theme</span>(</span>
-<span id="cb21-15"><a href="quantile-linear-regression.html#cb21-15"></a>    <span class="dt">plot.title.position =</span> <span class="st">&quot;plot&quot;</span></span>
-<span id="cb21-16"><a href="quantile-linear-regression.html#cb21-16"></a>  )</span></code></pre></div>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<span id="cb21-3"><a href="quantile-linear-regression.html#cb21-3"></a>  <span class="dt">q =</span> <span class="kw">quantile_lp</span>(tau, y)</span>
+<span id="cb21-4"><a href="quantile-linear-regression.html#cb21-4"></a>)</span></code></pre></div>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 
 <div class="note">
 <strong>NOTE</strong>: <code>lpSolve::lp()</code>는 모든 실수형 변수를 0보다 크거나 같다고 가정한다. 따라서, <span class="math inline">\(\xi \in \mathbb{R}\)</span>의 해를 구하기 위해서 <span class="math inline">\(\xi = \xi^{+} - \xi^{-}\)</span>, <span class="math inline">\(\xi^{+}, \xi^{-} \geq 0\)</span> 의 방식으로 decision variable을 변환하였다.
@@ -427,23 +415,11 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="quantile-linear-regression.html#cb24-1"></a><span class="kw">tibble</span>(</span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="quantile-linear-regression.html#cb24-1"></a>q_solution1 &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
 <span id="cb24-2"><a href="quantile-linear-regression.html#cb24-2"></a>  <span class="dt">tau =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>),</span>
 <span id="cb24-3"><a href="quantile-linear-regression.html#cb24-3"></a>  <span class="dt">q =</span> <span class="kw">predict</span>(rq_fit, <span class="kw">tibble</span>(<span class="dt">.rows =</span> 1L)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop</span>()</span>
-<span id="cb24-4"><a href="quantile-linear-regression.html#cb24-4"></a>) <span class="op">%&gt;%</span></span>
-<span id="cb24-5"><a href="quantile-linear-regression.html#cb24-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tau, <span class="dt">y =</span> q)) <span class="op">+</span></span>
-<span id="cb24-6"><a href="quantile-linear-regression.html#cb24-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb24-7"><a href="quantile-linear-regression.html#cb24-7"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.1</span>), <span class="dt">minor_breaks =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
-<span id="cb24-8"><a href="quantile-linear-regression.html#cb24-8"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="dt">minor_breaks =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
-<span id="cb24-9"><a href="quantile-linear-regression.html#cb24-9"></a><span class="st">  </span><span class="kw">labs</span>(</span>
-<span id="cb24-10"><a href="quantile-linear-regression.html#cb24-10"></a>    <span class="dt">x =</span> <span class="ot">NULL</span>,</span>
-<span id="cb24-11"><a href="quantile-linear-regression.html#cb24-11"></a>    <span class="dt">y =</span> <span class="ot">NULL</span>,</span>
-<span id="cb24-12"><a href="quantile-linear-regression.html#cb24-12"></a>    <span class="dt">title =</span> <span class="st">&quot;Quantile regression estimates: intercept only&quot;</span></span>
-<span id="cb24-13"><a href="quantile-linear-regression.html#cb24-13"></a>  ) <span class="op">+</span></span>
-<span id="cb24-14"><a href="quantile-linear-regression.html#cb24-14"></a><span class="st">  </span><span class="kw">theme</span>(</span>
-<span id="cb24-15"><a href="quantile-linear-regression.html#cb24-15"></a>    <span class="dt">plot.title.position =</span> <span class="st">&quot;plot&quot;</span></span>
-<span id="cb24-16"><a href="quantile-linear-regression.html#cb24-16"></a>  )</span></code></pre></div>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<span id="cb24-4"><a href="quantile-linear-regression.html#cb24-4"></a>)</span></code></pre></div>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="예측-변수가-존재하는-경우" class="section level3">
 <h3><span class="header-section-number">1.3.3</span> 예측 변수가 존재하는 경우</h3>
@@ -874,7 +850,7 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique</code></pre>
 <p>이 때, 회귀분석 결과 객체의 원소 <code>rq_fit$coefficients</code>는 각 열이 <span class="math inline">\(\tau\)</span>값, 각 행이 회귀계수를 나타내는 행렬이다. 여기에서 예측변수에 해당하는 회귀계수가 <span class="math inline">\(\tau\)</span>값에 상관없이 일정하게 1로 추정됨을 확인해보자.</p>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>위 그래프에서, 추정된 intercept (<span class="math inline">\(\hat{\beta}_0^{\tau}\)</span>) step function의 knots에 해당하는 <span class="math inline">\(\tau\)</span>값(0.1, 0.2, …, 0.9)을 제외하면, 예측변수에 해당하는 회귀계수가 <span class="math inline">\(\tau\)</span>값에 상관없이 일정하게 1로 추정되었다.</p>
 
 <div class="note">
@@ -887,7 +863,7 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 <span id="cb28-3"><a href="quantile-linear-regression.html#cb28-3"></a>  <span class="dt">tau =</span> <span class="kw">rep</span>(tau_list, <span class="dt">each =</span> 3L),</span>
 <span id="cb28-4"><a href="quantile-linear-regression.html#cb28-4"></a>  <span class="dt">q =</span> <span class="kw">c</span>(<span class="kw">predict</span>(rq_fit, <span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">c</span>(0L, 1L, 2L))) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.vector</span>())</span>
 <span id="cb28-5"><a href="quantile-linear-regression.html#cb28-5"></a>)</span></code></pre></div>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>위 그래프에서, <span class="math inline">\(X = 2\)</span>인 경우의 <span class="math inline">\(\tau\)</span>-quantile 예측값은 <span class="math inline">\(X = 0\)</span>인 경우보다 2씩 일정하게 높음을 확인할 수 있다. 또한, <span class="math inline">\(X = 1\)</span>인 경우의 <span class="math inline">\(\tau\)</span>-quantile 예측값은 <span class="math inline">\(X = 0\)</span>인 경우보다 1씩 일정하게 높음을 확인할 수 있다.</p>
 </div>
 </div>
@@ -932,7 +908,7 @@ F_6(\varepsilon; X) &amp;=&amp; Gumbel(-\gamma(1 + X), 1 + X)
 <span id="cb29-13"><a href="quantile-linear-regression.html#cb29-13"></a>  ) <span class="op">%&gt;%</span></span>
 <span id="cb29-14"><a href="quantile-linear-regression.html#cb29-14"></a><span class="st">  </span><span class="kw">pivot_longer</span>(F1<span class="op">:</span>F6, <span class="dt">names_to =</span> <span class="st">&quot;distribution&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;epsilon&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb29-15"><a href="quantile-linear-regression.html#cb29-15"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">y =</span> beta0 <span class="op">+</span><span class="st"> </span>beta1 <span class="op">*</span><span class="st"> </span>x  <span class="op">+</span><span class="st"> </span>epsilon)</span></code></pre></div>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>6개 데이터셋 각각에 대해 일반 회귀분석과 quantile regression 분석을 수행해보자. 이 때, 분석의 목적은 95% 예측구간을 얻는 것이다.</p>
 <ul>
 <li>일반 회귀분석의 경우, 평균을 추정하는 회귀모형이 분산 또한 추정하므로, 잘 알려진 공식에 따라 임의의 <span class="math inline">\(x\)</span>값에 대한 <span class="math inline">\(y\)</span>값의 예측구간을 추정할 수 있다.</li>
@@ -985,7 +961,7 @@ F_6(\varepsilon; X) &amp;=&amp; Gumbel(-\gamma(1 + X), 1 + X)
 <span id="cb31-40"><a href="quantile-linear-regression.html#cb31-40"></a>  },</span>
 <span id="cb31-41"><a href="quantile-linear-regression.html#cb31-41"></a>  <span class="dt">newdata =</span> pred_df</span>
 <span id="cb31-42"><a href="quantile-linear-regression.html#cb31-42"></a>)</span></code></pre></div>
-<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>위 그래프에서 보이는 바와 같이, 일반 회귀분석의 경우 회귀모형 가정을 따르는 첫 번째 데이터셋을 제외하면 실제 95% 구간과 상당한 차이를 보이는 예측구간을 추정한 반면, quantile regression은 대체로 실제 95% 구간에 근접한 예측구간을 추정하였다.</p>
 
 </div>
