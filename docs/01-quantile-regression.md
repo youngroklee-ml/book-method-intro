@@ -949,7 +949,53 @@ lm_fit <- map(nested_df$data, ~ lm(y ~ x, data = .x))
 rq_fit <- map(nested_df$data, ~ rq(y ~ x, tau = c(0.025, 0.975), data = .x))
 ```
 
+이후, 각각의 데이터셋에 대해 실제 95% 구간(`true_interval`), 일반 최소자승 회귀모형으로부터의 95% 예측구간(`lm_interval`), 그리고 quantile regression을 이용하여 추정한 구간(`rq_interval`)을 구해보자.
 
+
+```r
+pred_df <- tibble(x = c(0, 1, by = 0.5))
+
+true_interval <- pred_df %>%
+  mutate(
+    F1_lwr = qnorm(0.025, 0, 1),
+    F1_upr = qnorm(0.975, 0, 1),
+    F2_lwr = qunif(0.025, - 1, 1),
+    F2_upr = qunif(0.975, - 1, 1),
+    F3_lwr = qgumbel(0.025, - euler, 1),
+    F3_upr = qgumbel(0.975, - euler, 1),
+    F4_lwr = qnorm(0.025, 0, x),
+    F4_upr = qnorm(0.975, 0, x),
+    F5_lwr = qunif(0.025, - x, x),
+    F5_upr = qunif(0.975, - x, x),
+    F6_lwr = qgumbel(0.025, - euler * (1 + x), 1 + x),
+    F6_upr = qgumbel(0.975, - euler * (1 + x), 1 + x)
+  ) %>%
+  pivot_longer(F1_lwr:F6_upr, names_to = c("distribution", "quantile"), 
+               names_sep = "_", values_to = "epsilon") %>%
+  mutate(y = beta0 + beta1 * x  + epsilon) %>%
+  pivot_wider(id_cols = c(x, distribution), names_from = quantile, values_from = y)
+
+lm_interval <- map2_dfr(
+  lm_fit, paste0("F", seq_along(lm_fit)),
+  function(object, distribution, newdata) {
+    newdata %>% 
+      mutate(distribution = distribution) %>%
+      bind_cols(as_tibble(
+        predict(object, newdata, interval = "prediction", level = 0.95)))
+  },
+  newdata = pred_df
+)
+
+rq_interval <- map2_dfr(
+  rq_fit, paste0("F", seq_along(lm_fit)),
+  function(object, distribution, newdata) {
+    newdata %>% 
+      mutate(distribution = distribution) %>%
+      bind_cols(set_names(as_tibble(predict(object, newdata)), c("lwr", "upr")))
+  },
+  newdata = pred_df
+)
+```
 
 
 <img src="01-quantile-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" />
