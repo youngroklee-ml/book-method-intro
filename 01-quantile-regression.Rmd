@@ -51,7 +51,7 @@ ggplot(df_gumbel, aes(x = y, y = fy)) +
   labs(
     x = NULL,
     y = NULL,
-    title = "Probability density function: <span style = 'color:firebrick'>standard Gumble</span> vs. <span style = 'color:steelblue'>standard normal</span>"
+    title = "Probability density function: <span style = 'color:firebrick'>standard Gumbel</span> vs. <span style = 'color:steelblue'>standard normal</span>"
   ) +
   theme(
     plot.title = element_markdown(),
