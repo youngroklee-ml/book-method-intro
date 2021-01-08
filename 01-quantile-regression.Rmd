@@ -1,4 +1,4 @@
-# Quantile linear regression {#quantile-linear-regression}
+# Quantile regression {#quantile-regression}
 
 ```{r}
 library(extraDistr)
@@ -21,7 +21,7 @@ library(lpSolve)
 
 물론, 다중회귀분석 결과를 이용하여 예측값의 범위를 추정할 수 있다. 하지만, 다중회귀분석에 적용되는 가정, 즉 실제 조건부 관측치의 분포가 예측변수 $X$값에 상관없이 "동일한 분산"의 "정규분포"를 따른다는 가정은 현실 문제에서 그대로 적용되기 쉽지 않다. 이러한 가정에 위배되는 데이터에 다중회귀분석이 추정하는 예측값의 범위를 사용할 경우, 그로 인해 의사결정 과정에서 최적과는 거리가 먼 결정을 내리게 될 수 있다.
 
-Quantile linear regression은 반응변수의 분포에 대한 특정한 명시적 가정 없이, 연속형 반응변수 분포의 각 quantile과 예측변수 $X$간의 선형관계를 추정하는 방법이다. 
+Linear quantile regression은 반응변수의 분포에 대한 특정한 명시적 가정 없이, 연속형 반응변수 분포의 각 quantile과 예측변수 $X$간의 선형관계를 추정하는 방법이다. 
 
 
 ## Univariate의 예
@@ -357,7 +357,7 @@ q_solution %>%
 
 
 
-## Quantile regression
+## Linear quantile regression
 
 ### 최적화 문제
 

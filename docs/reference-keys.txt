@@ -1,10 +1,10 @@
-quantile-linear-regression
+quantile-regression
 univariate의-예
 quantile
 정의
 univariate-추정
 최적화-문제
-quantile-regression
+linear-quantile-regression
 최적화-문제-1
 intercept-only
 예측-변수가-존재하는-경우
