@@ -93,7 +93,7 @@ empirical_estimate_df %>%
 이러한 변환 방법에는 여러가지 방법이 있겠으나, 본 장에서는 $Y \in (-\infty, \infty)$라 가정하고 간단하게 아래의 두 가지 방법을 섞어서 사용해보기로 하자.
 
 - $\hat{F}_Y(y) \in [0.1, 0.9]$인 경우, 즉, $y$값이 0.1-quantile과 $0.9$-quantile 사이로 추정될 경우, linear interpolation으로 확률분포함수를 추정해보다.
-- $\hat{F}_Y(y) \notin [0.1, 0.9]$인 경우, 즉, $y$값이 매우 작거나 매우 큰 경우, extrapolation으로 확률분포함수를 추정해보자.
+- $\hat{F}_Y(y) \notin [0.1, 0.9]$인 경우, 즉, $y$값이 매우 작거나 매우 큰 경우, exponential extrapolation으로 확률분포함수를 추정해보자.
 
 ```{block2, type = 'note'}
 **NOTE**: 위 방법은 간단한 예를 보이기 위함이며, 알고 있는 변수의 특성이나 주어진 데이터에 따라 적절한 방법을 적용할 필요가 있다.
