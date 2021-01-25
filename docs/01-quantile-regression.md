@@ -398,7 +398,9 @@ df <- tibble(
 )
 ```
 
-<!--html_preserve--><style>html {
+
+```{=html}
+<style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
@@ -793,7 +795,8 @@ df <- tibble(
   </tbody>
   
   
-</table></div><!--/html_preserve-->
+</table></div>
+```
 
 
 위 데이터에서, $X = 0$인 경우 반응변수의 관측치는 앞 절의 예와 동일하며, $X = 2$인 경우 반응변수의 관측치는 $X = 0$인 경우보다 각각 2씩 일정하게 높게 관측되었다. 따라서, 이 데이터를 사용하여 조건부 quantile을 추정할 때, $X = 0$인 경우에는 앞 절과 동일하게 추정되며, $X = 2$에 대하여는 $X = 0$일 경우보다 2만큼 높은 값이 각각의 $\tau$에 대해 추정될 것을 예상할 수 있다. 즉, 

@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-01-07" />
+<meta name="date" content="2021-01-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +33,7 @@
   
 
 <link rel="next" href="quantile-regression.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +51,20 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +84,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -135,19 +134,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>들어가는 글</a></li>
-<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a><ul>
+<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate의-예"><i class="fa fa-check"></i><b>1.1</b> Univariate의 예</a></li>
-<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a><ul>
+<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="quantile-regression.html"><a href="quantile-regression.html#정의"><i class="fa fa-check"></i><b>1.2.1</b> 정의</a></li>
 <li class="chapter" data-level="1.2.2" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate-추정"><i class="fa fa-check"></i><b>1.2.2</b> Univariate 추정</a></li>
 <li class="chapter" data-level="1.2.3" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제"><i class="fa fa-check"></i><b>1.2.3</b> 최적화 문제</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a><ul>
+<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제-1"><i class="fa fa-check"></i><b>1.3.1</b> 최적화 문제</a></li>
 <li class="chapter" data-level="1.3.2" data-path="quantile-regression.html"><a href="quantile-regression.html#intercept-only"><i class="fa fa-check"></i><b>1.3.2</b> Intercept only</a></li>
 <li class="chapter" data-level="1.3.3" data-path="quantile-regression.html"><a href="quantile-regression.html#예측-변수가-존재하는-경우"><i class="fa fa-check"></i><b>1.3.3</b> 예측 변수가 존재하는 경우</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="quantile-regression.html"><a href="quantile-regression.html#예측구간prediction-interval"><i class="fa fa-check"></i><b>1.4</b> 예측구간(prediction interval)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html"><i class="fa fa-check"></i><b>2</b> Discrete choice model</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#data"><i class="fa fa-check"></i><b>2.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice"><i class="fa fa-check"></i><b>2.1.1</b> Choice</a></li>
+<li class="chapter" data-level="2.1.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#covariate"><i class="fa fa-check"></i><b>2.1.2</b> Covariate</a></li>
+<li class="chapter" data-level="2.1.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#availability"><i class="fa fa-check"></i><b>2.1.3</b> Availability</a></li>
+<li class="chapter" data-level="2.1.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#no-choice-alternative"><i class="fa fa-check"></i><b>2.1.4</b> “No choice” alternative</a></li>
+<li class="chapter" data-level="2.1.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-예"><i class="fa fa-check"></i><b>2.1.5</b> 데이터 예</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility"><i class="fa fa-check"></i><b>2.2</b> Utility</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility-representative-utility"><i class="fa fa-check"></i><b>2.2.1</b> Observable utility (Representative utility)</a></li>
+<li class="chapter" data-level="2.2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility"><i class="fa fa-check"></i><b>2.2.2</b> Unobservable utility</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit model</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-1"><i class="fa fa-check"></i><b>2.3.1</b> Utility</a></li>
+<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-모델-예"><i class="fa fa-check"></i><b>2.3.2</b> 데이터 모델 (예)</a></li>
+<li class="chapter" data-level="2.3.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#independent-from-irrelevant-alternatives-iia"><i class="fa fa-check"></i><b>2.3.3</b> Independent from irrelevant alternatives (IIA)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -172,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">알아두면 유용한 데이터 분석 방법들</h1>
 <p class="author"><em>이영록</em></p>
-<p class="date"><em>2021-01-07</em></p>
+<p class="date"><em>2021-01-17</em></p>
 </div>
 <div id="들어가는-글" class="section level1 unnumbered">
 <h1>들어가는 글</h1>

@@ -8,10 +8,19 @@ library(ggrepel)
 library(gt)
 library(dplyr)
 library(tidyr)
+library(stringr)
 library(rlang)
 library(purrr)
 library(mlogit)
 ```
+
+```{r, echo=FALSE}
+library(showtext)
+font_add_google("Nanum Gothic", "nanum")
+font_add_google("Noto Sans KR", "nato")
+showtext_auto()
+```
+
 
 우리의 삶에는 수많은 선택의 순간들이 있다. 크게는 집을 구매할 때 어떤 집을 선택할지부터, 소소하게는 짬뽕과 짜장면 중 어떤 음식을 먹을지 선택해야한다. 물론, 가진 자원이 많다면 여러 채의 집을 구매할 수도 있고, 짬뽕과 짜장면 둘 다 주문에서 먹을 수도 있다. 하지만, 제한된 자원에서는 선택지 중 한 가지를 선택하면 나머지는 포기해야 하는 상황에 부딪힌다. 이 때, 사람들이 어떤 선택을 하는지를 모델링하는 방법이 있다. 본 장에서는 **discrete choice model**이라 불리는 방법에 대해 알아보자.
 
@@ -131,15 +140,15 @@ v_{ij} = f(\mathbf{x}_{ij}, \mathbf{z}_i)
 
 $v_{ij}$는 observable utility 혹은 representative utility라 한다. $v_{ij}$를 설명변수에 대한 affine 함수로 아래와 같이 정의하자.
 
-\[
+$$
 v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i + \boldsymbol{\delta}_j \mathbf{x}_{ij}
-\]
+$$
 
 이 때, $\boldsymbol{\beta}$는 모든 대안 $j$에 동일하게 적용되는 계수벡터이며, $\boldsymbol{\gamma}_j$와 $\boldsymbol{\delta}_j$는 대안 $j$에 따라 다른 값을 지니는 계수벡터이다. 변수 벡터 $\mathbf{x}_{ij}$내의 각 변수는 $\boldsymbol{\beta}$와 $\boldsymbol{\delta}_j$ 중 한 가지의 회귀계수에만 해당한다고 가정하고, 설명변수 벡터 $\mathbf{w}_{ij}$를 추가로 정의하자.
 
-\[
+$$
 v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i + \boldsymbol{\delta}_j \mathbf{w}_{ij}
-\]
+$$
 
 여기에서, 각각의 변수에 대한 예는 아래와 같이 생각해볼 수 있다.
 
@@ -149,11 +158,19 @@ v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gam
 
 위의 세 가지 변수 종류 중 본 장에서는 두 가지 변수 $\mathbf{x}_{ij}$와 $\mathbf{z}_{i}$를 중심으로 살펴보자. 아래와 같이 보다 단순한 형태의 $v_{ij}$를 고려하도록 하자.
 
-\[
+$$
 v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i
-\]
+$$
 
-이 때, 주어진 데이터로부터 회귀계수들의 추정치 $\hat{\alpha}_j, \hat{\boldsymbol{\beta}}, \hat{\boldsymbol{\gamma}}_j$을 구하는 것이 discrete choice model 추정이다.
+여기에서, $\mathbf{x}_{ij} \in \mathbb{R}^r$, $\mathbf{z}_{i} \in \mathbb{R}^s$라 할 때, 모든 $(i, j)$에 대한 $v_{ij}$는 아래 세 가지 파라미터를 이용한 함수이다.
+
+$$
+\boldsymbol{\alpha} = (\alpha_1, \ldots, \alpha_J) \in \mathbb{R}^J\\
+\boldsymbol{\beta} = (\beta_1, \ldots, \beta_r) \in \mathbb{R}^r\\
+\boldsymbol{\gamma} = (\gamma_{11}, \ldots, \gamma_{1s}, \gamma_{21}, \ldots, \gamma_{Js}) \in \mathbb{R}^{J \times s}
+$$
+
+이 때, 주어진 데이터로부터 회귀계수들의 추정치 $\hat{\boldsymbol{\alpha}}, \hat{\boldsymbol{\beta}}, \hat{\boldsymbol{\gamma}}$을 구하는 것이 discrete choice model 추정이다.
 
 
 ### Unobservable utility
@@ -184,8 +201,31 @@ $y_{ij}$ ($j = 1, \ldots, J$)는 확률 $p_{ij}$ ($j = 1, \ldots, J$)로 정의�
 위에서, $\varepsilon_{ij}$의 분포에 대한 가정에 따라 $p_{ij}$의 값이 다르게 추정된다. 따라서 discrete choice model 추정에서는 observable utility에 대한 model specification 뿐만 아니라 unobservable utility에 대한 분포 가정 또한 중요하다. 다음 장에서 살펴볼 multinomial logit model과 nested logit model은 $\varepsilon_{ij}$의 분포에 대해 서로 다른 가정을 지닌다.
 
 
+### Maximum likelihood estimation
 
-## Multinomial logit model
+각 선택상황 $i = 1, \ldots, N$에서의 선택이 서로 독립이라 할 때, 파리미터값 $\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma}$에 대한 우도함수(likelihood function)는 아래와 같이 표현된다.
+
+$$
+L(\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma}) = \prod_{i = 1}^{N} \prod_{j = 1}^{J} p_{ij} ^ {y_{ij}}
+$$
+
+따라서, 로그우도함수(log-likelihood function)는 아래와 같이 표현된다.
+
+$$
+l(\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma}) = \sum_{i = 1}^{N} \sum_{j = 1}^{J} y_{ij} \log p_{ij}
+$$
+
+이때, 파리미터 $\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma}$는 위 로그우도함수를 최대화하는 값으로 추정할 수 있다.
+
+$$
+\{\hat{\boldsymbol{\alpha}}, \hat{\boldsymbol{\beta}}, \hat{\boldsymbol{\gamma}}\} = {\arg\max}_{\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma}} l(\boldsymbol{\alpha}, \boldsymbol{\beta}, \boldsymbol{\gamma})
+$$
+
+
+위에서 우도함수 및 로그우도함수를 $y_{ij}$와 $p_{ij}$를 이용하여 표현한 식은 multiclass classification 문제에서 널리 볼 수 있다 (명목형 로지스틱 회귀모형 등). 결국, $p_{ij}$의 모형이 어떻게 정의되는지에 그 차이가 존재한다. 다음 절에서는 구체적으로 $p_{ij}$의 모형을 살펴보기로 한다.
+
+
+## Multinomial logit (MNL) model
 
 Discrete choice model을 얘기할 때 가장 기본으로 다루는 모형이다. 
 
@@ -283,16 +323,21 @@ $$
 
 ### Independent from irrelevant alternatives (IIA)
 
-Multinomial logit model에서는 서로 다른 두 개의 대안 $j$와 $k$간의 상대적인 선택확률($p_{ij} / p_{ik}$)은 또 다른 대안 $l \notin \{j, k\}$을 선택할 확률 $p_{il}$에 영향을 받지 않는다.
+Multinomial logit model에서는 서로 다른 두 개의 대안 $j$와 $k$간의 상대적인 선택확률($p_{ij} / p_{ik}$)은 또 다른 대안 $l \notin \{j, k\}$을 선택할 확률 $p_{il}$에 영향을 받지 않는다고 가정한다.
 
 $$
 \frac{p_{ij}}{p_{ik}} = \frac{\exp(v_{ij})}{\exp(v_{ik})}
 $$
 
+이는 어떠한 두 대안이 다른 대안들보다 더 강한 대체관계를 가지지는 않는다는 것을 의미한다. 현실의 선택상황에서는 이러한 가정이 성립하지 않는 경우가 많으며, 이에 대한 방법은 다음 **nested logit model**절에서 더 다루기로 한다.
 
-## 예제
 
-### 데이터 모델
+### 예제
+
+Multinomial logit model의 추정과 그로부터 확률을 추정하는 과정을 아래 예제 데이터와 R 스크립트로 살펴보도록 하자.
+
+
+#### 데이터 모델
 
 네 가지 메뉴가 있는 식당을 고려해보자. 각 선택 상황에 따라 가격과 메뉴 주문 가능 여부는 매번 달라진다고 가정하자.
 
@@ -315,31 +360,31 @@ z_i \sim U(5, 95)
 $$
 - Observable utility
 \begin{eqnarray*}
-v_{i1} &=& 0 - 0.001 * x_{i1} + 0.2 * z_{i}\\
-v_{i2} &=& 4 - 0.001 * x_{i2} + 0.1 * z_{i}\\
-v_{i3} &=& 2 - 0.001 * x_{i3} + 0.2 * z_{i}\\
-v_{i4} &=& 6 - 0.001 * x_{i4} + 0.1 * z_{i}
+v_{i1} &=& 0 - 0.001 * x_{i1} + 0 * z_{i}\\
+v_{i2} &=& 4 - 0.001 * x_{i2} - 0.1 * z_{i}\\
+v_{i3} &=& 2 - 0.001 * x_{i3} + 0 * z_{i}\\
+v_{i4} &=& 6 - 0.001 * x_{i4} - 0.1 * z_{i}
 \end{eqnarray*}
 - Unobservable utility
   - $\varepsilon_{ij} \overset{i.i.d.}{\sim} Gumbel(0, 1)$
 - Availability
 \begin{eqnarray*}
-a_{i1} $\sim$ Bernoulli(0.95)\\
-a_{i2} $\sim$ Bernoulli(0.95)\\
-a_{i3} $\sim$ a_{i1} \times Bernoulli(0.9)\\
-a_{i4} $\sim$ a_{i2} \times Bernoulli(0.9)
+a_{i1} $=$ 1\\
+a_{i2} $=$ 1\\
+a_{i3} $\sim$ Bernoulli(0.8)\\
+a_{i4} $\sim$ Bernoulli(0.8)
 \end{eqnarray*}
 
 
 ```{r}
 set.seed(2)
 
-N <- 1000
+N <- 2000
 menu <- c("짬뽕" = 1, "짜장면" = 2, "삼선짬뽕" = 3, "삼선짜장" = 4)
 menu_name <- names(menu)
 alpha_true <- c(0, 4, 2, 6)
 beta_true <- -0.001
-gamma_true <- c(0.2, 0.1, 0.2, 0.1)
+gamma_true <- c(0, -0.1, 0, -0.1)
 
 generate_price <- function(N) {
   tibble(
@@ -368,10 +413,10 @@ generate_age <- function(N) {
 generate_availability <- function(N) {
   tibble(
     i = seq_len(N),
-    avail1 = rbern(N, 0.95),
-    avail2 = rbern(N, 0.95),
-    avail3 = avail1 * rbern(N, 0.9),
-    avail4 = avail2 * rbern(N, 0.9)
+    avail1 = 1,
+    avail2 = 1,
+    avail3 = avail1 * rbern(N, 0.8),
+    avail4 = avail2 * rbern(N, 0.8)
   ) %>%
     pivot_longer(
       cols = avail1:avail4, 
@@ -395,23 +440,322 @@ choice_df <- generate_price(N) %>%
   mutate(menu_item = menu_name[alternative]) %>%
   select(-avail) %>%
   group_by(i) %>%
-  mutate(choice = if_else(u == max(u), 1L, 0L))
+  mutate(choice = if_else(u == max(u), 1L, 0L)) %>%
+  ungroup()
 
 ```
+
+
+
+```{r, echo=FALSE}
+choice_df %>%
+  filter(choice == 1L) %>%
+  group_by(menu_item) %>%
+  summarize(n_choice = sum(choice), .groups = "drop") %>%
+  ggplot(aes(x = reorder(menu_item, n_choice), y = n_choice)) +
+  geom_pointrange(aes(ymin = 0, ymax = n_choice)) +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "메뉴 선택 횟수"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
+
+```{r, echo=FALSE}
+choice_df %>%
+  filter(choice == 1L) %>%
+  mutate(
+    age_bin = cut_number(age, n = 3, 
+                         breaks = c(5, 35, 65, 95), 
+                         labels = c("[5, 35]", "(35, 65]", "(65, 95]"))
+  ) %>%
+  group_by(age_bin, menu_item) %>%
+  summarize(n_choice = sum(choice), .groups = "drop") %>%
+  ggplot(aes(x = reorder(menu_item, n_choice), y = n_choice)) +
+  geom_pointrange(aes(ymin = 0, ymax = n_choice)) +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "연령대에 따른 메뉴 선택 횟수"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  ) +
+  facet_wrap( ~ age_bin)
+```
+
+
+```{r, echo=FALSE}
+choice_df %>%
+  pivot_wider(
+    id_cols = c(i, alternative, choice),
+    names_from = menu_item,
+    values_from = price
+  ) %>%
+  mutate(menu_item = menu_name[alternative]) %>%
+  group_by(i) %>%
+  mutate(across(!!menu_name,
+                function(x) {
+                  if (any(!is.na(x)))
+                    max(x, na.rm = TRUE)
+                  else
+                    NA_real_
+                })) %>%
+  ungroup() %>%
+  filter(choice == 1) %>%
+  mutate(
+    price_diff_bin = cut_number(`짬뽕` - `짜장면`, n = 2, 
+                         breaks = c(0, 1000, 2000), 
+                         labels = c("[0, 1000]", "(1000, 2000]"))
+  ) %>%
+  group_by(price_diff_bin, menu_item) %>%
+  summarize(n_choice = sum(choice), .groups = "drop") %>%
+  ggplot(aes(x = reorder(menu_item, n_choice), y = n_choice)) +
+  geom_pointrange(aes(ymin = 0, ymax = n_choice)) +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "가격 차이(짬뽕 - 짜장면)에 따른 메뉴 선택 횟수"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  ) +
+  facet_wrap( ~ price_diff_bin, scales = "free_x")
+```
+
+
+
+
+#### 모델 추정
+
+R 패키지 `{mlogit}`의 함수 `mlogit()`을 이용하여 multinomial logit model을 추정할 수 있다.
 
 
 ```{r}
-choice_df %>% filter(choice == 1L) %>% pull(menu_item) %>% table()
+fit_mnl <- mlogit(choice ~ price | age, data = choice_df, 
+                  alt.var = "alternative", chid.var = "i")
+```
+
+```{r}
+estimate_df <- tibble(
+  term = names(fit_mnl$coefficients),
+  estimate = coef(fit_mnl),
+  std.error = sqrt(diag(solve(-fit_mnl$hessian))),
+  true = c(alpha_true[-1], beta_true, gamma_true[-1])
+)
+
+```
+
+```{r, echo=FALSE}
+knitr::kable(estimate_df)
+```
+
+
+```{r, echo=FALSE}
+estimate_df %>%
+  mutate(
+    variable = word(term, sep = ":")
+  ) %>%
+  ggplot(aes(x = term)) +
+  geom_point(aes(y = true), color = "gray", size = 4) +
+  geom_linerange(aes(
+    y = estimate,
+    ymin = estimate - 1.96 * std.error,
+    ymax = estimate + 1.96 * std.error
+  ), color = "steelblue") +
+  geom_point(aes(y = estimate), color = "firebrick") +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "MNL model coefficient: <span style='color:gray'>true</span> vs <span style='color:firebrick'>point estmiate</span> vs <span style='color:steelblue'>95% confidence interval</span>"
+  ) +
+  coord_flip() +
+  facet_wrap( ~ variable, scales = "free") +
+  theme(
+    plot.title = element_markdown(),
+    plot.title.position = "plot"
+  )
+```
+
+위 추정 결과, 각 파라미터에 대해 추정된 95% 신뢰구간들은 실제 데이터 모델에서 사용된 파라미터값(true values)을 포함하고 있음을 확인할 수 있다.
+
+
+
+#### 확률 추정
+
+추정된 모형에 기반하여, 다음과 같은 메뉴판이 주어졌을 때 손님의 선택을 예측해보자.
+
+```{r}
+alpha_hat <- c(0, coef(fit_mnl)[c("(Intercept):2", "(Intercept):3", "(Intercept):4")])
+beta_hat <- coef(fit_mnl)[c("price")]
+gamma_hat <- c(0, coef(fit_mnl)[c("age:2", "age:3", "age:4")])
+```
+
+```{r}
+new_choice_situation <- tribble(
+  ~menu_item, ~price,
+  "짬뽕", 7000,
+  "짜장면", 6000,
+  "삼선짬뽕", 10000,
+  "삼선짜장", 9000
+) %>%
+  mutate(
+    alternative = menu[menu_item]
+  )
+```
+
+```{r, echo=FALSE}
+knitr::kable(new_choice_situation)
+```
+
+
+이 때, 손님의 나이가 15세인 경우의 선택확률 예측은 아래와 같다.
+
+```{r}
+new_choice_situation %>%
+  mutate(age = 15) %>%
+  mutate(
+    v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
+    p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+```{block2, type = 'note'}
+**NOTE**: 확률을 계산하는 식을 `p = exp(v) / sum(exp(v))` 대신 `p = exp(v - max(v)) / sum(exp(v - max(v)))`로 구현하였다. 두 계산방법은 이론적으로 동일한 확률값을 나타낸다. 컴퓨팅 과정에서 `v`값이 매우 크거나 매우 작을 경우, `exp(v)`값이 `Inf` 혹은 `0`으로 계산되어 확률값이 적절하게 계산되지 않을 수 있기 때문에, 그러한 가능성을 줄이기 위해서 `exp(v)` 대신 `exp(v - max(v))`을 사용하였다.
 ```
 
 
 
-### 모델 추정
+반면, 손님의 나이가 45세인 경우의 선택확률 예측은 아래와 같다.
+
+```{r}
+new_choice_situation %>%
+  mutate(age = 45) %>%
+  mutate(
+    v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
+    p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+
+위 손님의 나이가 45세인 경우, 만약 삼선짜장이 메뉴에서 제외된다면 않다면, 선택확률은 아래와 같이 달라진다.
+
+```{r}
+new_choice_situation %>%
+  filter(menu_item != "삼선짜장") %>%
+  mutate(age = 45) %>%
+  mutate(
+    v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
+    p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
 
 
 
 
 
 ## Nested logit model
+
+Nested logit model은 multinomial logit model과는 달리, 어떠한 두 대안이 다른 대안들보다 더 강한 대체관계를 갖는 상황을 가정한다. 예를 들어, 메뉴를 짜장류와 짬뽕류로 구분하여 생각할 때, 삼선짜장이 주문 가능하지 않을 경우에 대체재로 짬뽕류 대신 같은 짜장류 내의 다른 메뉴를 선택하는 경향이 있다면, 이는 각 선택이 메뉴 종류(짜장류, 짬뽕류)로부터 얻어지는 효용성과 각각의 메뉴로부터 얻어지는 효용성에 모두 기반한다고 볼 수 있다. 
+
+대안 $1, \lots, J$가 $C$개의 그룹(nest)으로 구분된다고 가정하자. 이 때, $m_{jc}$를 대안 $j$가 그룹 $c$에 속하는 지에 대한 indicator variable이라 하자.
+
+$$
+m_{jc} = \begin{cases}
+1 & \text{if alternative } j \text{ belongs to group } c,\\
+0 & \text{otherwise.}
+\end{cases}
+$$
+
+이 때, $m_{jc}$는 아래와 같은 제약조건을 만족한다 하자.
+
+$$
+\sum_{c = 1}^{C} m_{jc} = 1, \; \forall j
+$$
+
+즉, 각 대안은 하나의 그룹에만 속한다. 
+
+```{block2, type = 'note'}
+**NOTE**: Nested logit model은 multilevel nested logit model로 확장 가능하나, 본 장에서는 two-level nested logit 모형만 다루기로 하자.
+```
+
+
+$M_c$를 그룹 $c$에 속하는 대안들의 집합이라 하자.
+
+$$
+M_c = \{j: m_{jc} = 1\}
+$$
+
+
+
+### Utility
+
+### Observable utility
+
+$v_{ij}$에 대한 모형은 위에서 살펴본 multinomial logit model의 경우와 차이가 없다 해도 무방하다. 
+
+```{block2, type = 'note'}
+**NOTE**: 경우에 따라서, 각 그룹별로 observable utility의 parametric form을 다르게 구성하거나, 파라미터 값이 서로 다르다 가정하고 추정할 수 있다. 이를 구현함에 있어서, 모형을 추정하는 방법에 차이를 두기보다는 feature vector($\mathbf{x}_{ij}, \mathbf{z}_i$)를 확장하는 형태로 구현할 수 있다. 이에 대한 자세한 설명은 생략하기로 한다. 
+```
+
+
+### Unobservable utility
+
+Nested logit model이 multinomial logit model과 중요한 차이를 보이는 부분은 unobservable utility에 대한 가정이다.
+
+$j \in M_c$인 대안 $j$에 대하여, $i$번째 선택상황에서의 unobservable utility $\varepsilon_{ij}$는 아래와 같이 두 가지 부분으로 나뉜다.
+
+$$
+\varepsilon_{ij} = \varepsilon_{ij}^{(c)} + \varepsilon_i^{(c)}, \; j \in M_c
+$$
+
+이 때, 서로 다른 그룹 $c, d$에 속한 두 대안 $j, k$간에는 unobservable utility가 독립이다.
+
+$$
+Cov(\varepsilon_{ij}, \varepsilon_{ik}) = 0, \forall j \in M_c, k \in M_{d \neq c}
+$$
+
+$\varepsilon_{ij}^{(c)}$는 아래와 같은 Gumbel distribution을 따른다.
+
+$$
+\varepsilon_{ij}^{(c)} \overset{i.i.d.}{\sim} Gumbel(0, \lambda_c)
+$$
+
+여기에서, $\lambda_c > 0$는 nest $c$내 대안들간의 독립성을 나타내는 척도로써, 값이 0에 가까울수록 그룹 내 대안들간 대체재의 성격이 강하다. 모든 $c$에 대해 $\lambda_c = 1$이면 IIA 가정이 성립한다고 볼 수 있다.
+
+그룹 $c$ 내의 대안이 선택됨을 안다고 가정할 때 (즉, 그룹 $c$ 외의 대안이 선택될 확률이 0이라 가정할 때), 위 i.i.d. Gumbel distribution 가정에 따라, 대안 $j \in M_c$가 선택될 확률은 아래와 같이 계산된다.
+
+$$
+E\left[y_{ij} \, \left| \, \sum_{k \in M_c} y_{ik} = 1, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda_c)}{\sum_{k \in M_c} \exp(v_{ij} / \lambda_c)}
+$$
+
+그룹 $c$의 대안이 선택되는 경우는, 그룹 $c$내 모든 대안들의 utility의 최대값이 다른 모든 그룹 내 대안의 utility의 최대값보다 큰 경우이다.
+
+$$
+P\left(\max_{j \in M_c} u_{ij} > \max_{k \notin M_c} u_{ik}\right) = 
+\prod_{d \neq c} P\left(\max_{j \in M_c} u_{ij} > \max_{k \in M_d} u_{ik}\right)\\
+= \prod_{d \neq c} P\left(\max_{j \in M_c} v_{ij} + \varepsilon^{(c)} + \varepsilon_{ij}^{(c)} > \max_{k \in M_d} v_{ik} + \varepsilon^{(d)} + \varepsilon_{ik}^{(d)}\right)
+$$
+
+$$
+P\left(\max_{j \in M_c} v_{ij} + \varepsilon^{(c)} + \varepsilon_{ij}^{(c)} < x\right) = \prod_{j \in M_c} P\left(v_{ij} + \varepsilon^{(c)} + \varepsilon_{ij}^{(c)} < x\right)\\
+= \prod_{j \in M_c} P\left(\varepsilon_{ij}^{(c)} < x - v_{ij} + \varepsilon^{(c)}\right)\\
+= \prod_{j \in M_c} \exp(-\exp(-(x - v_{ij} + \varepsilon^{(c)}) / \lambda_c))\\
+= \exp\left(-\sum_{j \in M_c} \exp(-(x - v_{ij} + \varepsilon^{(c)}) / \lambda_c) \right)
+$$
+
 
 

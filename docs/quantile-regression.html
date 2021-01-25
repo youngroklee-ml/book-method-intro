@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-01-07" />
+<meta name="date" content="2021-01-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,8 @@
   
   
 <link rel="prev" href="index.html"/>
-
+<link rel="next" href="discrete-choice-model.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +51,20 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +84,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -135,19 +134,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>들어가는 글</a></li>
-<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a><ul>
+<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate의-예"><i class="fa fa-check"></i><b>1.1</b> Univariate의 예</a></li>
-<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a><ul>
+<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="quantile-regression.html"><a href="quantile-regression.html#정의"><i class="fa fa-check"></i><b>1.2.1</b> 정의</a></li>
 <li class="chapter" data-level="1.2.2" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate-추정"><i class="fa fa-check"></i><b>1.2.2</b> Univariate 추정</a></li>
 <li class="chapter" data-level="1.2.3" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제"><i class="fa fa-check"></i><b>1.2.3</b> 최적화 문제</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a><ul>
+<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제-1"><i class="fa fa-check"></i><b>1.3.1</b> 최적화 문제</a></li>
 <li class="chapter" data-level="1.3.2" data-path="quantile-regression.html"><a href="quantile-regression.html#intercept-only"><i class="fa fa-check"></i><b>1.3.2</b> Intercept only</a></li>
 <li class="chapter" data-level="1.3.3" data-path="quantile-regression.html"><a href="quantile-regression.html#예측-변수가-존재하는-경우"><i class="fa fa-check"></i><b>1.3.3</b> 예측 변수가 존재하는 경우</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="quantile-regression.html"><a href="quantile-regression.html#예측구간prediction-interval"><i class="fa fa-check"></i><b>1.4</b> 예측구간(prediction interval)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html"><i class="fa fa-check"></i><b>2</b> Discrete choice model</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#data"><i class="fa fa-check"></i><b>2.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice"><i class="fa fa-check"></i><b>2.1.1</b> Choice</a></li>
+<li class="chapter" data-level="2.1.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#covariate"><i class="fa fa-check"></i><b>2.1.2</b> Covariate</a></li>
+<li class="chapter" data-level="2.1.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#availability"><i class="fa fa-check"></i><b>2.1.3</b> Availability</a></li>
+<li class="chapter" data-level="2.1.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#no-choice-alternative"><i class="fa fa-check"></i><b>2.1.4</b> “No choice” alternative</a></li>
+<li class="chapter" data-level="2.1.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-예"><i class="fa fa-check"></i><b>2.1.5</b> 데이터 예</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility"><i class="fa fa-check"></i><b>2.2</b> Utility</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility-representative-utility"><i class="fa fa-check"></i><b>2.2.1</b> Observable utility (Representative utility)</a></li>
+<li class="chapter" data-level="2.2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility"><i class="fa fa-check"></i><b>2.2.2</b> Unobservable utility</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit model</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-1"><i class="fa fa-check"></i><b>2.3.1</b> Utility</a></li>
+<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-모델-예"><i class="fa fa-check"></i><b>2.3.2</b> 데이터 모델 (예)</a></li>
+<li class="chapter" data-level="2.3.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#independent-from-irrelevant-alternatives-iia"><i class="fa fa-check"></i><b>2.3.3</b> Independent from irrelevant alternatives (IIA)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -169,14 +194,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="quantile-regression" class="section level1">
+<div id="quantile-regression" class="section level1" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Quantile regression</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="quantile-regression.html#cb1-1"></a><span class="kw">library</span>(extraDistr)</span>
-<span id="cb1-2"><a href="quantile-regression.html#cb1-2"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="quantile-regression.html#cb1-3"></a><span class="kw">library</span>(ggtext)</span>
-<span id="cb1-4"><a href="quantile-regression.html#cb1-4"></a><span class="kw">library</span>(ggrepel)</span>
-<span id="cb1-5"><a href="quantile-regression.html#cb1-5"></a><span class="kw">library</span>(gt)</span>
-<span id="cb1-6"><a href="quantile-regression.html#cb1-6"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="quantile-regression.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extraDistr)</span>
+<span id="cb1-2"><a href="quantile-regression.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="quantile-regression.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb1-4"><a href="quantile-regression.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb1-5"><a href="quantile-regression.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-6"><a href="quantile-regression.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -185,9 +210,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="quantile-regression.html#cb5-1"></a><span class="kw">library</span>(tidyr)</span>
-<span id="cb5-2"><a href="quantile-regression.html#cb5-2"></a><span class="kw">library</span>(rlang)</span>
-<span id="cb5-3"><a href="quantile-regression.html#cb5-3"></a><span class="kw">library</span>(purrr)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="quantile-regression.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb5-2"><a href="quantile-regression.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb5-3"><a href="quantile-regression.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;purrr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:rlang&#39;:
@@ -198,19 +223,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## The following object is masked from &#39;package:extraDistr&#39;:
 ## 
 ##     rdunif</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="quantile-regression.html#cb9-1"></a><span class="kw">library</span>(quantreg)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="quantile-regression.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantreg)</span></code></pre></div>
 <pre><code>## Loading required package: SparseM</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;SparseM&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     backsolve</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="quantile-regression.html#cb13-1"></a><span class="kw">library</span>(lpSolve)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="quantile-regression.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)</span></code></pre></div>
 <p>우리가 흔히 사용하는 다중회귀분석(multiple linear regression)은 예측변수 <span class="math inline">\(X\)</span>를 이용하여 연속형 반응변수 <span class="math inline">\(Y\)</span>의 조건부 기대값, 즉 평균을 예측하는 데 주로 사용한다. 평균은 물론 매우 유용하고 대부분의 경우 가장 중요한 통계치이나, 경우에 따라서 평균과 더불어 반응변수의 분포를 예측하는 것이 의사결정에 큰 도움이 되는 상황들이 있다.</p>
 <p>예를 들어, 에너지 산업의 경우, 재생 에너지 생산량의 예측값보다 실제 생산량이 적었을 때 발생하는 비용(e.g. 정전 등)이 실제 생산량이 많았을 때 발생하는 비용보다 크다고 가정하면, 보수적인 관점에서 평균 반응치보다는 좀 더 낮은 변위치(quantile)을 예측하고, 그에 기반하여 예비 전력을 준비하는 것이 적합할 수 있다.</p>
 <p>물론, 다중회귀분석 결과를 이용하여 예측값의 범위를 추정할 수 있다. 하지만, 다중회귀분석에 적용되는 가정, 즉 실제 조건부 관측치의 분포가 예측변수 <span class="math inline">\(X\)</span>값에 상관없이 “동일한 분산”의 “정규분포”를 따른다는 가정은 현실 문제에서 그대로 적용되기 쉽지 않다. 이러한 가정에 위배되는 데이터에 다중회귀분석이 추정하는 예측값의 범위를 사용할 경우, 그로 인해 의사결정 과정에서 최적과는 거리가 먼 결정을 내리게 될 수 있다.</p>
 <p>Linear quantile regression은 반응변수의 분포에 대한 특정한 명시적 가정 없이, 연속형 반응변수 분포의 각 quantile과 예측변수 <span class="math inline">\(X\)</span>간의 선형관계를 추정하는 방법이다.</p>
-<div id="univariate의-예" class="section level2">
+<div id="univariate의-예" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Univariate의 예</h2>
 <p>반응변수 <span class="math inline">\(Y\)</span>가 아래와 같은 Gumbel distribution을 따른다고 할 때,</p>
 <p><span class="math display">\[
@@ -219,28 +244,28 @@ F(y) = \exp \left( -\exp \left( - \frac{y - \mu}{\sigma} \right) \right)
 <p><span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\sigma = 1\)</span> 에서의 분포는 아래 그래프와 같다.</p>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>위 standard Gumbel 분포에서 100,000개의 샘플을 추출한 뒤, 일반적인 최소자승 회귀분석과 quantile regression을 각각 적용하여 95% 예측구간(i.e. [2.5%, 97.5%])을 추정해보자. 이 예에서 예측변수는 존재하지 않으므로, 회귀모형은 y-절편값만을 구한다. 또한, <span class="math inline">\(y\)</span>값의 실제 분포를 알고 있으므로, 실제 분포에서의 95% 구간을 구해보자.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="quantile-regression.html#cb14-1"></a>df_gumbel_random &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb14-2"><a href="quantile-regression.html#cb14-2"></a>  <span class="dt">y =</span> <span class="kw">rgumbel</span>(<span class="fl">1e5</span>)</span>
-<span id="cb14-3"><a href="quantile-regression.html#cb14-3"></a>)</span>
-<span id="cb14-4"><a href="quantile-regression.html#cb14-4"></a></span>
-<span id="cb14-5"><a href="quantile-regression.html#cb14-5"></a>true_interval &lt;-<span class="st"> </span><span class="kw">qgumbel</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb14-6"><a href="quantile-regression.html#cb14-6"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span>
-<span id="cb14-7"><a href="quantile-regression.html#cb14-7"></a></span>
-<span id="cb14-8"><a href="quantile-regression.html#cb14-8"></a>lm_interval &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, df_gumbel_random) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-9"><a href="quantile-regression.html#cb14-9"></a><span class="st">  </span><span class="kw">predict</span>(<span class="dt">newdata =</span> <span class="kw">tibble</span>(<span class="dt">.rows =</span> <span class="dv">1</span>), <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="dt">level =</span> <span class="fl">0.95</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-10"><a href="quantile-regression.html#cb14-10"></a><span class="st">  </span><span class="kw">drop</span>() <span class="op">%&gt;%</span></span>
-<span id="cb14-11"><a href="quantile-regression.html#cb14-11"></a><span class="st">  `</span><span class="dt">[</span><span class="st">`</span>(<span class="kw">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span>
-<span id="cb14-12"><a href="quantile-regression.html#cb14-12"></a></span>
-<span id="cb14-13"><a href="quantile-regression.html#cb14-13"></a>rq_interval &lt;-<span class="st"> </span><span class="kw">rq</span>(y <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, df_gumbel_random, <span class="dt">tau =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb14-14"><a href="quantile-regression.html#cb14-14"></a><span class="st">  </span><span class="kw">predict</span>(<span class="dt">newdata =</span> <span class="kw">tibble</span>(<span class="dt">.rows =</span> <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb14-15"><a href="quantile-regression.html#cb14-15"></a><span class="st">  </span><span class="kw">drop</span>() <span class="op">%&gt;%</span></span>
-<span id="cb14-16"><a href="quantile-regression.html#cb14-16"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="quantile-regression.html#cb14-1" aria-hidden="true" tabindex="-1"></a>df_gumbel_random <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb14-2"><a href="quantile-regression.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rgumbel</span>(<span class="fl">1e5</span>)</span>
+<span id="cb14-3"><a href="quantile-regression.html#cb14-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-4"><a href="quantile-regression.html#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="quantile-regression.html#cb14-5" aria-hidden="true" tabindex="-1"></a>true_interval <span class="ot">&lt;-</span> <span class="fu">qgumbel</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="quantile-regression.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span>
+<span id="cb14-7"><a href="quantile-regression.html#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="quantile-regression.html#cb14-8" aria-hidden="true" tabindex="-1"></a>lm_interval <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, df_gumbel_random) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="quantile-regression.html#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">.rows =</span> <span class="dv">1</span>), <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-10"><a href="quantile-regression.html#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-11"><a href="quantile-regression.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">[</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span>
+<span id="cb14-12"><a href="quantile-regression.html#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="quantile-regression.html#cb14-13" aria-hidden="true" tabindex="-1"></a>rq_interval <span class="ot">&lt;-</span> <span class="fu">rq</span>(y <span class="sc">~</span> <span class="dv">1</span>, df_gumbel_random, <span class="at">tau =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-14"><a href="quantile-regression.html#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">.rows =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-15"><a href="quantile-regression.html#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-16"><a href="quantile-regression.html#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>))</span></code></pre></div>
 <pre><code>## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="quantile-regression.html#cb16-1"></a>df_prediction_interval &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">cbind</span>(true_interval, lm_interval, rq_interval)) <span class="op">%&gt;%</span></span>
-<span id="cb16-2"><a href="quantile-regression.html#cb16-2"></a><span class="st">  </span><span class="kw">as_tibble</span>(<span class="dt">rownames =</span> <span class="st">&quot;method&quot;</span>)</span>
-<span id="cb16-3"><a href="quantile-regression.html#cb16-3"></a>df_prediction_interval</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="quantile-regression.html#cb16-1" aria-hidden="true" tabindex="-1"></a>df_prediction_interval <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">cbind</span>(true_interval, lm_interval, rq_interval)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="quantile-regression.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;method&quot;</span>)</span>
+<span id="cb16-3"><a href="quantile-regression.html#cb16-3" aria-hidden="true" tabindex="-1"></a>df_prediction_interval</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 3
 ##   method          lwr   upr
 ##   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;
@@ -250,9 +275,9 @@ F(y) = \exp \left( -\exp \left( - \frac{y - \mu}{\sigma} \right) \right)
 <p>아래 그래프에서, quantile regression을 사용하였을 때 실제 범위와 가깝게 추정되며, 일반 최소자승 회귀분석을 이용하였을 때에는 추정범위가 실제 범위로부터 멀어짐을 확인할 수 있다.</p>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
-<div id="quantile" class="section level2">
+<div id="quantile" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Quantile</h2>
-<div id="정의" class="section level3">
+<div id="정의" class="section level3" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> 정의</h3>
 <p>연속형 변수 <span class="math inline">\(Y\)</span>의 분포함수를 <span class="math inline">\(F_Y(y) = P(Y \geq y)\)</span>라 할 때, <span class="math inline">\(\tau \in (0, 1)\)</span>에 대해 <span class="math inline">\(\tau\)</span>-quantile은 아래와 같이 정의된다.</p>
 <p><span class="math display">\[
@@ -260,21 +285,20 @@ Q_Y(\tau) = F_Y^{-1}(\tau)
 \]</span></p>
 <p>예를 들어, <span class="math inline">\(Y\)</span>가 <span class="math inline">\(U(0, 1)\)</span>의 분포를 따를 경우, 0.3-quantile은 0.3이며, <span class="math inline">\(U(0, 2)\)</span>의 분포를 따른 경우, 0.3-quantile은 0.6이다.</p>
 </div>
-<div id="univariate-추정" class="section level3">
+<div id="univariate-추정" class="section level3" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> Univariate 추정</h3>
 <p>분포 <span class="math inline">\(F_Y(y)\)</span>로부터 <span class="math inline">\(N\)</span>개의 샘플 <span class="math inline">\(y_{(1)}, y_{(2)}, \ldots, y_{(N)}\)</span>을 추출하였다 할 때 (<span class="math inline">\(y_{(1)} \leq y_{(2)} \leq \cdots \leq y_{(N)}\)</span>), 분포 <span class="math inline">\(F_Y(y)\)</span>의 <span class="math inline">\(\tau\)</span>-quantile을 추정하는 방법은 여러가지가 있다. R의 <code>stats::quantile()</code> 함수는 총 9가지 추정방법을 지원한다. 이 중, 첫 번째 방법(<code>type = 1</code>)에 대해 알아보자.</p>
 
 <div class="note">
 <strong>NOTE</strong>: <code>stats::quantile()</code> 함수의 default는 <code>type = 7</code>으로 linear interpolation을 이용하며, 해당 방법이 quantile 추정에 더 적합하지만, 본 장에서 알아볼 quantile regression은 <code>type = 1</code>이 지원하는 quantile 추정 함수와 일관성이 있다.
 </div>
-
 <p>우선, 분포 <span class="math inline">\(F_Y(y)\)</span>를 <span class="math inline">\(N\)</span>개의 샘플 <span class="math inline">\(y_{(1)}, y_{(2)}, \ldots, y_{(N)}\)</span>을 이용하여 아래와 같이 추정한다.</p>
 <p><span class="math display">\[
 \hat{F}_Y(y) = \frac{1}{N} \sum_{i = 1}^{N} \mathbb{I}(y_{(i)} \leq y)
 \]</span></p>
 <p>예를 들어, 추출된 10개의 샘플의 값이 <span class="math inline">\(y_{(1)} = 1, y_{(2)} = 2, \ldots, y_{(10)} = 10\)</span>이었다고 할 때, 분포 <span class="math inline">\(F_Y(y)\)</span>은 아래와 같이 추정된다.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="quantile-regression.html#cb18-1"></a>y &lt;-<span class="st"> </span>1L<span class="op">:</span>10L</span>
-<span id="cb18-2"><a href="quantile-regression.html#cb18-2"></a>Fy &lt;-<span class="st"> </span><span class="kw">ecdf</span>(y)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="quantile-regression.html#cb18-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> 1L<span class="sc">:</span>10L</span>
+<span id="cb18-2"><a href="quantile-regression.html#cb18-2" aria-hidden="true" tabindex="-1"></a>Fy <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(y)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>위에서 추정된 분포는 불연속적인 step function으로 그 역함수 <span class="math inline">\(\hat{F}_Y^{-1}(\tau)\)</span> 가 <span class="math inline">\(\tau \in (0, 1\)</span>에 대해 정의되지 않는다. 이에 아래와 같이 quantile을 다시 정의해보자.</p>
 <p><span class="math display">\[
@@ -284,19 +308,19 @@ Q_Y(\tau) = \inf \{y \, | \, F_Y(y) \geq \tau \}
 <p><span class="math display">\[
 \hat{Q}_Y(\tau) = \inf \{y \, | \, \hat{F}_Y(y) \geq \tau \}
 \]</span></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="quantile-regression.html#cb19-1"></a>quantile_Fy &lt;-<span class="st"> </span><span class="kw">Vectorize</span>(</span>
-<span id="cb19-2"><a href="quantile-regression.html#cb19-2"></a>  <span class="cf">function</span>(tau, Fy) {</span>
-<span id="cb19-3"><a href="quantile-regression.html#cb19-3"></a>    q_list &lt;-<span class="st"> </span><span class="kw">eval</span>(rlang<span class="op">::</span><span class="kw">expr</span>(x), <span class="kw">environment</span>(Fy))</span>
-<span id="cb19-4"><a href="quantile-regression.html#cb19-4"></a>    p_list &lt;-<span class="st"> </span><span class="kw">eval</span>(rlang<span class="op">::</span><span class="kw">expr</span>(y), <span class="kw">environment</span>(Fy))</span>
-<span id="cb19-5"><a href="quantile-regression.html#cb19-5"></a>    q_tau &lt;-<span class="st"> </span>q_list[<span class="kw">min</span>(<span class="kw">which</span>(p_list <span class="op">&gt;=</span><span class="st"> </span>tau))]</span>
-<span id="cb19-6"><a href="quantile-regression.html#cb19-6"></a>    <span class="kw">return</span>(q_tau)</span>
-<span id="cb19-7"><a href="quantile-regression.html#cb19-7"></a>  },</span>
-<span id="cb19-8"><a href="quantile-regression.html#cb19-8"></a>  <span class="st">&quot;tau&quot;</span></span>
-<span id="cb19-9"><a href="quantile-regression.html#cb19-9"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="quantile-regression.html#cb19-1" aria-hidden="true" tabindex="-1"></a>quantile_Fy <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(</span>
+<span id="cb19-2"><a href="quantile-regression.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(tau, Fy) {</span>
+<span id="cb19-3"><a href="quantile-regression.html#cb19-3" aria-hidden="true" tabindex="-1"></a>    q_list <span class="ot">&lt;-</span> <span class="fu">eval</span>(rlang<span class="sc">::</span><span class="fu">expr</span>(x), <span class="fu">environment</span>(Fy))</span>
+<span id="cb19-4"><a href="quantile-regression.html#cb19-4" aria-hidden="true" tabindex="-1"></a>    p_list <span class="ot">&lt;-</span> <span class="fu">eval</span>(rlang<span class="sc">::</span><span class="fu">expr</span>(y), <span class="fu">environment</span>(Fy))</span>
+<span id="cb19-5"><a href="quantile-regression.html#cb19-5" aria-hidden="true" tabindex="-1"></a>    q_tau <span class="ot">&lt;-</span> q_list[<span class="fu">min</span>(<span class="fu">which</span>(p_list <span class="sc">&gt;=</span> tau))]</span>
+<span id="cb19-6"><a href="quantile-regression.html#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(q_tau)</span>
+<span id="cb19-7"><a href="quantile-regression.html#cb19-7" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb19-8"><a href="quantile-regression.html#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;tau&quot;</span></span>
+<span id="cb19-9"><a href="quantile-regression.html#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>위에서 <span class="math inline">\(\hat{Q}_Y(\tau)\)</span>는 <span class="math inline">\(\tau \in [0, 1]\)</span>에서 정의되는 함수임을 볼 수 있다.</p>
 </div>
-<div id="최적화-문제" class="section level3">
+<div id="최적화-문제" class="section level3" number="1.2.3">
 <h3><span class="header-section-number">1.2.3</span> 최적화 문제</h3>
 <p>Check function <span class="math inline">\(\rho_\tau(u)\)</span>를 아래와 같이 정의하자.</p>
 <p><span class="math display">\[\begin{equation*}
@@ -325,42 +349,40 @@ Q_Y(\tau) = \inf \{y \, | \, F_Y(y) \geq \tau \}
 \text{s.t.} &amp; &amp;u_i^{+} - u_i^{-} = y_{(i)} - \xi, \; i = 1, \ldots, N\\
  &amp; &amp; u_i^{+}, u_i^{-} \geq 0, \; i = 1, \ldots, N
 \end{eqnarray*}\]</span></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="quantile-regression.html#cb20-1"></a>y &lt;-<span class="st"> </span>1L<span class="op">:</span>10L</span>
-<span id="cb20-2"><a href="quantile-regression.html#cb20-2"></a></span>
-<span id="cb20-3"><a href="quantile-regression.html#cb20-3"></a>quantile_lp &lt;-<span class="st"> </span><span class="kw">Vectorize</span>(</span>
-<span id="cb20-4"><a href="quantile-regression.html#cb20-4"></a>  <span class="cf">function</span>(tau, y, <span class="dt">penalty_xi =</span> <span class="fl">1e-10</span>) {</span>
-<span id="cb20-5"><a href="quantile-regression.html#cb20-5"></a>    n &lt;-<span class="st"> </span><span class="kw">length</span>(y)</span>
-<span id="cb20-6"><a href="quantile-regression.html#cb20-6"></a>    penalty_xi &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">range</span>(y)) <span class="op">*</span><span class="st"> </span>penalty_xi</span>
-<span id="cb20-7"><a href="quantile-regression.html#cb20-7"></a>    obj_vec &lt;-<span class="st"> </span><span class="kw">c</span>(penalty_xi, <span class="op">-</span><span class="st"> </span>penalty_xi, <span class="kw">rep</span>(tau, <span class="dt">length =</span> n), <span class="kw">rep</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>tau, <span class="dt">length =</span> n))</span>
-<span id="cb20-8"><a href="quantile-regression.html#cb20-8"></a>    const_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rep</span>(1L, n), <span class="kw">rep</span>(<span class="op">-</span>1L, n), <span class="kw">diag</span>(n), <span class="op">-</span><span class="st"> </span><span class="kw">diag</span>(n))</span>
-<span id="cb20-9"><a href="quantile-regression.html#cb20-9"></a>    const_dir &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;=&quot;</span>))</span>
-<span id="cb20-10"><a href="quantile-regression.html#cb20-10"></a>    const_rhs &lt;-<span class="st"> </span>y</span>
-<span id="cb20-11"><a href="quantile-regression.html#cb20-11"></a>    res &lt;-<span class="st"> </span><span class="kw">lp</span>(<span class="st">&quot;min&quot;</span>, obj_vec, const_mat, const_dir, const_rhs)</span>
-<span id="cb20-12"><a href="quantile-regression.html#cb20-12"></a>    opt_sol &lt;-<span class="st"> </span>res<span class="op">$</span>solution[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>res<span class="op">$</span>solution[<span class="dv">2</span>]</span>
-<span id="cb20-13"><a href="quantile-regression.html#cb20-13"></a>    <span class="kw">return</span>(opt_sol)</span>
-<span id="cb20-14"><a href="quantile-regression.html#cb20-14"></a>  },</span>
-<span id="cb20-15"><a href="quantile-regression.html#cb20-15"></a>  <span class="st">&quot;tau&quot;</span></span>
-<span id="cb20-16"><a href="quantile-regression.html#cb20-16"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="quantile-regression.html#cb21-1"></a>q_solution &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb21-2"><a href="quantile-regression.html#cb21-2"></a>  <span class="dt">tau =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>),</span>
-<span id="cb21-3"><a href="quantile-regression.html#cb21-3"></a>  <span class="dt">q =</span> <span class="kw">quantile_lp</span>(tau, y)</span>
-<span id="cb21-4"><a href="quantile-regression.html#cb21-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="quantile-regression.html#cb20-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> 1L<span class="sc">:</span>10L</span>
+<span id="cb20-2"><a href="quantile-regression.html#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="quantile-regression.html#cb20-3" aria-hidden="true" tabindex="-1"></a>quantile_lp <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(</span>
+<span id="cb20-4"><a href="quantile-regression.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(tau, y, <span class="at">penalty_xi =</span> <span class="fl">1e-10</span>) {</span>
+<span id="cb20-5"><a href="quantile-regression.html#cb20-5" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb20-6"><a href="quantile-regression.html#cb20-6" aria-hidden="true" tabindex="-1"></a>    penalty_xi <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">range</span>(y)) <span class="sc">*</span> penalty_xi</span>
+<span id="cb20-7"><a href="quantile-regression.html#cb20-7" aria-hidden="true" tabindex="-1"></a>    obj_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(penalty_xi, <span class="sc">-</span> penalty_xi, <span class="fu">rep</span>(tau, <span class="at">length =</span> n), <span class="fu">rep</span>(<span class="dv">1</span> <span class="sc">-</span> tau, <span class="at">length =</span> n))</span>
+<span id="cb20-8"><a href="quantile-regression.html#cb20-8" aria-hidden="true" tabindex="-1"></a>    const_mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(1L, n), <span class="fu">rep</span>(<span class="sc">-</span>1L, n), <span class="fu">diag</span>(n), <span class="sc">-</span> <span class="fu">diag</span>(n))</span>
+<span id="cb20-9"><a href="quantile-regression.html#cb20-9" aria-hidden="true" tabindex="-1"></a>    const_dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;=&quot;</span>))</span>
+<span id="cb20-10"><a href="quantile-regression.html#cb20-10" aria-hidden="true" tabindex="-1"></a>    const_rhs <span class="ot">&lt;-</span> y</span>
+<span id="cb20-11"><a href="quantile-regression.html#cb20-11" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">lp</span>(<span class="st">&quot;min&quot;</span>, obj_vec, const_mat, const_dir, const_rhs)</span>
+<span id="cb20-12"><a href="quantile-regression.html#cb20-12" aria-hidden="true" tabindex="-1"></a>    opt_sol <span class="ot">&lt;-</span> res<span class="sc">$</span>solution[<span class="dv">1</span>] <span class="sc">-</span> res<span class="sc">$</span>solution[<span class="dv">2</span>]</span>
+<span id="cb20-13"><a href="quantile-regression.html#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(opt_sol)</span>
+<span id="cb20-14"><a href="quantile-regression.html#cb20-14" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb20-15"><a href="quantile-regression.html#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;tau&quot;</span></span>
+<span id="cb20-16"><a href="quantile-regression.html#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="quantile-regression.html#cb21-1" aria-hidden="true" tabindex="-1"></a>q_solution <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb21-2"><a href="quantile-regression.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.001</span>),</span>
+<span id="cb21-3"><a href="quantile-regression.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">q =</span> <span class="fu">quantile_lp</span>(tau, y)</span>
+<span id="cb21-4"><a href="quantile-regression.html#cb21-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 
 <div class="note">
 <strong>NOTE</strong>: <code>lpSolve::lp()</code>는 모든 실수형 변수를 0보다 크거나 같다고 가정한다. 따라서, <span class="math inline">\(\xi \in \mathbb{R}\)</span>의 해를 구하기 위해서 <span class="math inline">\(\xi = \xi^{+} - \xi^{-}\)</span>, <span class="math inline">\(\xi^{+}, \xi^{-} \geq 0\)</span> 의 방식으로 decision variable을 변환하였다.
 </div>
 
-
 <div class="note">
 <strong>NOTE</strong>: 위 예제 데이터에 최적화 모형을 그대로 적용하면, 일부 <span class="math inline">\(\tau\)</span>값에서는 하나 이상의 최적해 값이 도출된다. 예를 들어, <span class="math inline">\(\tau = 0.6\)</span>일 때, <span class="math inline">\(\xi = 6\)</span>과 <span class="math inline">\(\xi = 7\)</span>은 동일한 목적식 값을 얻는다. 이 때, <span class="math inline">\(\tau\)</span>-quantile의 정의(<span class="math inline">\(\inf \{y \, | \, F_Y(y) \geq \tau \}\)</span>)에 의하면 작은 값 6을 <span class="math inline">\(\xi\)</span>의 최적해로 얻어야 하나, 위 최적화 문제의 식에서는 6과 7 모두 동일하게 최적해로 판단하여 그 둘 중 하나를 <code>lpSolve::lp()</code> 함수의 결과값으로 리턴한다. 따라서, <span class="math inline">\(\tau\)</span>값이 step function의 knot에 해당하는 경우에는 <code>lpSolve::lp()</code>의 결과값이 틀린 <span class="math inline">\(\tau\)</span>-qunatile값을 리턴할 수 있다. 이를 해소하기 위해, 위에서 구현한 <code>quantile_lp()</code>함수에서는 목적식에 추가로 <span class="math inline">\(\xi\)</span>값에 대한 임의의 작은 패널티를 부과하였다. 이는 간단하지만 안전한 방법이 아니며, 보다 안정적인 알고리즘의 구현이 필요하다.
 </div>
-
 </div>
 </div>
-<div id="linear-quantile-regression" class="section level2">
+<div id="linear-quantile-regression" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Linear quantile regression</h2>
-<div id="최적화-문제-1" class="section level3">
+<div id="최적화-문제-1" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> 최적화 문제</h3>
 <p>앞 장에서 살펴본 최적화 문제</p>
 <p><span class="math display">\[
@@ -393,11 +415,11 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 \hat{\boldsymbol\beta}^{(\tau)} = {\arg\min}_{\boldsymbol\beta \in \mathbb{R}^{d + 1}} \sum_{i = 1}^{N} \rho_\tau(y_{(i)} - \tilde{\mathbf{x}}_i^\top \boldsymbol\beta)
 \]</span></p>
 </div>
-<div id="intercept-only" class="section level3">
+<div id="intercept-only" class="section level3" number="1.3.2">
 <h3><span class="header-section-number">1.3.2</span> Intercept only</h3>
 <p>앞 절에서 살펴본 univariate 추정 결과를 quantile regression 함수 <code>quantreg::rq()</code>를 이용하여 아래와 같이 재현해볼 수 있다. 예측변수가 없는 univariate 데이터이기 때문에 (i.e. <span class="math inline">\(d = 0\)</span>), 모델에서는 intercept <span class="math inline">\(\beta_0\)</span>만을 추정한다. (i.e. <code>formula = y ~ 1</code>).</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="quantile-regression.html#cb22-1"></a>df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">y =</span> 1L<span class="op">:</span>10L)</span>
-<span id="cb22-2"><a href="quantile-regression.html#cb22-2"></a>rq_fit &lt;-<span class="st"> </span><span class="kw">rq</span>(y <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> df, <span class="dt">tau =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="quantile-regression.html#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y =</span> 1L<span class="sc">:</span>10L)</span>
+<span id="cb22-2"><a href="quantile-regression.html#cb22-2" aria-hidden="true" tabindex="-1"></a>rq_fit <span class="ot">&lt;-</span> <span class="fu">rq</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> df, <span class="at">tau =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.001</span>))</span></code></pre></div>
 <pre><code>## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
@@ -415,19 +437,19 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="quantile-regression.html#cb24-1"></a>q_solution1 &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb24-2"><a href="quantile-regression.html#cb24-2"></a>  <span class="dt">tau =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>),</span>
-<span id="cb24-3"><a href="quantile-regression.html#cb24-3"></a>  <span class="dt">q =</span> <span class="kw">predict</span>(rq_fit, <span class="kw">tibble</span>(<span class="dt">.rows =</span> 1L)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop</span>()</span>
-<span id="cb24-4"><a href="quantile-regression.html#cb24-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="quantile-regression.html#cb24-1" aria-hidden="true" tabindex="-1"></a>q_solution1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-2"><a href="quantile-regression.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.001</span>),</span>
+<span id="cb24-3"><a href="quantile-regression.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">q =</span> <span class="fu">predict</span>(rq_fit, <span class="fu">tibble</span>(<span class="at">.rows =</span> 1L)) <span class="sc">%&gt;%</span> <span class="fu">drop</span>()</span>
+<span id="cb24-4"><a href="quantile-regression.html#cb24-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
-<div id="예측-변수가-존재하는-경우" class="section level3">
+<div id="예측-변수가-존재하는-경우" class="section level3" number="1.3.3">
 <h3><span class="header-section-number">1.3.3</span> 예측 변수가 존재하는 경우</h3>
 <p>하나의 예측변수 <span class="math inline">\(X\)</span>에 대해 두 가지의 값이 관측되었고 (0, 2), 각 경우에 대해 반응변수 <span class="math inline">\(Y\)</span>가 아래와 같이 10번씩 관측되었다고 하자.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="quantile-regression.html#cb25-1"></a>df &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb25-2"><a href="quantile-regression.html#cb25-2"></a>  <span class="dt">x =</span> <span class="kw">rep</span>(<span class="kw">c</span>(0L, 2L), <span class="dt">each =</span> 10L),</span>
-<span id="cb25-3"><a href="quantile-regression.html#cb25-3"></a>  <span class="dt">y =</span> <span class="kw">rep</span>(1L<span class="op">:</span>10L, <span class="dt">times =</span> 2L) <span class="op">+</span><span class="st"> </span>x</span>
-<span id="cb25-4"><a href="quantile-regression.html#cb25-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="quantile-regression.html#cb25-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb25-2"><a href="quantile-regression.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">c</span>(0L, 2L), <span class="at">each =</span> 10L),</span>
+<span id="cb25-3"><a href="quantile-regression.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rep</span>(1L<span class="sc">:</span>10L, <span class="at">times =</span> 2L) <span class="sc">+</span> x</span>
+<span id="cb25-4"><a href="quantile-regression.html#cb25-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -830,8 +852,8 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 \]</span></p>
 <p>에서, <span class="math inline">\(\hat{\beta}^{(\tau)}_1\)</span>의 값, 즉 예측변수 <span class="math inline">\(X\)</span>에 대한 회귀계수는 <span class="math inline">\(\tau\)</span>값에 상관없이 1일 것임을 예상할 수 있다.</p>
 <p><span class="math inline">\(\tau\)</span>값을 0부터 1까지 0.001씩 증가시키며 회귀모형을 추정해보자.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="quantile-regression.html#cb26-1"></a>tau_list &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.001</span>)</span>
-<span id="cb26-2"><a href="quantile-regression.html#cb26-2"></a>rq_fit &lt;-<span class="st"> </span><span class="kw">rq</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> df, <span class="dt">tau =</span> tau_list)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="quantile-regression.html#cb26-1" aria-hidden="true" tabindex="-1"></a>tau_list <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.001</span>)</span>
+<span id="cb26-2"><a href="quantile-regression.html#cb26-2" aria-hidden="true" tabindex="-1"></a>rq_fit <span class="ot">&lt;-</span> <span class="fu">rq</span>(y <span class="sc">~</span> x, <span class="at">data =</span> df, <span class="at">tau =</span> tau_list)</span></code></pre></div>
 <pre><code>## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
 
 ## Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
@@ -856,18 +878,17 @@ Q_{Y|X}(\tau) = \beta_0 + \beta_1 x_1 + \cdots + \beta_d x_d
 <div class="note">
 <strong>TO DO</strong>: <span class="math inline">\(\tau\)</span>가 step function의 knots에 해당할 때의 quantile regression 추정에 대해 추후 내용 보충 필요.
 </div>
-
 <p>위에서 추정된 모형을 토대로, 새로운 데이터에 대해 <span class="math inline">\(\tau\)</span>-quantile을 예측하기 위해 <code>predict()</code> 함수를 사용한다. 예측의 경우, 학습 데이터에서 관측되지 않았던 숫자형 예측변수 값에 대한 반응변수의 <span class="math inline">\(\tau\)</span>-quantile 또한 예측할 수 있다. 아래에서, 학습 데이터에서 관측되었던 <span class="math inline">\(X = 0\)</span>, <span class="math inline">\(X = 2\)</span>에 더해, 학습데이터에서 관측되지 않았던 <span class="math inline">\(X = 1\)</span>인 경우에 대한 <span class="math inline">\(\tau\)</span>-quantile을 예측해보자.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="quantile-regression.html#cb28-1"></a>df_predicted &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb28-2"><a href="quantile-regression.html#cb28-2"></a>  <span class="dt">x =</span> <span class="kw">rep</span>(<span class="kw">c</span>(0L, 1L, 2L), <span class="dt">times =</span> <span class="kw">length</span>(tau_list)),</span>
-<span id="cb28-3"><a href="quantile-regression.html#cb28-3"></a>  <span class="dt">tau =</span> <span class="kw">rep</span>(tau_list, <span class="dt">each =</span> 3L),</span>
-<span id="cb28-4"><a href="quantile-regression.html#cb28-4"></a>  <span class="dt">q =</span> <span class="kw">c</span>(<span class="kw">predict</span>(rq_fit, <span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">c</span>(0L, 1L, 2L))) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.vector</span>())</span>
-<span id="cb28-5"><a href="quantile-regression.html#cb28-5"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="quantile-regression.html#cb28-1" aria-hidden="true" tabindex="-1"></a>df_predicted <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb28-2"><a href="quantile-regression.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">c</span>(0L, 1L, 2L), <span class="at">times =</span> <span class="fu">length</span>(tau_list)),</span>
+<span id="cb28-3"><a href="quantile-regression.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">rep</span>(tau_list, <span class="at">each =</span> 3L),</span>
+<span id="cb28-4"><a href="quantile-regression.html#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">q =</span> <span class="fu">c</span>(<span class="fu">predict</span>(rq_fit, <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(0L, 1L, 2L))) <span class="sc">%&gt;%</span> <span class="fu">as.vector</span>())</span>
+<span id="cb28-5"><a href="quantile-regression.html#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>위 그래프에서, <span class="math inline">\(X = 2\)</span>인 경우의 <span class="math inline">\(\tau\)</span>-quantile 예측값은 <span class="math inline">\(X = 0\)</span>인 경우보다 2씩 일정하게 높음을 확인할 수 있다. 또한, <span class="math inline">\(X = 1\)</span>인 경우의 <span class="math inline">\(\tau\)</span>-quantile 예측값은 <span class="math inline">\(X = 0\)</span>인 경우보다 1씩 일정하게 높음을 확인할 수 있다.</p>
 </div>
 </div>
-<div id="예측구간prediction-interval" class="section level2">
+<div id="예측구간prediction-interval" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> 예측구간(prediction interval)</h2>
 <p><span class="math inline">\(N\)</span>개의 관측 데이터가 아래 모델을 통해 얻어졌다고 하자.</p>
 <p><span class="math display">\[\begin{eqnarray*}
@@ -893,74 +914,74 @@ F_6(\varepsilon; X) &amp;=&amp; Gumbel(-\gamma(1 + X), 1 + X)
 <li>분포 <span class="math inline">\(F_1, F_2, F_4, F_5\)</span>는 symmetric 분포이며, 분포 <span class="math inline">\(F_3, F_6\)</span>은 right-skewed 분포이다.</li>
 </ul>
 <p>위에서 분포 <span class="math inline">\(F_1\)</span>을 제외한 다른 모든 분포는 최소자승 회귀분석의 가정(등분산 정규분포)을 위배함을 알 수 있다. 따라서, 최소자승 회귀분석으로부터 얻은 예측구간은 실제 예측구간을 추정하기에 적합하지 않을 것을 예상할 수 있다.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="quantile-regression.html#cb29-1"></a>beta0 &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb29-2"><a href="quantile-regression.html#cb29-2"></a>beta1 &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb29-3"><a href="quantile-regression.html#cb29-3"></a>euler &lt;-<span class="st"> </span><span class="op">-</span><span class="st"> </span><span class="kw">digamma</span>(<span class="dv">1</span>)</span>
-<span id="cb29-4"><a href="quantile-regression.html#cb29-4"></a></span>
-<span id="cb29-5"><a href="quantile-regression.html#cb29-5"></a>df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="fl">3e2</span>, <span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb29-6"><a href="quantile-regression.html#cb29-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb29-7"><a href="quantile-regression.html#cb29-7"></a>    <span class="dt">F1 =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(), <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb29-8"><a href="quantile-regression.html#cb29-8"></a>    <span class="dt">F2 =</span> <span class="kw">runif</span>(<span class="kw">n</span>(), <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb29-9"><a href="quantile-regression.html#cb29-9"></a>    <span class="dt">F3 =</span> <span class="kw">rgumbel</span>(<span class="kw">n</span>(), <span class="op">-</span><span class="st"> </span>euler, <span class="dv">1</span>),</span>
-<span id="cb29-10"><a href="quantile-regression.html#cb29-10"></a>    <span class="dt">F4 =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(), <span class="dv">0</span>, x),</span>
-<span id="cb29-11"><a href="quantile-regression.html#cb29-11"></a>    <span class="dt">F5 =</span> <span class="kw">runif</span>(<span class="kw">n</span>(), <span class="op">-</span><span class="st"> </span>x, x),</span>
-<span id="cb29-12"><a href="quantile-regression.html#cb29-12"></a>    <span class="dt">F6 =</span> <span class="kw">rgumbel</span>(<span class="kw">n</span>(), <span class="op">-</span><span class="st"> </span>euler <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x), <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x)</span>
-<span id="cb29-13"><a href="quantile-regression.html#cb29-13"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb29-14"><a href="quantile-regression.html#cb29-14"></a><span class="st">  </span><span class="kw">pivot_longer</span>(F1<span class="op">:</span>F6, <span class="dt">names_to =</span> <span class="st">&quot;distribution&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;epsilon&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb29-15"><a href="quantile-regression.html#cb29-15"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">y =</span> beta0 <span class="op">+</span><span class="st"> </span>beta1 <span class="op">*</span><span class="st"> </span>x  <span class="op">+</span><span class="st"> </span>epsilon)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="quantile-regression.html#cb29-1" aria-hidden="true" tabindex="-1"></a>beta0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb29-2"><a href="quantile-regression.html#cb29-2" aria-hidden="true" tabindex="-1"></a>beta1 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb29-3"><a href="quantile-regression.html#cb29-3" aria-hidden="true" tabindex="-1"></a>euler <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">digamma</span>(<span class="dv">1</span>)</span>
+<span id="cb29-4"><a href="quantile-regression.html#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="quantile-regression.html#cb29-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">runif</span>(<span class="fl">3e2</span>, <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-6"><a href="quantile-regression.html#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb29-7"><a href="quantile-regression.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1 =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb29-8"><a href="quantile-regression.html#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2 =</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb29-9"><a href="quantile-regression.html#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">F3 =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>(), <span class="sc">-</span> euler, <span class="dv">1</span>),</span>
+<span id="cb29-10"><a href="quantile-regression.html#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">F4 =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="dv">0</span>, x),</span>
+<span id="cb29-11"><a href="quantile-regression.html#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">F5 =</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="sc">-</span> x, x),</span>
+<span id="cb29-12"><a href="quantile-regression.html#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">F6 =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>(), <span class="sc">-</span> euler <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> x), <span class="dv">1</span> <span class="sc">+</span> x)</span>
+<span id="cb29-13"><a href="quantile-regression.html#cb29-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb29-14"><a href="quantile-regression.html#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(F1<span class="sc">:</span>F6, <span class="at">names_to =</span> <span class="st">&quot;distribution&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;epsilon&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-15"><a href="quantile-regression.html#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> x  <span class="sc">+</span> epsilon)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>6개 데이터셋 각각에 대해 일반 회귀분석과 quantile regression 분석을 수행해보자. 이 때, 분석의 목적은 95% 예측구간을 얻는 것이다.</p>
 <ul>
 <li>일반 회귀분석의 경우, 평균을 추정하는 회귀모형이 분산 또한 추정하므로, 잘 알려진 공식에 따라 임의의 <span class="math inline">\(x\)</span>값에 대한 <span class="math inline">\(y\)</span>값의 예측구간을 추정할 수 있다.</li>
 <li>Quantile regression의 경우, 0.025-quantile과 0.975-quantile을 예측하는 모형을 추정한 뒤, 임의의 <span class="math inline">\(x\)</span>값에 해당하는 0.025-quantile 예측값과 0.975-quantile의 예측값을 각각 95% 예측구간의 lower bound, upper bound로 간주한다.</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="quantile-regression.html#cb30-1"></a>nested_df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nest</span>(<span class="dt">data =</span> <span class="op">-</span><span class="st"> </span>distribution)</span>
-<span id="cb30-2"><a href="quantile-regression.html#cb30-2"></a></span>
-<span id="cb30-3"><a href="quantile-regression.html#cb30-3"></a>lm_fit &lt;-<span class="st"> </span><span class="kw">map</span>(nested_df<span class="op">$</span>data, <span class="op">~</span><span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> .x))</span>
-<span id="cb30-4"><a href="quantile-regression.html#cb30-4"></a>rq_fit &lt;-<span class="st"> </span><span class="kw">map</span>(nested_df<span class="op">$</span>data, <span class="op">~</span><span class="st"> </span><span class="kw">rq</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">tau =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="dt">data =</span> .x))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="quantile-regression.html#cb30-1" aria-hidden="true" tabindex="-1"></a>nested_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">nest</span>(<span class="at">data =</span> <span class="sc">-</span> distribution)</span>
+<span id="cb30-2"><a href="quantile-regression.html#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="quantile-regression.html#cb30-3" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">map</span>(nested_df<span class="sc">$</span>data, <span class="sc">~</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> .x))</span>
+<span id="cb30-4"><a href="quantile-regression.html#cb30-4" aria-hidden="true" tabindex="-1"></a>rq_fit <span class="ot">&lt;-</span> <span class="fu">map</span>(nested_df<span class="sc">$</span>data, <span class="sc">~</span> <span class="fu">rq</span>(y <span class="sc">~</span> x, <span class="at">tau =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="at">data =</span> .x))</span></code></pre></div>
 <p>이후, 각각의 데이터셋에 대해 실제 95% 구간(<code>true_interval</code>), 일반 최소자승 회귀모형으로부터의 95% 예측구간(<code>lm_interval</code>), 그리고 quantile regression을 이용하여 추정한 구간(<code>rq_interval</code>)을 구해보자.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="quantile-regression.html#cb31-1"></a>pred_df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.5</span>))</span>
-<span id="cb31-2"><a href="quantile-regression.html#cb31-2"></a></span>
-<span id="cb31-3"><a href="quantile-regression.html#cb31-3"></a>true_interval &lt;-<span class="st"> </span>pred_df <span class="op">%&gt;%</span></span>
-<span id="cb31-4"><a href="quantile-regression.html#cb31-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb31-5"><a href="quantile-regression.html#cb31-5"></a>    <span class="dt">F1_lwr =</span> <span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb31-6"><a href="quantile-regression.html#cb31-6"></a>    <span class="dt">F1_upr =</span> <span class="kw">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb31-7"><a href="quantile-regression.html#cb31-7"></a>    <span class="dt">F2_lwr =</span> <span class="kw">qunif</span>(<span class="fl">0.025</span>, <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb31-8"><a href="quantile-regression.html#cb31-8"></a>    <span class="dt">F2_upr =</span> <span class="kw">qunif</span>(<span class="fl">0.975</span>, <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb31-9"><a href="quantile-regression.html#cb31-9"></a>    <span class="dt">F3_lwr =</span> <span class="kw">qgumbel</span>(<span class="fl">0.025</span>, <span class="op">-</span><span class="st"> </span>euler, <span class="dv">1</span>),</span>
-<span id="cb31-10"><a href="quantile-regression.html#cb31-10"></a>    <span class="dt">F3_upr =</span> <span class="kw">qgumbel</span>(<span class="fl">0.975</span>, <span class="op">-</span><span class="st"> </span>euler, <span class="dv">1</span>),</span>
-<span id="cb31-11"><a href="quantile-regression.html#cb31-11"></a>    <span class="dt">F4_lwr =</span> <span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">0</span>, x),</span>
-<span id="cb31-12"><a href="quantile-regression.html#cb31-12"></a>    <span class="dt">F4_upr =</span> <span class="kw">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">0</span>, x),</span>
-<span id="cb31-13"><a href="quantile-regression.html#cb31-13"></a>    <span class="dt">F5_lwr =</span> <span class="kw">qunif</span>(<span class="fl">0.025</span>, <span class="op">-</span><span class="st"> </span>x, x),</span>
-<span id="cb31-14"><a href="quantile-regression.html#cb31-14"></a>    <span class="dt">F5_upr =</span> <span class="kw">qunif</span>(<span class="fl">0.975</span>, <span class="op">-</span><span class="st"> </span>x, x),</span>
-<span id="cb31-15"><a href="quantile-regression.html#cb31-15"></a>    <span class="dt">F6_lwr =</span> <span class="kw">qgumbel</span>(<span class="fl">0.025</span>, <span class="op">-</span><span class="st"> </span>euler <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x), <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x),</span>
-<span id="cb31-16"><a href="quantile-regression.html#cb31-16"></a>    <span class="dt">F6_upr =</span> <span class="kw">qgumbel</span>(<span class="fl">0.975</span>, <span class="op">-</span><span class="st"> </span>euler <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x), <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x)</span>
-<span id="cb31-17"><a href="quantile-regression.html#cb31-17"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb31-18"><a href="quantile-regression.html#cb31-18"></a><span class="st">  </span><span class="kw">pivot_longer</span>(F1_lwr<span class="op">:</span>F6_upr, <span class="dt">names_to =</span> <span class="kw">c</span>(<span class="st">&quot;distribution&quot;</span>, <span class="st">&quot;quantile&quot;</span>), </span>
-<span id="cb31-19"><a href="quantile-regression.html#cb31-19"></a>               <span class="dt">names_sep =</span> <span class="st">&quot;_&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;epsilon&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb31-20"><a href="quantile-regression.html#cb31-20"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">y =</span> beta0 <span class="op">+</span><span class="st"> </span>beta1 <span class="op">*</span><span class="st"> </span>x  <span class="op">+</span><span class="st"> </span>epsilon) <span class="op">%&gt;%</span></span>
-<span id="cb31-21"><a href="quantile-regression.html#cb31-21"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">id_cols =</span> <span class="kw">c</span>(x, distribution), <span class="dt">names_from =</span> quantile, <span class="dt">values_from =</span> y)</span>
-<span id="cb31-22"><a href="quantile-regression.html#cb31-22"></a></span>
-<span id="cb31-23"><a href="quantile-regression.html#cb31-23"></a>lm_interval &lt;-<span class="st"> </span><span class="kw">map2_dfr</span>(</span>
-<span id="cb31-24"><a href="quantile-regression.html#cb31-24"></a>  lm_fit, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, <span class="kw">seq_along</span>(lm_fit)),</span>
-<span id="cb31-25"><a href="quantile-regression.html#cb31-25"></a>  <span class="cf">function</span>(object, distribution, newdata) {</span>
-<span id="cb31-26"><a href="quantile-regression.html#cb31-26"></a>    newdata <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-27"><a href="quantile-regression.html#cb31-27"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">distribution =</span> distribution) <span class="op">%&gt;%</span></span>
-<span id="cb31-28"><a href="quantile-regression.html#cb31-28"></a><span class="st">      </span><span class="kw">bind_cols</span>(<span class="kw">as_tibble</span>(</span>
-<span id="cb31-29"><a href="quantile-regression.html#cb31-29"></a>        <span class="kw">predict</span>(object, newdata, <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="dt">level =</span> <span class="fl">0.95</span>)))</span>
-<span id="cb31-30"><a href="quantile-regression.html#cb31-30"></a>  },</span>
-<span id="cb31-31"><a href="quantile-regression.html#cb31-31"></a>  <span class="dt">newdata =</span> pred_df</span>
-<span id="cb31-32"><a href="quantile-regression.html#cb31-32"></a>)</span>
-<span id="cb31-33"><a href="quantile-regression.html#cb31-33"></a></span>
-<span id="cb31-34"><a href="quantile-regression.html#cb31-34"></a>rq_interval &lt;-<span class="st"> </span><span class="kw">map2_dfr</span>(</span>
-<span id="cb31-35"><a href="quantile-regression.html#cb31-35"></a>  rq_fit, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, <span class="kw">seq_along</span>(lm_fit)),</span>
-<span id="cb31-36"><a href="quantile-regression.html#cb31-36"></a>  <span class="cf">function</span>(object, distribution, newdata) {</span>
-<span id="cb31-37"><a href="quantile-regression.html#cb31-37"></a>    newdata <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-38"><a href="quantile-regression.html#cb31-38"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">distribution =</span> distribution) <span class="op">%&gt;%</span></span>
-<span id="cb31-39"><a href="quantile-regression.html#cb31-39"></a><span class="st">      </span><span class="kw">bind_cols</span>(<span class="kw">set_names</span>(<span class="kw">as_tibble</span>(<span class="kw">predict</span>(object, newdata)), <span class="kw">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>)))</span>
-<span id="cb31-40"><a href="quantile-regression.html#cb31-40"></a>  },</span>
-<span id="cb31-41"><a href="quantile-regression.html#cb31-41"></a>  <span class="dt">newdata =</span> pred_df</span>
-<span id="cb31-42"><a href="quantile-regression.html#cb31-42"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="quantile-regression.html#cb31-1" aria-hidden="true" tabindex="-1"></a>pred_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.5</span>))</span>
+<span id="cb31-2"><a href="quantile-regression.html#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="quantile-regression.html#cb31-3" aria-hidden="true" tabindex="-1"></a>true_interval <span class="ot">&lt;-</span> pred_df <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="quantile-regression.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-5"><a href="quantile-regression.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1_lwr =</span> <span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb31-6"><a href="quantile-regression.html#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1_upr =</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb31-7"><a href="quantile-regression.html#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2_lwr =</span> <span class="fu">qunif</span>(<span class="fl">0.025</span>, <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb31-8"><a href="quantile-regression.html#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2_upr =</span> <span class="fu">qunif</span>(<span class="fl">0.975</span>, <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb31-9"><a href="quantile-regression.html#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">F3_lwr =</span> <span class="fu">qgumbel</span>(<span class="fl">0.025</span>, <span class="sc">-</span> euler, <span class="dv">1</span>),</span>
+<span id="cb31-10"><a href="quantile-regression.html#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">F3_upr =</span> <span class="fu">qgumbel</span>(<span class="fl">0.975</span>, <span class="sc">-</span> euler, <span class="dv">1</span>),</span>
+<span id="cb31-11"><a href="quantile-regression.html#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">F4_lwr =</span> <span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">0</span>, x),</span>
+<span id="cb31-12"><a href="quantile-regression.html#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">F4_upr =</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">0</span>, x),</span>
+<span id="cb31-13"><a href="quantile-regression.html#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">F5_lwr =</span> <span class="fu">qunif</span>(<span class="fl">0.025</span>, <span class="sc">-</span> x, x),</span>
+<span id="cb31-14"><a href="quantile-regression.html#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">F5_upr =</span> <span class="fu">qunif</span>(<span class="fl">0.975</span>, <span class="sc">-</span> x, x),</span>
+<span id="cb31-15"><a href="quantile-regression.html#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">F6_lwr =</span> <span class="fu">qgumbel</span>(<span class="fl">0.025</span>, <span class="sc">-</span> euler <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> x), <span class="dv">1</span> <span class="sc">+</span> x),</span>
+<span id="cb31-16"><a href="quantile-regression.html#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">F6_upr =</span> <span class="fu">qgumbel</span>(<span class="fl">0.975</span>, <span class="sc">-</span> euler <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> x), <span class="dv">1</span> <span class="sc">+</span> x)</span>
+<span id="cb31-17"><a href="quantile-regression.html#cb31-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-18"><a href="quantile-regression.html#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(F1_lwr<span class="sc">:</span>F6_upr, <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">&quot;distribution&quot;</span>, <span class="st">&quot;quantile&quot;</span>), </span>
+<span id="cb31-19"><a href="quantile-regression.html#cb31-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_sep =</span> <span class="st">&quot;_&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;epsilon&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-20"><a href="quantile-regression.html#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> x  <span class="sc">+</span> epsilon) <span class="sc">%&gt;%</span></span>
+<span id="cb31-21"><a href="quantile-regression.html#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(x, distribution), <span class="at">names_from =</span> quantile, <span class="at">values_from =</span> y)</span>
+<span id="cb31-22"><a href="quantile-regression.html#cb31-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-23"><a href="quantile-regression.html#cb31-23" aria-hidden="true" tabindex="-1"></a>lm_interval <span class="ot">&lt;-</span> <span class="fu">map2_dfr</span>(</span>
+<span id="cb31-24"><a href="quantile-regression.html#cb31-24" aria-hidden="true" tabindex="-1"></a>  lm_fit, <span class="fu">paste0</span>(<span class="st">&quot;F&quot;</span>, <span class="fu">seq_along</span>(lm_fit)),</span>
+<span id="cb31-25"><a href="quantile-regression.html#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(object, distribution, newdata) {</span>
+<span id="cb31-26"><a href="quantile-regression.html#cb31-26" aria-hidden="true" tabindex="-1"></a>    newdata <span class="sc">%&gt;%</span> </span>
+<span id="cb31-27"><a href="quantile-regression.html#cb31-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">distribution =</span> distribution) <span class="sc">%&gt;%</span></span>
+<span id="cb31-28"><a href="quantile-regression.html#cb31-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bind_cols</span>(<span class="fu">as_tibble</span>(</span>
+<span id="cb31-29"><a href="quantile-regression.html#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">predict</span>(object, newdata, <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)))</span>
+<span id="cb31-30"><a href="quantile-regression.html#cb31-30" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb31-31"><a href="quantile-regression.html#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> pred_df</span>
+<span id="cb31-32"><a href="quantile-regression.html#cb31-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-33"><a href="quantile-regression.html#cb31-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-34"><a href="quantile-regression.html#cb31-34" aria-hidden="true" tabindex="-1"></a>rq_interval <span class="ot">&lt;-</span> <span class="fu">map2_dfr</span>(</span>
+<span id="cb31-35"><a href="quantile-regression.html#cb31-35" aria-hidden="true" tabindex="-1"></a>  rq_fit, <span class="fu">paste0</span>(<span class="st">&quot;F&quot;</span>, <span class="fu">seq_along</span>(lm_fit)),</span>
+<span id="cb31-36"><a href="quantile-regression.html#cb31-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(object, distribution, newdata) {</span>
+<span id="cb31-37"><a href="quantile-regression.html#cb31-37" aria-hidden="true" tabindex="-1"></a>    newdata <span class="sc">%&gt;%</span> </span>
+<span id="cb31-38"><a href="quantile-regression.html#cb31-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">distribution =</span> distribution) <span class="sc">%&gt;%</span></span>
+<span id="cb31-39"><a href="quantile-regression.html#cb31-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bind_cols</span>(<span class="fu">set_names</span>(<span class="fu">as_tibble</span>(<span class="fu">predict</span>(object, newdata)), <span class="fu">c</span>(<span class="st">&quot;lwr&quot;</span>, <span class="st">&quot;upr&quot;</span>)))</span>
+<span id="cb31-40"><a href="quantile-regression.html#cb31-40" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb31-41"><a href="quantile-regression.html#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> pred_df</span>
+<span id="cb31-42"><a href="quantile-regression.html#cb31-42" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="01-quantile-regression_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>위 그래프에서 보이는 바와 같이, 일반 회귀분석의 경우 회귀모형 가정을 따르는 첫 번째 데이터셋을 제외하면 실제 95% 구간과 상당한 차이를 보이는 예측구간을 추정한 반면, quantile regression은 대체로 실제 95% 구간에 근접한 예측구간을 추정하였다.</p>
 
@@ -971,8 +992,8 @@ F_6(\varepsilon; X) &amp;=&amp; Gumbel(-\gamma(1 + X), 1 + X)
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="discrete-choice-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

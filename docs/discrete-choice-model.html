@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Discrete choice model | 알아두면 유용한 데이터 분석 방법들</title>
+  <meta name="description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Discrete choice model | 알아두면 유용한 데이터 분석 방법들" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Discrete choice model | 알아두면 유용한 데이터 분석 방법들" />
+  
+  <meta name="twitter:description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  
+
+<meta name="author" content="이영록" />
+
+
+<meta name="date" content="2021-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="quantile-regression.html"/>
+
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">알아두면 유용한 데이터 분석 방법들</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>들어가는 글</a></li>
+<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate의-예"><i class="fa fa-check"></i><b>1.1</b> Univariate의 예</a></li>
+<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="quantile-regression.html"><a href="quantile-regression.html#정의"><i class="fa fa-check"></i><b>1.2.1</b> 정의</a></li>
+<li class="chapter" data-level="1.2.2" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate-추정"><i class="fa fa-check"></i><b>1.2.2</b> Univariate 추정</a></li>
+<li class="chapter" data-level="1.2.3" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제"><i class="fa fa-check"></i><b>1.2.3</b> 최적화 문제</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제-1"><i class="fa fa-check"></i><b>1.3.1</b> 최적화 문제</a></li>
+<li class="chapter" data-level="1.3.2" data-path="quantile-regression.html"><a href="quantile-regression.html#intercept-only"><i class="fa fa-check"></i><b>1.3.2</b> Intercept only</a></li>
+<li class="chapter" data-level="1.3.3" data-path="quantile-regression.html"><a href="quantile-regression.html#예측-변수가-존재하는-경우"><i class="fa fa-check"></i><b>1.3.3</b> 예측 변수가 존재하는 경우</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="quantile-regression.html"><a href="quantile-regression.html#예측구간prediction-interval"><i class="fa fa-check"></i><b>1.4</b> 예측구간(prediction interval)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html"><i class="fa fa-check"></i><b>2</b> Discrete choice model</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#data"><i class="fa fa-check"></i><b>2.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice"><i class="fa fa-check"></i><b>2.1.1</b> Choice</a></li>
+<li class="chapter" data-level="2.1.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#covariate"><i class="fa fa-check"></i><b>2.1.2</b> Covariate</a></li>
+<li class="chapter" data-level="2.1.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#availability"><i class="fa fa-check"></i><b>2.1.3</b> Availability</a></li>
+<li class="chapter" data-level="2.1.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#no-choice-alternative"><i class="fa fa-check"></i><b>2.1.4</b> “No choice” alternative</a></li>
+<li class="chapter" data-level="2.1.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-예"><i class="fa fa-check"></i><b>2.1.5</b> 데이터 예</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility"><i class="fa fa-check"></i><b>2.2</b> Utility</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility-representative-utility"><i class="fa fa-check"></i><b>2.2.1</b> Observable utility (Representative utility)</a></li>
+<li class="chapter" data-level="2.2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility"><i class="fa fa-check"></i><b>2.2.2</b> Unobservable utility</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit model</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-1"><i class="fa fa-check"></i><b>2.3.1</b> Utility</a></li>
+<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-모델-예"><i class="fa fa-check"></i><b>2.3.2</b> 데이터 모델 (예)</a></li>
+<li class="chapter" data-level="2.3.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#independent-from-irrelevant-alternatives-iia"><i class="fa fa-check"></i><b>2.3.3</b> Independent from irrelevant alternatives (IIA)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">알아두면 유용한 데이터 분석 방법들</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="discrete-choice-model" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Discrete choice model</h1>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="discrete-choice-model.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extraDistr)</span>
+<span id="cb32-2"><a href="discrete-choice-model.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb32-3"><a href="discrete-choice-model.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb32-4"><a href="discrete-choice-model.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb32-5"><a href="discrete-choice-model.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb32-6"><a href="discrete-choice-model.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="discrete-choice-model.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb36-2"><a href="discrete-choice-model.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb36-3"><a href="discrete-choice-model.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;purrr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:rlang&#39;:
+## 
+##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int,
+##     flatten_lgl, flatten_raw, invoke, list_along, modify, prepend,
+##     splice</code></pre>
+<pre><code>## The following object is masked from &#39;package:extraDistr&#39;:
+## 
+##     rdunif</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="discrete-choice-model.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlogit)</span></code></pre></div>
+<pre><code>## Loading required package: dfidx</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dfidx&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<p>우리의 삶에는 수많은 선택의 순간들이 있다. 크게는 집을 구매할 때 어떤 집을 선택할지부터, 소소하게는 짬뽕과 짜장면 중 어떤 음식을 먹을지 선택해야한다. 물론, 가진 자원이 많다면 여러 채의 집을 구매할 수도 있고, 짬뽕과 짜장면 둘 다 주문에서 먹을 수도 있다. 하지만, 제한된 자원에서는 선택지 중 한 가지를 선택하면 나머지는 포기해야 하는 상황에 부딪힌다. 이 때, 사람들이 어떤 선택을 하는지를 모델링하는 방법이 있다. 본 장에서는 <strong>discrete choice model</strong>이라 불리는 방법에 대해 알아보자.</p>
+<div id="data" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Data</h2>
+<p>아래와 같이 데이터를 정의해보자.</p>
+<div id="choice" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Choice</h3>
+<ul>
+<li><span class="math inline">\(j = 1, \ldots, J\)</span>: 선택할 수 있는 <span class="math inline">\(J\)</span>개의 서로 다른 대안(alternative). 예를 들어, 짬뽕(<span class="math inline">\(j = 1\)</span>)과 짜장면(<span class="math inline">\(j = 2\)</span>).</li>
+<li><span class="math inline">\(i = 1, \ldots, N\)</span>: 선택하여야 하는 상황(choice situation). 예를 들어, 100명의 손님이 있다면, 각각의 손님(<span class="math inline">\(i = 1, \ldots, 100\)</span>)은 짬뽕과 짜장면 중 한 가지 음식을 선택하여야 한다.</li>
+<li><span class="math inline">\(y_{ij}\)</span>: <span class="math inline">\(i\)</span>번째 선택 상황에서 <span class="math inline">\(j\)</span>번째 대안이 선택되었다면 1, 아니라면 0.</li>
+</ul>
+<p>이 때, <span class="math inline">\(y_{ij}\)</span>는 모든 <span class="math inline">\(i\)</span>에 대해 다음과 같은 제약을 만족한다.</p>
+<p><span class="math display">\[
+\sum_{j = 1}^{J} y_{ij} = 1\\
+y_{ij} \in \{0, 1\}
+\]</span></p>
+</div>
+<div id="covariate" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Covariate</h3>
+<p>선택 변수 <span class="math inline">\(y_{ij}\)</span>의 값은 선택 상황에 대한 설명 변수들과 상관관계가 있을 수 있다. 예를 들어, 손님의 나이가 어릴수록 짜장면을 선택할 확률이 높다거나, 날씨가 비가 오면 짬뽕을 선택할 확률이 높다거나, 음식 가격이 비쌀수록 해당 음식을 선택할 확률이 줄어들 수 있다. 이러한 변수의 벡터를 아래 <span class="math inline">\(\mathbf{x}_{ij}\)</span>와 <span class="math inline">\(\mathbf{z}_{i}\)</span> 두 가지로 나누어 정의하자.</p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}_{ij}\)</span>: <span class="math inline">\(i\)</span>번째 선택 상황에서 <span class="math inline">\(j\)</span>번째 대안에 대한 설명변수 관측치 (음식 가격 등)</li>
+<li><span class="math inline">\(\mathbf{z}_{i}\)</span>: <span class="math inline">\(i\)</span>번째 선택 상황에 대한 설명변수 관측치 (손님 나이, 날씨 등)</li>
+</ul>
+<p>위에서 <span class="math inline">\(\mathbf{x}_{ij}\)</span>는 이후에 다시 두 가지 벡터로 분리된다.</p>
+</div>
+<div id="availability" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Availability</h3>
+<p><span class="math inline">\(i\)</span>번째 선택 상황에서 <span class="math inline">\(j\)</span>번째 대안이 선택 가능하지 않는 경우들이 있다. 예를 들어, 재료수급 문제로 짬뽕이 품절이었거나, 손님이 가진 현금이 짬뽕을 주문하기 부족한 경우, 짬뽕은 선택 가능한 대안에서 제외되게 된다. 이를 표현하기 위해 변수 <span class="math inline">\(a_{ij}\)</span>를 아래와 같이 정의하자.</p>
+<ul>
+<li><span class="math inline">\(a_{ij}\)</span>: <span class="math inline">\(i\)</span>번째 선택 상황에서 <span class="math inline">\(j\)</span>번째 대안이 선택 가능했다면 1, 아니라면 0.</li>
+</ul>
+<p>이 때, <span class="math inline">\(a_{ij}\)</span> 와 <span class="math inline">\(y_{ij}\)</span>간에는 아래와 같은 관계가 성립한다.</p>
+<p><span class="math display">\[
+a_{ij} \geq y_{ij}
+\]</span></p>
+<p>따라서,</p>
+<p><span class="math display">\[
+\sum_{j = 1}^{J} a_{ij} \geq \sum_{j = 1}^{J} y_{ij} = 1
+\]</span></p>
+<p>즉, 적어도 하나의 대안은 선택 가능하여야 한다.</p>
+<p><span class="math inline">\(i\)</span>번째 선택 상황에서 선택 가능한 대안의 집합을 <span class="math inline">\(A_i\)</span>라 하자.</p>
+<p><span class="math display">\[
+A_i = \left\{j : a_{ij} = 1 \right\}
+\]</span></p>
+<p>이 때, <span class="math inline">\(y_{ij}\)</span>값은 아래와 같은 조건을 만족한다.</p>
+<p><span class="math display">\[
+\sum_{j \in A_i} y_{ij} = 1\\
+y_{ij} \in \{0, 1\}, \; \forall j \in A_i\\
+y_{ij} = 0, \; \forall j \notin A_i\\
+\]</span></p>
+</div>
+<div id="no-choice-alternative" class="section level3" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> “No choice” alternative</h3>
+<p>앞서 availability 측면에서 고려했던, 짬뽕이 선택 가능하지 않고 짜장면만 선택 가능한 경우, <span class="math inline">\(\sum_{j = 1}^{J} y_{ij} = 1\)</span>에 따라 무조건 짜장면을 선택하게 된다. 하지만, 짬뽕이 선택 가능하지 않았을 때, 짜장면을 먹는 대신 다른 음식점을 찾아가는 경우를 예상해볼 수 있다. 이 때, 손님은 선택 가능한 대안 중 어떠한 선택도 하지 않은 것이 되어 <span class="math inline">\(\sum_{j = 1}^{J} y_{ij} = 1\)</span>을 만족하지 못한다.</p>
+<p>이 때, 해당 선택 상황을 분석에서 제외하는 대신, 모든 선택 상황에서 <span class="math inline">\(J\)</span>개의 대안 중 어떠한 대안도 선택하지 않는 <span class="math inline">\(J + 1\)</span>째의 대안을 고려할 수 있다. 이에 대한 구체적은 예는 이후 다시 다루도록 하자.</p>
+</div>
+<div id="데이터-예" class="section level3" number="2.1.5">
+<h3><span class="header-section-number">2.1.5</span> 데이터 예</h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="discrete-choice-model.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
+<span id="cb44-2"><a href="discrete-choice-model.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>손님ID, <span class="sc">~</span>손님나이, <span class="sc">~</span>음식, <span class="sc">~</span>가격, <span class="sc">~</span>선택여부,</span>
+<span id="cb44-3"><a href="discrete-choice-model.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">40</span>, <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">8000</span>, <span class="dv">1</span>,</span>
+<span id="cb44-4"><a href="discrete-choice-model.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">40</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">7000</span>, <span class="dv">0</span>,</span>
+<span id="cb44-5"><a href="discrete-choice-model.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">5000</span>, <span class="dv">0</span>,</span>
+<span id="cb44-6"><a href="discrete-choice-model.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">5000</span>, <span class="dv">1</span>,</span>
+<span id="cb44-7"><a href="discrete-choice-model.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>, <span class="dv">70</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6500</span>, <span class="dv">1</span></span>
+<span id="cb44-8"><a href="discrete-choice-model.html#cb44-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-9"><a href="discrete-choice-model.html#cb44-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">손님ID</th>
+<th align="right">손님나이</th>
+<th align="left">음식</th>
+<th align="right">가격</th>
+<th align="right">선택여부</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">40</td>
+<td align="left">짬뽕</td>
+<td align="right">8000</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">40</td>
+<td align="left">짜장면</td>
+<td align="right">7000</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="left">짬뽕</td>
+<td align="right">5000</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="left">짜장면</td>
+<td align="right">5000</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">70</td>
+<td align="left">짜장면</td>
+<td align="right">6500</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="utility" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Utility</h2>
+<p><span class="math inline">\(i\)</span>번째 선택 상황에서 <span class="math inline">\(j\)</span>번째 대안에 대한 효용성의 값을 <span class="math inline">\(u_{ij} \in \mathbb{R}\)</span>이라 하자. 이 때, 합리적인 선택은 효용성이 가장 큰 대안을 선택하는 것이다. 본 장에서 다룰 기본적인 discrete choice model들은 이러한 합리적인 선택을 가정한다.</p>
+<p><span class="math display">\[
+y_{ij} = \begin{cases}
+1 &amp; j = \arg\max_{j \in A_i} u_{ij}\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>이 때, <span class="math inline">\(u_{ij}\)</span>는 관측되지 않는 값이다. 이를 두 개의 부분으로 아래와 같이 나눈다.</p>
+<p><span class="math display">\[
+u_{ij} = v_{ij} + \varepsilon_{ij}
+\]</span></p>
+<p>이 때, <span class="math inline">\(v_{ij}\)</span>는 관측된 설명변수 <span class="math inline">\(\mathbf{x}_{ij}\)</span>와 <span class="math inline">\(\mathbf{z}_i\)</span>에 대한 함수이며, <span class="math inline">\(\varepsilon_{ij}\)</span>는 설명변수로는 설명되지 않는 부분이다.</p>
+<p><span class="math display">\[
+v_{ij} = f(\mathbf{x}_{ij}, \mathbf{z}_i)
+\]</span></p>
+<p>이 때, 함수 <span class="math inline">\(f()\)</span>의 형태나 <span class="math inline">\(\varepsilon_{ij}\)</span>에 대한 가정에 따라 다양한 형태의 discrete choice model이 존재한다. 이후 본 장에서는 가장 간단한 두 가지 모형들(multinomial logit model, nested logit model)을 살펴보기로 하자.</p>
+<div id="observable-utility-representative-utility" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Observable utility (Representative utility)</h3>
+<p><span class="math inline">\(v_{ij}\)</span>는 observable utility 혹은 representative utility라 한다. <span class="math inline">\(v_{ij}\)</span>를 설명변수에 대한 affine 함수로 아래와 같이 정의하자.</p>
+<p><span class="math display">\[
+v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i + \boldsymbol{\delta}_j \mathbf{x}_{ij}
+\]</span></p>
+<p>이 때, <span class="math inline">\(\boldsymbol{\beta}\)</span>는 모든 대안 <span class="math inline">\(j\)</span>에 동일하게 적용되는 계수벡터이며, <span class="math inline">\(\boldsymbol{\gamma}_j\)</span>와 <span class="math inline">\(\boldsymbol{\delta}_j\)</span>는 대안 <span class="math inline">\(j\)</span>에 따라 다른 값을 지니는 계수벡터이다. 변수 벡터 <span class="math inline">\(\mathbf{x}_{ij}\)</span>내의 각 변수는 <span class="math inline">\(\boldsymbol{\beta}\)</span>와 <span class="math inline">\(\boldsymbol{\delta}_j\)</span> 중 한 가지의 회귀계수에만 해당한다고 가정하고, 설명변수 벡터 <span class="math inline">\(\mathbf{w}_{ij}\)</span>를 추가로 정의하자.</p>
+<p><span class="math display">\[
+v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i + \boldsymbol{\delta}_j \mathbf{w}_{ij}
+\]</span></p>
+<p>여기에서, 각각의 변수에 대한 예는 아래와 같이 생각해볼 수 있다.</p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}_{ij}\)</span>: (예: 음식가격) 음식 가격은 각 메뉴별로 다르나, 손님이 느끼는 효용성에 가격이 미치는 영향은 단위 가격당 동일한 경우, 음식 가격에 적용되는 계수 <span class="math inline">\(\beta\)</span>의 값은 대안 <span class="math inline">\(j\)</span>와 상관없이 동일할 수 있다.</li>
+<li><span class="math inline">\(\mathbf{z}_{i}\)</span>: (예: 나이) 나이가 어릴수록 짜장면을 선호하고 짬뽕을 덜 선호하는 경향이 커지는 경우, 나이에 적용되는 계수 <span class="math inline">\(\gamma\)</span>의 값은 짬뽕(<span class="math inline">\(j = 1\)</span>)에 대한 계수값보다 짜장면(<span class="math inline">\(j = 2\)</span>)에 대한 계수값이 크다고 볼 수 있다 (<span class="math inline">\(\gamma_1 &lt; \gamma_2\)</span>).</li>
+<li><span class="math inline">\(\mathbf{w}_{ij}\)</span>: (예: 음식가격) 만약 음식에 느끼는 효용성에 가격이 미치는 영향이 메뉴별로 다를 경우, 음식 가격은 <span class="math inline">\(\mathbf{x}_{ij}\)</span>가 아닌 <span class="math inline">\(\mathbf{w}_{ij}\)</span>에 해당하는 변수라 할 수 있다. 짜장면 가격이 500원 증가할 때 느끼는 효용성의 감소가 짬뽕 가격이 500원 증가할 때 느끼는 효용성의 감소보다 크다면, 즉 효용성 가격 민감도가 짜장면의 경우가 더 크다면, <span class="math inline">\(\delta_2 &lt; \delta_1 &lt; 0\)</span>라 볼 수 있다 (<span class="math inline">\(|\delta_2| &gt; |\delta_1|\)</span>).</li>
+</ul>
+<p>위의 세 가지 변수 종류 중 본 장에서는 두 가지 변수 <span class="math inline">\(\mathbf{x}_{ij}\)</span>와 <span class="math inline">\(\mathbf{z}_{i}\)</span>를 중심으로 살펴보자. 아래와 같이 보다 단순한 형태의 <span class="math inline">\(v_{ij}\)</span>를 고려하도록 하자.</p>
+<p><span class="math display">\[
+v_{ij} = \alpha_j + \boldsymbol{\beta}^{\top} \mathbf{x}_{ij} + \boldsymbol{\gamma}_j^{\top} \mathbf{z}_i
+\]</span></p>
+<p>이 때, 주어진 데이터로부터 회귀계수들의 추정치 <span class="math inline">\(\hat{\alpha}_j, \hat{\boldsymbol{\beta}}, \hat{\boldsymbol{\gamma}}_j\)</span>을 구하는 것이 discrete choice model 추정이다.</p>
+</div>
+<div id="unobservable-utility" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Unobservable utility</h3>
+<p><span class="math inline">\(\varepsilon_{ij}\)</span>는 효용성 중 covariate으로 설명되지 않는 부분이다. 같은 나이의 두 손님이 동일한 가게에서 동일한 시각에 각자 식사를 하더라도, 한 명은 짬뽕을 선택하고 다른 한 명은 짜장면을 선택할 수 있다. 이는 설명변수(나이, 가격 등)로 설명되지 않는 각 손님의 개인적인 취향에 기인한 것으로 생각할 수 있다.</p>
+<p>임의의 <span class="math inline">\(i\)</span>번째 선택 상황에서, <span class="math inline">\(j \in A_i\)</span>에 대해 <span class="math inline">\(v_{ij}\)</span>의 참값은 알고 있고 <span class="math inline">\(y_{ij}\)</span>값은 관측되지 않았다 할 때, <span class="math inline">\(y_{ij}\)</span>에 대한 기대값은 아래와 같이 표현할 수 있다.</p>
+<p><span class="math display">\[\begin{eqnarray*}
+E[y_{ij}] &amp;=&amp; \prod_{k \in A_i \\ j} P(u_{ij} &gt; u_{ik})\\
+&amp;=&amp; \prod_{k \in A_i \\ j} P(v_{ij} + \varepsilon_{ij} &gt; v_{ik} + \varepsilon_{ik})\\
+&amp;=&amp; \prod_{k \in A_i \\ j} P(\varepsilon_{ij} - \varepsilon_{ik} &gt; v_{ik} - v_{ij})
+\end{eqnarray*}\]</span></p>
+<p>여기서, <span class="math inline">\(y_{ij}\)</span>의 기대값을 <span class="math inline">\(p_{ij}\)</span>라 하면 (<span class="math inline">\(p_{ij} = E[y_{ij}]\)</span>), <span class="math inline">\(p_{ij}\)</span>는 아래의 식들을 만족한다.</p>
+<p><span class="math display">\[
+\sum_{j \in A_i} p_{ij} = 1\\
+p_{ij} \in [0, 1]
+\]</span></p>
+<p><span class="math inline">\(y_{ij}\)</span> (<span class="math inline">\(j = 1, \ldots, J\)</span>)는 확률 <span class="math inline">\(p_{ij}\)</span> (<span class="math inline">\(j = 1, \ldots, J\)</span>)로 정의된 multinomial distribution으로부터 얻어진 관측치라 하자.</p>
+<p><span class="math display">\[
+(y_{i1}, \ldots, y_{iJ}) \sim multinom(p_{i1}, \ldots, p_{iJ})
+\]</span></p>
+<p>위에서, <span class="math inline">\(\varepsilon_{ij}\)</span>의 분포에 대한 가정에 따라 <span class="math inline">\(p_{ij}\)</span>의 값이 다르게 추정된다. 따라서 discrete choice model 추정에서는 observable utility에 대한 model specification 뿐만 아니라 unobservable utility에 대한 분포 가정 또한 중요하다. 다음 장에서 살펴볼 multinomial logit model과 nested logit model은 <span class="math inline">\(\varepsilon_{ij}\)</span>의 분포에 대해 서로 다른 가정을 지닌다.</p>
+</div>
+</div>
+<div id="multinomial-logit-model" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Multinomial logit model</h2>
+<p>Discrete choice model을 얘기할 때 가장 기본으로 다루는 모형이다.</p>
+<div id="utility-1" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Utility</h3>
+<p><span class="math display">\[
+u_{ij} = v_{ij} + \varepsilon_{ij}
+\]</span></p>
+<p>에서, unobservable utility <span class="math inline">\(\varepsilon_{ij}\)</span>가 standard Gumbel distribution으로부터 얻어진다고 가정한다.</p>
+<p><span class="math display">\[
+\varepsilon_{ij} \overset{i.i.d.}{\sim} Gumbel(0, 1)
+\]</span></p>
+<p>이 때, standard Gumbel distribution은 아래와 같다.</p>
+<p><span class="math display">\[
+F(\varepsilon_{ij}) = \exp\left(-\exp\left(- \varepsilon_{ij}\right) \right)
+\]</span></p>
+</div>
+<div id="데이터-모델-예" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> 데이터 모델 (예)</h3>
+<p>네 가지 메뉴가 있는 식당을 고려해보자. 각 선택 상황에 따라 가격과 메뉴 주문 가능 여부는 매번 달라진다고 가정하자.</p>
+<ul>
+<li>대안
+<ul>
+<li><span class="math inline">\(j = 1\)</span>: 짬뽕</li>
+<li><span class="math inline">\(j = 2\)</span>: 짜장면</li>
+<li><span class="math inline">\(j = 3\)</span>: 삼선짬뽕</li>
+<li><span class="math inline">\(j = 4\)</span>: 삼선짜장</li>
+</ul></li>
+<li>설명변수
+<ul>
+<li><span class="math inline">\(x_{ij}\)</span>: <span class="math inline">\(i\)</span>번째 손님이 <span class="math inline">\(j\)</span>번째 음식에 대해 지불해야 할 가격
+<span class="math display">\[
+x_{i1} \sim U(5000, 7000)\\
+x_{i2} \sim U(5000, x_{i1})\\
+x_{i3} \sim x_{i1} + U(2000, 4000)\\
+x_{i4} \sim x_{i2} + (x_{i3} - x_{i1}) + U(-500, 0)
+\]</span></li>
+<li><span class="math inline">\(z_{i}\)</span>: <span class="math inline">\(i\)</span>번째 손님의 나이
+<span class="math display">\[
+z_i \sim U(5, 95)
+\]</span></li>
+</ul></li>
+<li>Observable utility
+<span class="math display">\[\begin{eqnarray*}
+v_{i1} &amp;=&amp; 0 - 0.001 * x_{i1} + 0.1 * z_{i}\\
+v_{i2} &amp;=&amp; 0 - 0.001 * x_{i2} - 0.2 * z_{i}\\
+v_{i3} &amp;=&amp; 3 - 0.001 * x_{i3} + 0.1 * z_{i}\\
+v_{i4} &amp;=&amp; 3 - 0.001 * x_{i4} - 0.2 * z_{i}
+\end{eqnarray*}\]</span></li>
+<li>Unobservable utility
+<ul>
+<li><span class="math inline">\(\varepsilon_{ij} \overset{i.i.d.}{\sim} Gumbel(0, 1)\)</span></li>
+</ul></li>
+</ul>
+</div>
+<div id="independent-from-irrelevant-alternatives-iia" class="section level3" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Independent from irrelevant alternatives (IIA)</h3>
+<p>서로 다른 두 개의 대안 <span class="math inline">\(j\)</span>와 <span class="math inline">\(k\)</span>간의 상대적인 선택확률(<span class="math inline">\(p_{ij} / p_{ik}\)</span>)은 또 다른 대안 <span class="math inline">\(l \notin \{j, k\}\)</span>을 선택할 확률 <span class="math inline">\(p_{il}\)</span>에 영향을 받지 않는다.</p>
+</div>
+</div>
+<div id="nested-logit-model" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Nested logit model</h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="quantile-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
