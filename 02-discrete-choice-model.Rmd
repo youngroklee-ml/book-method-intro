@@ -348,32 +348,32 @@ Multinomial logit model의 추정과 그로부터 확률을 추정하는 과정�
   - $j = 4$: 삼선짜장
 - 설명변수
   - $x_{ij}$: $i$번째 손님이 $j$번째 음식에 대해 지불해야 할 가격
-\begin{eqnarray*}
-x_{i1} &\sim& U(5000, 7000)\\
-x_{i2} &\sim& U(5000, x_{i1})\\
-x_{i3} &\sim& x_{i1} + U(2000, 4000)\\
-x_{i4} &\sim& x_{i2} + (x_{i3} - x_{i1}) + U(-500, 0)
-\end{eqnarray*}
+    \begin{eqnarray*}
+    x_{i1} &\sim& U(5000, 7000)\\
+    x_{i2} &\sim& U(5000, x_{i1})\\
+    x_{i3} &\sim& x_{i1} + U(2000, 4000)\\
+    x_{i4} &\sim& x_{i2} + (x_{i3} - x_{i1}) + U(-500, 0)
+    \end{eqnarray*}
   - $z_{i}$: $i$번째 손님의 나이
-$$
-z_i \sim U(5, 95)
-$$
+    $$
+    z_i \sim U(5, 95)
+    $$
 - Observable utility
-\begin{eqnarray*}
-v_{i1} &=& 0 - 0.001 * x_{i1} + 0 * z_{i}\\
-v_{i2} &=& 4 - 0.001 * x_{i2} - 0.1 * z_{i}\\
-v_{i3} &=& 2 - 0.001 * x_{i3} + 0 * z_{i}\\
-v_{i4} &=& 6 - 0.001 * x_{i4} - 0.1 * z_{i}
-\end{eqnarray*}
+  \begin{eqnarray*}
+  v_{i1} &=& 0 - 0.001 * x_{i1} + 0 * z_{i}\\
+  v_{i2} &=& 4 - 0.001 * x_{i2} - 0.1 * z_{i}\\
+  v_{i3} &=& 2 - 0.001 * x_{i3} + 0 * z_{i}\\
+  v_{i4} &=& 6 - 0.001 * x_{i4} - 0.1 * z_{i}
+  \end{eqnarray*}
 - Unobservable utility
   - $\varepsilon_{ij} \overset{i.i.d.}{\sim} Gumbel(0, 1)$
 - Availability
-\begin{eqnarray*}
-a_{i1} $=$ 1\\
-a_{i2} $=$ 1\\
-a_{i3} $\sim$ Bernoulli(0.8)\\
-a_{i4} $\sim$ Bernoulli(0.8)
-\end{eqnarray*}
+  \begin{eqnarray*}
+  a_{i1} &=& 1\\
+  a_{i2} &=& 1\\
+  a_{i3} &\sim& Bernoulli(0.8)\\
+  a_{i4} &\sim& Bernoulli(0.8)
+  \end{eqnarray*}
 
 
 ```{r}
@@ -664,6 +664,205 @@ new_choice_situation %>%
 ```
 
 
+#### 주어진 대안들을 선택하지 않을 확률
+
+위 주어진 메뉴판에서 각 메뉴의 가격이 모두 3만원씩 올랐다고 가정해보자.
+
+```{r}
+new_choice_situation_2 <- tribble(
+  ~menu_item, ~price,
+  "짬뽕", 37000,
+  "짜장면", 36000,
+  "삼선짬뽕", 40000,
+  "삼선짜장", 39000
+) %>%
+  mutate(
+    alternative = menu[menu_item]
+  )
+```
+
+```{r, echo=FALSE}
+knitr::kable(new_choice_situation_2)
+```
+
+```{r}
+new_choice_situation_2 %>%
+  mutate(age = 45) %>%
+  mutate(
+    v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
+    p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+위 결과와 같이, 각 메뉴를 선택할 확률은 모든 메뉴의 가격을 3만원씩 올리기 이전과 동일하다. 이는 utility가 가격에 따라 linear하게 증가하여, 두 메뉴의 가격의 차이가 변하지 않을 때는 두 메뉴 간의 효용성의 차이 또한 변하지 않기 때문이다.
+
+$$
+\frac{\exp(v_{ij} + \beta \times 30000)}{\exp(v_{ik}  + \beta \times 30000)} = \frac{\exp(v_{ij})\exp(\beta \times 30000)}{\exp(v_{ik})\exp(\beta \times 30000)} = \frac{\exp(v_{ij})}{\exp(v_{ik})} = \frac{p_{ij}}{p_{ik}}
+$$
+
+위의 확률은 네 가지 음식 중 한 가지가 무조건 선택된다는 가정 하에서 추정되는 확률이다. 하지만, 위처럼 가격이 크게 오른 새 메뉴판이 주어진다면 많은 손님들은 어떠한 음식도 선택하지 않고 음식점을 나설 것이다. 이렇게 "어떠한 음식도 선택하지 않을" 확률을 추정하기 위해서는 "어떠한 음식도 선택하지 않음"을 또 하나의 대안으로 고려한 모형 추정이 필요하다. 이를 위해서는 선택 모형을 추정하는데 필요한 학습데이터에 음식점에 방문하였으나 음식을 주문하지 않고 나간 손님에 대한 데이터가 존재해야 한다.
+
+위 네 가지 음식 외에 추가로 "안 먹어"라는 대안($j = 5$)을 설정하고, 해당 대안에 대한 데이터 모델이 아래와 같다고 가정해보자.
+
+\begin{eqnarray*}
+x_{i5} &=& 0\\
+v_{i5} &=& -10\\
+\varepsilon_{i5} &\overset{i.i.d.}{\sim}& Gumbel(0, 1)\\
+a_{i5} &=& 1
+\end{eqnarray*}
+
+즉,
+
+- 어떠한 음식도 선택하지 않았을 때 손님이 지불해야 할 가격은 0원이며 ($x_{i5} = 0$), 
+- 이 때의 효용성은 손님의 나이에 상관이 없고 ($v_{i5} = -10$),
+- 다만 손님에 따라 어떠한 음식도 선택하지 않을 때 느끼는 효용성은 조금씩 다르며 ($\varepsilon_{i5} \overset{i.i.d.}{\sim} Gumbel(0, 1)$),
+- 어떠한 음식도 선택하지 않을 권리는 항상 손님에게 주어진다 ($a_{i5} = 1$).
+
+
+위의 데이터 모델을 추가하여 학습데이터를 생성하고 선택 모형을 추정해보자.
+
+```{r}
+set.seed(22)
+
+N <- 2000
+menu <- c("짬뽕" = 1, "짜장면" = 2, "삼선짬뽕" = 3, "삼선짜장" = 4, "안 먹어" = 5)
+menu_name <- names(menu)
+alpha_true <- c(0, 4, 2, 6, -10)
+beta_true <- -0.001
+gamma_true <- c(0, -0.1, 0, -0.1, 0)
+
+choice_df_2 <- generate_price(N) %>%
+  complete(i, alternative = c(1L:5L), fill = list(price = 0)) %>%
+  inner_join(generate_age(N), by = "i") %>%
+  inner_join(
+    generate_availability(N) %>% complete(i, alternative = c(1L:5L), fill = list(avail = 1)),
+    by = c("i", "alternative")
+  ) %>%
+  filter(avail == 1) %>%
+  mutate(
+    v = alpha_true[alternative] +
+      beta_true * price + gamma_true[alternative] * age,
+    e = rgumbel(n()),
+    u = v + e
+  ) %>%
+  mutate(menu_item = menu_name[alternative]) %>%
+  select(-avail) %>%
+  group_by(i) %>%
+  mutate(choice = if_else(u == max(u), 1L, 0L)) %>%
+  ungroup()
+
+```
+
+
+
+```{r, echo=FALSE}
+choice_df_2 %>%
+  filter(choice == 1L) %>%
+  group_by(menu_item) %>%
+  summarize(n_choice = sum(choice), .groups = "drop") %>%
+  ggplot(aes(x = reorder(menu_item, n_choice), y = n_choice)) +
+  geom_pointrange(aes(ymin = 0, ymax = n_choice)) +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "메뉴 선택 횟수"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
+```{r}
+fit_mnl_2 <- mlogit(choice ~ price | age, data = choice_df_2, 
+                  alt.var = "alternative", chid.var = "i")
+```
+
+```{r}
+estimate_df_2 <- tibble(
+  term = names(fit_mnl_2$coefficients),
+  estimate = coef(fit_mnl_2),
+  std.error = sqrt(diag(solve(-fit_mnl_2$hessian))),
+  true = c(alpha_true[-1], beta_true, gamma_true[-1])
+)
+
+```
+
+```{r, echo=FALSE}
+knitr::kable(estimate_df_2)
+```
+
+
+```{r, echo=FALSE}
+estimate_df_2 %>%
+  mutate(
+    variable = word(term, sep = ":")
+  ) %>%
+  ggplot(aes(x = term)) +
+  geom_point(aes(y = true), color = "gray", size = 4) +
+  geom_linerange(aes(
+    y = estimate,
+    ymin = estimate - 1.96 * std.error,
+    ymax = estimate + 1.96 * std.error
+  ), color = "steelblue") +
+  geom_point(aes(y = estimate), color = "firebrick") +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "MNL model coefficient: <span style='color:gray'>true</span> vs <span style='color:firebrick'>point estmiate</span> vs <span style='color:steelblue'>95% confidence interval</span>"
+  ) +
+  coord_flip() +
+  facet_wrap( ~ variable, scales = "free") +
+  theme(
+    plot.title = element_markdown(),
+    plot.title.position = "plot"
+  )
+```
+
+
+이제 추정된 모형을 토대로, 가격이 비싼 메뉴판이 주어졌을 때 손님의 선택 확률을 추정해보자.
+
+```{r}
+alpha_hat_2 <-
+  c(0, coef(fit_mnl_2)[c("(Intercept):2",
+                         "(Intercept):3",
+                         "(Intercept):4",
+                         "(Intercept):5")])
+beta_hat_2 <- coef(fit_mnl_2)[c("price")]
+gamma_hat_2 <-
+  c(0, coef(fit_mnl_2)[c("age:2", "age:3", "age:4", "age:5")])
+```
+
+```{r}
+new_choice_situation_3 <- tribble(
+  ~menu_item, ~price,
+  "짬뽕", 37000,
+  "짜장면", 36000,
+  "삼선짬뽕", 40000,
+  "삼선짜장", 39000,
+  "안 먹어", 0
+) %>%
+  mutate(
+    alternative = menu[menu_item]
+  )
+```
+
+```{r, echo=FALSE}
+knitr::kable(new_choice_situation_3)
+```
+
+```{r}
+new_choice_situation_3 %>%
+  mutate(age = 45) %>%
+  mutate(
+    v = alpha_hat_2[alternative] + beta_hat_2 * price + gamma_hat_2[alternative] * age,
+    p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+위 결과, 손님이 어떠한 음식도 주문하지 않고 음식점을 나설 확률이 100%에 근접하게 추정된다.
 
 
 
@@ -671,7 +870,7 @@ new_choice_situation %>%
 
 Nested logit model은 multinomial logit model과는 달리, 어떠한 두 대안이 다른 대안들보다 더 강한 대체관계를 갖는 상황을 가정한다. 예를 들어, 메뉴를 짜장류와 짬뽕류로 구분하여 생각할 때, 삼선짜장이 주문 가능하지 않을 경우에 대체재로 짬뽕류 대신 같은 짜장류 내의 다른 메뉴를 선택하는 경향이 있다면, 이는 각 선택이 메뉴 종류(짜장류, 짬뽕류)로부터 얻어지는 효용성과 각각의 메뉴로부터 얻어지는 효용성에 모두 기반한다고 볼 수 있다. 
 
-대안 $1, \lots, J$가 $C$개의 그룹(nest)으로 구분된다고 가정하자. 이 때, $m_{jc}$를 대안 $j$가 그룹 $c$에 속하는 지에 대한 indicator variable이라 하자.
+대안 $1, \ldots, J$가 $C$개의 그룹(nest)으로 구분된다고 가정하자. 이 때, $m_{jc}$를 대안 $j$가 그룹 $c$에 속하는 지에 대한 indicator variable이라 하자.
 
 $$
 m_{jc} = \begin{cases}
@@ -727,6 +926,17 @@ $$
 $$
 Cov(\varepsilon_{ij}, \varepsilon_{ik}) = 0, \forall j \in M_c, k \in M_{d \neq c}
 $$
+
+그에 반해, 같은 그룹에 속하는 두 대안 $j, k$간에는 unobservable utility간에 상관관계가 존재하는데, 이는 두 unobservable utility가 공통의 그룹 레벨의 unobserable utility $\varepsilon_i^{(c)}$를 포함하기 때문이다.
+
+$$
+Cov(\varepsilon_{ij}, \varepsilon_{ik}) \neq 0, \forall j, k \in M_c
+$$
+
+분포에 대한 가정은,
+
+
+
 
 $\varepsilon_{ij}^{(c)}$는 아래와 같은 Gumbel distribution을 따른다.
 
