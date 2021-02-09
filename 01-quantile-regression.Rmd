@@ -1,6 +1,6 @@
 # Quantile regression {#quantile-regression}
 
-```{r}
+```{r, message=FALSE}
 library(extraDistr)
 library(ggplot2)
 library(ggtext)

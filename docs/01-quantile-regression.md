@@ -8,70 +8,10 @@ library(ggtext)
 library(ggrepel)
 library(gt)
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(tidyr)
 library(rlang)
 library(purrr)
-```
-
-```
-## 
-## Attaching package: 'purrr'
-```
-
-```
-## The following objects are masked from 'package:rlang':
-## 
-##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int,
-##     flatten_lgl, flatten_raw, invoke, list_along, modify, prepend,
-##     splice
-```
-
-```
-## The following object is masked from 'package:extraDistr':
-## 
-##     rdunif
-```
-
-```r
 library(quantreg)
-```
-
-```
-## Loading required package: SparseM
-```
-
-```
-## 
-## Attaching package: 'SparseM'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     backsolve
-```
-
-```r
 library(lpSolve)
 ```
 
@@ -346,7 +286,7 @@ $i$번째 관측 데이터의 예측변수 관측치를
 
 ### Intercept only
 
-앞 절에서 살펴본 univariate 추정 결과를 quantile regression 함수 `quantreg::rq()`를 이용하여 아래와 같이 재현해볼 수 있다. 예측변수가 없는 univariate 데이터이기 때문에 (i.e. $d = 0$), 모델에서는 intercept $\beta_0$만을 추정한다. (i.e. `formula = y ~ 1`).
+앞 절에서 살펴본 univariate 추정 결과를 R 패키지 `{quantreg}`내의 quantile regression 함수 `rq()`를 이용하여 아래와 같이 재현해볼 수 있다. 예측변수가 없는 univariate 데이터이기 때문에 (i.e. $d = 0$), 모델에서는 intercept $\beta_0$만을 추정한다. (i.e. `formula = y ~ 1`).
 
 
 

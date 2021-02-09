@@ -1,6 +1,6 @@
 # Discrete choice model {#discrete-choice-model}
 
-```{r}
+```{r, message=FALSE}
 library(extraDistr)
 library(ggplot2)
 library(ggtext)

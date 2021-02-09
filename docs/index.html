@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-01-17" />
+<meta name="date" content="2021-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,14 +165,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility-representative-utility"><i class="fa fa-check"></i><b>2.2.1</b> Observable utility (Representative utility)</a></li>
 <li class="chapter" data-level="2.2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility"><i class="fa fa-check"></i><b>2.2.2</b> Unobservable utility</a></li>
+<li class="chapter" data-level="2.2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>2.2.3</b> Maximum likelihood estimation</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit model</a>
+<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-mnl-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit (MNL) model</a>
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-1"><i class="fa fa-check"></i><b>2.3.1</b> Utility</a></li>
-<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-모델-예"><i class="fa fa-check"></i><b>2.3.2</b> 데이터 모델 (예)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice-probablity"><i class="fa fa-check"></i><b>2.3.2</b> Choice probablity</a></li>
 <li class="chapter" data-level="2.3.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#independent-from-irrelevant-alternatives-iia"><i class="fa fa-check"></i><b>2.3.3</b> Independent from irrelevant alternatives (IIA)</a></li>
+<li class="chapter" data-level="2.3.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#예제"><i class="fa fa-check"></i><b>2.3.4</b> 예제</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a></li>
+<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-2"><i class="fa fa-check"></i><b>2.4.1</b> Utility</a></li>
+<li class="chapter" data-level="2.4.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility"><i class="fa fa-check"></i><b>2.4.2</b> Observable utility</a></li>
+<li class="chapter" data-level="2.4.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility-1"><i class="fa fa-check"></i><b>2.4.3</b> Unobservable utility</a></li>
+<li class="chapter" data-level="2.4.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice-probability"><i class="fa fa-check"></i><b>2.4.4</b> Choice probability</a></li>
+<li class="chapter" data-level="2.4.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#예제-1"><i class="fa fa-check"></i><b>2.4.5</b> 예제</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -197,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">알아두면 유용한 데이터 분석 방법들</h1>
 <p class="author"><em>이영록</em></p>
-<p class="date"><em>2021-01-17</em></p>
+<p class="date"><em>2021-02-08</em></p>
 </div>
 <div id="들어가는-글" class="section level1 unnumbered">
 <h1>들어가는 글</h1>
