@@ -14,7 +14,7 @@ library(purrr)
 library(mlogit)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(showtext)
 font_add_google("Nanum Gothic", "nanum")
 showtext_auto()
@@ -569,17 +569,17 @@ estimate_df %>%
     variable = word(term, sep = ":")
   ) %>%
   ggplot(aes(x = term)) +
-  geom_point(aes(y = true), color = "gray", size = 4) +
   geom_linerange(aes(
     y = estimate,
     ymin = estimate - 1.96 * std.error,
     ymax = estimate + 1.96 * std.error
   ), color = "steelblue") +
-  geom_point(aes(y = estimate), color = "firebrick") +
+  geom_point(aes(y = estimate), color = "steelblue") +
+  geom_point(aes(y = true), color = "firebrick") +
   labs(
     x = NULL,
     y = NULL,
-    title = "MNL model coefficient: <span style='color:gray'>true</span> vs <span style='color:firebrick'>point estmiate</span> vs <span style='color:steelblue'>95% confidence interval</span>"
+    title = "MNL model coefficient: <span style='color:firebrick'>true</span> vs <span style='color:steelblue'>point estmiate with 95% confidence interval</span>"
   ) +
   coord_flip() +
   facet_wrap( ~ variable, scales = "free") +
@@ -624,13 +624,32 @@ knitr::kable(new_choice_situation)
 이 때, 손님의 나이가 15세인 경우의 선택확률 예측은 아래와 같다.
 
 ```{r}
-new_choice_situation %>%
+pred_df1 <- new_choice_situation %>%
   mutate(age = 15) %>%
   mutate(
     v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
     p = exp(v - max(v)) / sum(exp(v - max(v)))
   )
 ```
+
+```{r, echo=FALSE}
+pred_df1 %>%
+  ggplot(aes(x = menu_item, y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "선택확률 예측 (나이 = 15)"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
 
 ```{block2, type = 'note'}
 **NOTE**: 확률을 계산하는 식을 `p = exp(v) / sum(exp(v))` 대신 `p = exp(v - max(v)) / sum(exp(v - max(v)))`로 구현하였다. 두 계산방법은 이론적으로 동일한 확률값을 나타낸다. 컴퓨팅 과정에서 `v`값이 매우 크거나 매우 작을 경우, `exp(v)`값이 `Inf` 혹은 `0`으로 계산되어 확률값이 적절하게 계산되지 않을 수 있기 때문에, 그러한 가능성을 줄이기 위해서 `exp(v)` 대신 `exp(v - max(v))`을 사용하였다.
@@ -641,7 +660,7 @@ new_choice_situation %>%
 반면, 손님의 나이가 45세인 경우의 선택확률 예측은 아래와 같다.
 
 ```{r}
-new_choice_situation %>%
+pred_df2 <- new_choice_situation %>%
   mutate(age = 45) %>%
   mutate(
     v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
@@ -649,16 +668,79 @@ new_choice_situation %>%
   )
 ```
 
+```{r, echo=FALSE}
+pred_df2 %>%
+  ggplot(aes(x = menu_item, y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "선택확률 예측 (나이 = 45)"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
 
-위 손님의 나이가 45세인 경우, 만약 삼선짜장이 메뉴에서 제외된다면 않다면, 선택확률은 아래와 같이 달라진다.
+
+위 손님의 나이가 45세인 경우, 만약 삼선짜장이 메뉴에서 제외된다면, 선택확률은 아래와 같이 달라진다.
 
 ```{r}
-new_choice_situation %>%
+pred_df3 <- new_choice_situation %>%
   filter(menu_item != "삼선짜장") %>%
   mutate(age = 45) %>%
   mutate(
     v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
     p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+```{r, echo=FALSE}
+pred_df3 %>%
+  ggplot(aes(x = menu_item, y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "삼선짜장이 제외된 메뉴에서 선택확률 예측 (나이 = 45)"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
+위에서 각 메뉴의 선택 확률은 기존 확률에 비례하여 증가한다. 따라서, 위 삼선짜장이 제외된 메뉴에서의 선택 확률의 예측은, 아래와 같이 삼선짜장이 포함된 메뉴에서 손님이 각 메뉴를 선택할 확률 예측값으로부터 산출할 수 있다.
+
+```{r}
+pred_df4 <- pred_df2 %>%
+  filter(menu_item != "삼선짜장") %>%
+  mutate(p = p / sum(p))
+
+```
+
+```{r, echo=FALSE}
+pred_df4 %>%
+  ggplot(aes(x = menu_item, y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "삼선짜장이 제외된 메뉴에서 선택확률 예측 (나이 = 45)"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
   )
 ```
 
@@ -685,11 +767,29 @@ knitr::kable(new_choice_situation_2)
 ```
 
 ```{r}
-new_choice_situation_2 %>%
+pred_df5 <- new_choice_situation_2 %>%
   mutate(age = 45) %>%
   mutate(
     v = alpha_hat[alternative] + beta_hat * price + gamma_hat[alternative] * age,
     p = exp(v - max(v)) / sum(exp(v - max(v)))
+  )
+```
+
+```{r, echo=FALSE}
+pred_df5 %>%
+  ggplot(aes(x = menu_item, y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "선택확률 예측 (나이 = 45)"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
   )
 ```
 
@@ -753,27 +853,6 @@ choice_df_2 <- generate_price(N) %>%
 ```
 
 
-
-```{r, echo=FALSE}
-choice_df_2 %>%
-  filter(choice == 1L) %>%
-  group_by(menu_item) %>%
-  summarize(n_choice = sum(choice), .groups = "drop") %>%
-  ggplot(aes(x = reorder(menu_item, n_choice), y = n_choice)) +
-  geom_pointrange(aes(ymin = 0, ymax = n_choice)) +
-  coord_flip() +
-  labs(
-    x = NULL,
-    y = NULL,
-    title = "메뉴 선택 횟수"
-  ) +
-  theme(
-    plot.title = element_text(family = "nanum"),
-    plot.title.position = "plot",
-    axis.text.x = element_text(family = "nanum")
-  )
-```
-
 ```{r}
 fit_mnl_2 <- mlogit(choice ~ price | age, data = choice_df_2, 
                   alt.var = "alternative", chid.var = "i")
@@ -800,17 +879,17 @@ estimate_df_2 %>%
     variable = word(term, sep = ":")
   ) %>%
   ggplot(aes(x = term)) +
-  geom_point(aes(y = true), color = "gray", size = 4) +
   geom_linerange(aes(
     y = estimate,
     ymin = estimate - 1.96 * std.error,
     ymax = estimate + 1.96 * std.error
   ), color = "steelblue") +
-  geom_point(aes(y = estimate), color = "firebrick") +
+  geom_point(aes(y = estimate), color = "steelblue") +
+  geom_point(aes(y = true), color = "firebrick") +
   labs(
     x = NULL,
     y = NULL,
-    title = "MNL model coefficient: <span style='color:gray'>true</span> vs <span style='color:firebrick'>point estmiate</span> vs <span style='color:steelblue'>95% confidence interval</span>"
+    title = "MNL model coefficient: <span style='color:firebrick'>true</span> vs <span style='color:steelblue'>point estmiate with 95% confidence interval</span>"
   ) +
   coord_flip() +
   facet_wrap( ~ variable, scales = "free") +
@@ -853,13 +932,32 @@ knitr::kable(new_choice_situation_3)
 ```
 
 ```{r}
-new_choice_situation_3 %>%
+pred_df6 <- new_choice_situation_3 %>%
   mutate(age = 45) %>%
   mutate(
     v = alpha_hat_2[alternative] + beta_hat_2 * price + gamma_hat_2[alternative] * age,
     p = exp(v - max(v)) / sum(exp(v - max(v)))
   )
 ```
+
+```{r, echo=FALSE}
+pred_df6 %>%
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "선택확률 예측 (나이 = 45): 모든 메뉴의 가격이 3만원씩 증가한 경우"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
 
 위 결과, 손님이 어떠한 음식도 주문하지 않고 음식점을 나설 확률이 100%에 근접하게 추정된다.
 
@@ -928,10 +1026,6 @@ $$
 
 그에 반해, 같은 그룹에 속하는 두 대안 $j, k$간에는 unobservable utility간에 상관관계가 존재하는데, 이는 두 unobservable utility가 공통의 그룹 레벨의 unobserable utility $\varepsilon_i^{(c)}$를 포함하기 때문이다.
 
-$$
-Cov(\varepsilon_{ij}, \varepsilon_{ik}) \neq 0, \forall j, k \in M_c
-$$
-
 Unobservable utility 벡터 $(\varepsilon_{i1}, \ldots, \varepsilon_{iJ})$는 아래와 같은 cumulative distribution을 따른다고 가정한다.
 
 $$
@@ -952,7 +1046,7 @@ $$
 ```
 
 ```{block2, type = 'note'}
-**TO DO**: $\varepsilon_i^{(c)$ 분포에 대한 추가 설명 필요.
+**TO DO**: $\varepsilon_i^{(c)}$ 분포에 대한 추가 설명 필요.
 ```
 
 
@@ -1074,23 +1168,26 @@ knitr::kable(estimate_nest_df)
 estimate_nest_df %>%
   mutate(variable = word(term, sep = ":")) %>%
   ggplot(aes(x = term)) +
-  geom_point(aes(y = true), color = "gray", size = 4) +
-  geom_linerange(
-    aes(
-      y = estimate,
-      ymin = estimate - 1.96 * std.error,
-      ymax = estimate + 1.96 * std.error
-    ),
-    color = "steelblue"
+  geom_linerange(aes(
+    y = estimate,
+    ymin = estimate - 1.96 * std.error,
+    ymax = estimate + 1.96 * std.error
+  ), color = "steelblue") +
+  geom_point(aes(y = estimate), color = "steelblue") +
+  geom_point(aes(y = true), color = "firebrick") +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Nested logit model coefficient: <span style='color:firebrick'>true</span> vs <span style='color:steelblue'>point estmiate with 95% confidence interval</span>"
   ) +
-  geom_point(aes(y = estimate), color = "firebrick") +
-  labs(x = NULL,
-       y = NULL,
-       title = "MNL model coefficient: <span style='color:gray'>true</span> vs <span style='color:firebrick'>point estmiate</span> vs <span style='color:steelblue'>95% confidence interval</span>") +
   coord_flip() +
   facet_wrap(~ variable, scales = "free") +
   theme(plot.title = element_markdown(),
         plot.title.position = "plot")
+```
+
+```{block2, type = 'note'}
+**TO DO**: TRUE 데이터 모델 재검토 필요.
 ```
 
 
@@ -1161,13 +1258,29 @@ prob_nest <- observable_utility %>%
   ) %>%
   select(-lambda)
   
-prob_alternative <- prob_within_nest %>%
+pred_df7 <- prob_within_nest %>%
   inner_join(prob_nest, by = "group") %>%
   mutate(
     p = p_within_nest * p_nest
   )
+```
 
-prob_alternative
+```{r, echo=FALSE}
+pred_df7 %>%
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "선택확률 예측 (나이 = 45): Nested logit model"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
 ```
 
 
@@ -1191,11 +1304,33 @@ prob_nest1 <- observable_utility1 %>%
   ) %>%
   select(-lambda)
   
-prob_alternative1 <- prob_within_nest1 %>%
+pred_df8 <- prob_within_nest1 %>%
   inner_join(prob_nest1, by = "group") %>%
   mutate(
     p = p_within_nest * p_nest
   )
 
-prob_alternative1
 ```
+
+```{r, echo=FALSE}
+pred_df8 %>%
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
+  geom_pointrange(aes(ymin = 0, ymax = p)) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "삼선짜장이 제외된 메뉴에서 선택확률 예측 (나이 = 45): Nested logit model"
+  ) +
+  theme(
+    plot.title = element_text(family = "nanum"),
+    plot.title.position = "plot",
+    axis.text.x = element_text(family = "nanum")
+  )
+```
+
+이 때, multinomial logit model의 경우와 달리, 삼선짜장을 원했던 손님들 대부분이 짜장면을 선택할 것으로 예측됨을 볼 수 있다.
+
+
+
