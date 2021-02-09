@@ -634,7 +634,7 @@ pred_df1 <- new_choice_situation %>%
 
 ```{r, echo=FALSE}
 pred_df1 %>%
-  ggplot(aes(x = menu_item, y = p)) +
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
   geom_pointrange(aes(ymin = 0, ymax = p)) +
   coord_flip() +
   scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
@@ -670,7 +670,7 @@ pred_df2 <- new_choice_situation %>%
 
 ```{r, echo=FALSE}
 pred_df2 %>%
-  ggplot(aes(x = menu_item, y = p)) +
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
   geom_pointrange(aes(ymin = 0, ymax = p)) +
   coord_flip() +
   scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
@@ -701,7 +701,7 @@ pred_df3 <- new_choice_situation %>%
 
 ```{r, echo=FALSE}
 pred_df3 %>%
-  ggplot(aes(x = menu_item, y = p)) +
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
   geom_pointrange(aes(ymin = 0, ymax = p)) +
   coord_flip() +
   scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
@@ -728,7 +728,7 @@ pred_df4 <- pred_df2 %>%
 
 ```{r, echo=FALSE}
 pred_df4 %>%
-  ggplot(aes(x = menu_item, y = p)) +
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
   geom_pointrange(aes(ymin = 0, ymax = p)) +
   coord_flip() +
   scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
@@ -777,7 +777,7 @@ pred_df5 <- new_choice_situation_2 %>%
 
 ```{r, echo=FALSE}
 pred_df5 %>%
-  ggplot(aes(x = menu_item, y = p)) +
+  ggplot(aes(x = reorder(menu_item, -alternative), y = p)) +
   geom_pointrange(aes(ymin = 0, ymax = p)) +
   coord_flip() +
   scale_y_continuous(labels = scales::percent, limits = seq(0, 1), breaks = seq(0, 1, 0.2)) +
