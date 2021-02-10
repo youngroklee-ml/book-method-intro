@@ -359,10 +359,10 @@ Multinomial logit model의 추정과 그로부터 확률을 추정하는 과정�
     $$
 - Observable utility
   \begin{eqnarray*}
-  v_{i1} &=& 0 - 0.001 * x_{i1} + 0 * z_{i}\\
-  v_{i2} &=& 4 - 0.001 * x_{i2} - 0.1 * z_{i}\\
-  v_{i3} &=& 2 - 0.001 * x_{i3} + 0 * z_{i}\\
-  v_{i4} &=& 6 - 0.001 * x_{i4} - 0.1 * z_{i}
+  v_{i1} &=& 0 - 0.001 \times x_{i1} + 0 \times z_{i}\\
+  v_{i2} &=& 4 - 0.001 \times x_{i2} - 0.1 \times z_{i}\\
+  v_{i3} &=& 2 - 0.001 \times x_{i3} + 0 \times z_{i}\\
+  v_{i4} &=& 6 - 0.001 \times x_{i4} - 0.1 \times z_{i}
   \end{eqnarray*}
 - Unobservable utility
   - $\varepsilon_{ij} \overset{i.i.d.}{\sim} Gumbel(0, 1)$
