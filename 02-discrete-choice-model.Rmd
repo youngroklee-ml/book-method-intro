@@ -95,7 +95,7 @@ y_{ij} = 0, \; \forall j \notin A_i\\
 
 ### 데이터 예
 
-```{r choice-data-example}
+```{r choice-data-example, echo=FALSE}
 tribble(
   ~손님ID, ~손님나이, ~음식, ~가격, ~선택여부,
   1, 40, "짬뽕", 8000, 1,
