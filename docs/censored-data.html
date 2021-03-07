@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Censored data | 알아두면 유용한 데이터 분석 방법들</title>
+  <meta name="description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Censored data | 알아두면 유용한 데이터 분석 방법들" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Censored data | 알아두면 유용한 데이터 분석 방법들" />
+  
+  <meta name="twitter:description" content="제가 학교 수업시간에 배우지 않았지만, 연구나 실무에서 사용했던 유용한 데이터 분석 방법들을 소개합니다." />
+  
+
+<meta name="author" content="이영록" />
+
+
+<meta name="date" content="2021-03-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="discrete-choice-model.html"/>
+
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">알아두면 유용한 데이터 분석 방법들</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>들어가는 글</a></li>
+<li class="chapter" data-level="1" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>1</b> Quantile regression</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate의-예"><i class="fa fa-check"></i><b>1.1</b> Univariate의 예</a></li>
+<li class="chapter" data-level="1.2" data-path="quantile-regression.html"><a href="quantile-regression.html#quantile"><i class="fa fa-check"></i><b>1.2</b> Quantile</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="quantile-regression.html"><a href="quantile-regression.html#정의"><i class="fa fa-check"></i><b>1.2.1</b> 정의</a></li>
+<li class="chapter" data-level="1.2.2" data-path="quantile-regression.html"><a href="quantile-regression.html#univariate-추정"><i class="fa fa-check"></i><b>1.2.2</b> Univariate 추정</a></li>
+<li class="chapter" data-level="1.2.3" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제"><i class="fa fa-check"></i><b>1.2.3</b> 최적화 문제</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="quantile-regression.html"><a href="quantile-regression.html#linear-quantile-regression"><i class="fa fa-check"></i><b>1.3</b> Linear quantile regression</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="quantile-regression.html"><a href="quantile-regression.html#최적화-문제-1"><i class="fa fa-check"></i><b>1.3.1</b> 최적화 문제</a></li>
+<li class="chapter" data-level="1.3.2" data-path="quantile-regression.html"><a href="quantile-regression.html#intercept-only"><i class="fa fa-check"></i><b>1.3.2</b> Intercept only</a></li>
+<li class="chapter" data-level="1.3.3" data-path="quantile-regression.html"><a href="quantile-regression.html#예측-변수가-존재하는-경우"><i class="fa fa-check"></i><b>1.3.3</b> 예측 변수가 존재하는 경우</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="quantile-regression.html"><a href="quantile-regression.html#예측구간prediction-interval"><i class="fa fa-check"></i><b>1.4</b> 예측구간(prediction interval)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html"><i class="fa fa-check"></i><b>2</b> Discrete choice model</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#data"><i class="fa fa-check"></i><b>2.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice"><i class="fa fa-check"></i><b>2.1.1</b> Choice</a></li>
+<li class="chapter" data-level="2.1.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#covariate"><i class="fa fa-check"></i><b>2.1.2</b> Covariate</a></li>
+<li class="chapter" data-level="2.1.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#availability"><i class="fa fa-check"></i><b>2.1.3</b> Availability</a></li>
+<li class="chapter" data-level="2.1.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#no-choice-alternative"><i class="fa fa-check"></i><b>2.1.4</b> “No choice” alternative</a></li>
+<li class="chapter" data-level="2.1.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#데이터-예"><i class="fa fa-check"></i><b>2.1.5</b> 데이터 예</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility"><i class="fa fa-check"></i><b>2.2</b> Utility</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility-representative-utility"><i class="fa fa-check"></i><b>2.2.1</b> Observable utility (Representative utility)</a></li>
+<li class="chapter" data-level="2.2.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility"><i class="fa fa-check"></i><b>2.2.2</b> Unobservable utility</a></li>
+<li class="chapter" data-level="2.2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>2.2.3</b> Maximum likelihood estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#multinomial-logit-mnl-model"><i class="fa fa-check"></i><b>2.3</b> Multinomial logit (MNL) model</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-1"><i class="fa fa-check"></i><b>2.3.1</b> Utility</a></li>
+<li class="chapter" data-level="2.3.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice-probablity"><i class="fa fa-check"></i><b>2.3.2</b> Choice probablity</a></li>
+<li class="chapter" data-level="2.3.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#independent-from-irrelevant-alternatives-iia"><i class="fa fa-check"></i><b>2.3.3</b> Independent from irrelevant alternatives (IIA)</a></li>
+<li class="chapter" data-level="2.3.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#예제"><i class="fa fa-check"></i><b>2.3.4</b> 예제</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#nested-logit-model"><i class="fa fa-check"></i><b>2.4</b> Nested logit model</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#utility-2"><i class="fa fa-check"></i><b>2.4.1</b> Utility</a></li>
+<li class="chapter" data-level="2.4.2" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#observable-utility"><i class="fa fa-check"></i><b>2.4.2</b> Observable utility</a></li>
+<li class="chapter" data-level="2.4.3" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#unobservable-utility-1"><i class="fa fa-check"></i><b>2.4.3</b> Unobservable utility</a></li>
+<li class="chapter" data-level="2.4.4" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#choice-probability"><i class="fa fa-check"></i><b>2.4.4</b> Choice probability</a></li>
+<li class="chapter" data-level="2.4.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#예제-1"><i class="fa fa-check"></i><b>2.4.5</b> 예제</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="censored-data.html"><a href="censored-data.html"><i class="fa fa-check"></i><b>3</b> Censored data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="censored-data.html"><a href="censored-data.html#right-censored-data"><i class="fa fa-check"></i><b>3.1</b> Right censored data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="censored-data.html"><a href="censored-data.html#이산형-변수"><i class="fa fa-check"></i><b>3.1.1</b> 이산형 변수</a></li>
+<li class="chapter" data-level="3.1.2" data-path="censored-data.html"><a href="censored-data.html#연속형-변수"><i class="fa fa-check"></i><b>3.1.2</b> 연속형 변수</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="censored-data.html"><a href="censored-data.html#left-censored-data"><i class="fa fa-check"></i><b>3.2</b> Left censored data</a></li>
+<li class="chapter" data-level="3.3" data-path="censored-data.html"><a href="censored-data.html#interval-data"><i class="fa fa-check"></i><b>3.3</b> Interval data</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">알아두면 유용한 데이터 분석 방법들</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="censored-data" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Censored data</h1>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="censored-data.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb47-2"><a href="censored-data.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb47-3"><a href="censored-data.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb47-4"><a href="censored-data.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb47-5"><a href="censored-data.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb47-6"><a href="censored-data.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb47-7"><a href="censored-data.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb47-8"><a href="censored-data.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb47-9"><a href="censored-data.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
+<p>확률분포나 통계모형을 추정할 때 가장 흔히 사용되는 방법이 최우추정법(maximum likelihood estimation)이다. 이 때 likelihood는 주어진 데이터가 어떠한 확률분포로부터 관측될 결합확률(joint probability)을 뜻한다. 이 때, likelihood 함수는 주어진 데이터의 성격에 맞게 정의되어야 한다.</p>
+<p>기초 통계 수업에서는 주로 정확한(precise) 값이 관측된다고 가정한다. 하지만, 경우에 따라 분포를 알고자 하는 값이 정확하게 관측되지 못하고, 단지 정확한 실제값이 어떤 범위 내에 존재하는지만 알 수 있는 경우가 있다. 예를 들어, 매일 아침 10개의 재고가 존재하는 제품에 대해 기록된 일간 판매량을 토대로 일간 수요의 분포를 추정한다고 하자. 이 때, 제품 재고 10개가 모두 소진된 날의 경우, 판매량은 10개이지만 실제 수요는 “10개보다 크거나 같았다”와 같이 정확한 수요값이 존재했을 범위를 고려하는 것이 합리적인데, 이는 재고가 더 많이 존재했을 경우 더 많은 판매가 이루어졌을 가능성이 있기 때문이다. 이러한 경우, 관측된 범위 데이터를 <strong>censored data</strong>라 한다. 본 장에서는 이러한 censored data가 존재할 때 최우추정법을 위한 likelihood 함수를 어떻게 정의하는지 살펴보자.</p>
+<div id="right-censored-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Right censored data</h2>
+<p>Right censored data는 실제값이 존재하는 범위의 lower bound가 관측되는 경우이다. 바로 앞에서 언급한 예와 같이, 재고량이 10개인 제품이 모두 판매되어 품절되었을 때, 제품에 대한 수요에 대한 lower bound 10은 관측되지만, 실제 수요가 11개였을지 20개였을 지는 알 수 없는 경우이다.</p>
+<p>아래와 같이 데이터를 정의해보자.</p>
+<ul>
+<li><span class="math inline">\(N\)</span>: 전체 관측 데이터 수.</li>
+<li><span class="math inline">\(y_i\)</span>: <span class="math inline">\(i\)</span>번째 관측치에 대응하는 실제값. 이 변수는 항상 관측 가능한 변수가 아니다. 예를 들어, <span class="math inline">\(i\)</span>번째 날짜에 해당 일자에 대한 재고 10개가 모두 판매되어 품절되었을 경우, 재고가 충분했다면 15개가 판매되었을 것이라면 <span class="math inline">\(y_i = 15\)</span>이지만, 이 실제값은 관측 가능한 값이 아니다.</li>
+<li><span class="math inline">\(\tilde{y}_i\)</span>: <span class="math inline">\(i\)</span>번째 관측치에 대응하는 관측값. 위에서 언급한 경우와 같이 <span class="math inline">\(i\)</span>번째 날짜에 해당 일자에 대한 재고 10개가 모두 판매되어 품절되었을 경우, <span class="math inline">\(\tilde{y}_i = 10\)</span>으로 관측된다.</li>
+<li><span class="math inline">\(r_i\)</span>: <span class="math inline">\(i\)</span>번째 관측치가 right censored data인지 아닌지 여부에 대한 지시변수. <span class="math inline">\(i\)</span>번째 관측치가 right censored data라면 <span class="math inline">\(r_i = 1\)</span>, 아니라면 <span class="math inline">\(r_i = 0\)</span>으로 관측된다. 이 지시변수는 항상 관측 가능한 값이다. 예를 들어, <span class="math inline">\(i\)</span>번째 날짜에 재고가 소진되어 더 이상 제품 판매가 불가능했다면, <span class="math inline">\(r_i = 1\)</span>로 관측된다.</li>
+</ul>
+<p>이 때, <span class="math inline">\(y_i\)</span>와 <span class="math inline">\(\tilde{y}_i\)</span>는 <span class="math inline">\(r_i\)</span>값에 따라 아래와 같은 관계를 보인다.</p>
+<p><span class="math display">\[
+\begin{cases}
+  y_i = \tilde{y}_i &amp; \text{if } r_i = 0 \\
+  y_i \geq \tilde{y}_i &amp; \text{if } r_i = 1
+\end{cases}
+\]</span></p>
+<p>전체 관측 데이터 <span class="math inline">\(D\)</span>는 아래와 같이 <span class="math inline">\(N\)</span>개의 <span class="math inline">\(\tilde{y}_i\)</span>와 <span class="math inline">\(r_i\)</span>의 쌍으로 이루어진다.</p>
+<p><span class="math display">\[
+D = \left\{(\tilde{y}_i, r_i): i = 1, \ldots, N\right\}
+\]</span></p>
+<p>해당 관측 데이터에 대한 likelihood값의 계산은 실제값 변수 <span class="math inline">\(Y\)</span>가 이산형(discrete) 변수인지 연속형(continuous) 변수인지에 따라 달라진다.</p>
+<div id="이산형-변수" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> 이산형 변수</h3>
+<p>변수 <span class="math inline">\(Y\)</span>에 대한 확률질량함수 <span class="math inline">\(P(Y = y)\)</span>를 이용하여 관측 데이터의 likelihood를 아래와 같이 정의된다.</p>
+<p><span class="math display">\[
+L(D) = \prod_{i = 1}^{N} P(Y = \tilde{y}_i)^{1 - r_i} \left(1 - P(Y &lt; \tilde{y}_i)\right)^{r_i}\\
+= \prod_{i = 1}^{N} P(Y = \tilde{y}_i)^{1 - r_i} P(Y \geq \tilde{y}_i)^{r_i}
+\]</span></p>
+<p>즉, 정확한 실제값을 관측한 경우 (<span class="math inline">\(r_i = 0\)</span>), 확률질량함수 <span class="math inline">\(P(Y = \tilde{y}_i)\)</span>값이 해당 값을 관측할 likelihood이다. 반면, right censored data인 경우 (<span class="math inline">\(r_i = 1\)</span>), 관측된 정보는 “<span class="math inline">\(y_i\)</span>가 <span class="math inline">\(\tilde{y}_i\)</span>보다 작지 않다”이므로, 변수 <span class="math inline">\(Y\)</span>가 <span class="math inline">\(\tilde{y}_i\)</span>보다 작지 않을 확률 <span class="math inline">\(1 - P(y_i &lt; \tilde{y}_i)\)</span>를 likelihood로 사용한다.</p>
+<div id="예제-2" class="section level4" number="3.1.1.1">
+<h4><span class="header-section-number">3.1.1.1</span> 예제</h4>
+<p>유통기한이 단 하루인 제품이 있다고 하자. 100일동안 매일 아침 가게 문을 열 때 제품을 10개를 생산해서 준비해두고, 매일 저녁 가게 문을 닫을 때까지 제품이 몇 개 팔렸는지를 기록해두었다 하자. 각 날짜의 제품의 수요는 서로 독립이며 평균(<span class="math inline">\(\lambda\)</span>)이 7인 Poisson distribution을 따른다고 가정하자. 단, 판매자는 실제 평균 수요를 알지 못하고, 100일동안 관측된 데이터를 이용하여 수요의 분포를 추정하려고 한다.</p>
+<p><span class="math display">\[
+y_i \overset{i.i.d.}{\sim} Pois(7)
+\]</span></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="censored-data.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">30</span>)</span>
+<span id="cb48-2"><a href="censored-data.html#cb48-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb48-3"><a href="censored-data.html#cb48-3" aria-hidden="true" tabindex="-1"></a>lambda_true <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb48-4"><a href="censored-data.html#cb48-4" aria-hidden="true" tabindex="-1"></a>daily_inventory <span class="ot">&lt;-</span> 10L</span>
+<span id="cb48-5"><a href="censored-data.html#cb48-5" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb48-6"><a href="censored-data.html#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">day =</span> <span class="fu">seq_len</span>(N),</span>
+<span id="cb48-7"><a href="censored-data.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">daily_sales =</span> <span class="fu">pmin</span>(<span class="fu">rpois</span>(N, <span class="dv">7</span>), daily_inventory),</span>
+<span id="cb48-8"><a href="censored-data.html#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sold_out =</span> <span class="fu">if_else</span>(daily_sales <span class="sc">&lt;</span> daily_inventory, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb48-9"><a href="censored-data.html#cb48-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-3">Table 3.1: </span>첫 열흘 동안의 판매량 기록</caption>
+<thead>
+<tr class="header">
+<th align="right">day</th>
+<th align="right">daily_sales</th>
+<th align="right">sold_out</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>위 데이터에서 <code>daily_sales</code>열이 <span class="math inline">\(\tilde{y}_i\)</span>, <code>sold_out</code>열이 <span class="math inline">\(r_i\)</span> 값을 저장한다. 실제 수요값이 10인 경우, 관측된 판매량과 실제 수요가 일치하지만, 판매자의 입장에서는 실제 수요가 더 이상 없었을 것이라는 사실을 알 수가 없다. 실제 수요가 더 있었다 하더라도 수요자의 입장에서 구매할 수가 없었으므로, 판매량은 동일하게 10이며, 따라서 판매자의 입장에서는 판매량이 10인 경우 right censored data라고 가정한다.</p>
+<p>위 데이터를 이용하여 Poisson distribution의 파라미터 <span class="math inline">\(\lambda\)</span>의 maximum likelihood estimate을 구해보자. 우선, likelihood function을 아래와 같이 정의한다.</p>
+<p><span class="math display">\[
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(\frac{\lambda ^ {\tilde{y}_i} \exp(-\lambda)}{\tilde{y}_i!}\right)^{1 - r_i} \left(1 - \sum_{k = 0}^{\tilde{y}_i - 1} \frac{\lambda ^ {k} \exp(-\lambda)}{k!} \right) ^ {r_i}
+\]</span></p>
+<p>이 때, 주어진 데이터 모형으로부터 <span class="math inline">\(r_i = 1\)</span> 일 때 <span class="math inline">\(\tilde{y}_i\)</span>값은 항상 10임을 추론할 수 있으므로, likelihood function은 아래와 같이 정리할 수 있다.</p>
+<p><span class="math display">\[
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(\frac{\lambda ^ {\tilde{y}_i} \exp(-\lambda)}{\tilde{y}_i!}\right)^{1 - r_i} \, p^{r_i}\\
+p = 1 - \sum_{k = 0}^{9} \frac{\lambda ^ {k} \exp(-\lambda)}{k!}
+\]</span></p>
+<p>Log-likelihood function은 아래와 같이 정리된다.</p>
+<p><span class="math display">\[
+logL(D \, | \, \lambda) = \sum_{i = 1}^{100} (1 - r_i) \left(\tilde{y}_i \log \lambda - \lambda - \sum_{k = 1} ^ {\tilde{y}_i} \log k\right) + r_i \log p\\
+p = 1 - \sum_{k = 0}^{9} \frac{\lambda ^ {k} \exp(-\lambda)}{k!}
+\]</span></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="censored-data.html#cb49-1" aria-hidden="true" tabindex="-1"></a>fn_loglik <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda, y, rc) {</span>
+<span id="cb49-2"><a href="censored-data.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dpois</span>(y, lambda, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> rc) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="censored-data.html#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ppois</span>(y, lambda, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> rc)</span>
+<span id="cb49-4"><a href="censored-data.html#cb49-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>위 log-likelihood function을 이용하여 수요분포 파라미터 <span class="math inline">\(\lambda\)</span>의 maximum likelihood estimate을 구해보자.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="censored-data.html#cb50-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> observed <span class="sc">%&gt;%</span> <span class="fu">pull</span>(daily_sales)</span>
+<span id="cb50-2"><a href="censored-data.html#cb50-2" aria-hidden="true" tabindex="-1"></a>rc <span class="ot">&lt;-</span> observed <span class="sc">%&gt;%</span> <span class="fu">pull</span>(sold_out)</span>
+<span id="cb50-3"><a href="censored-data.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="censored-data.html#cb50-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
+<span id="cb50-5"><a href="censored-data.html#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> <span class="dv">5</span>,</span>
+<span id="cb50-6"><a href="censored-data.html#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> fn_loglik,</span>
+<span id="cb50-7"><a href="censored-data.html#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb50-8"><a href="censored-data.html#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb50-9"><a href="censored-data.html#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> y, <span class="at">rc =</span> rc</span>
+<span id="cb50-10"><a href="censored-data.html#cb50-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## Warning in optim(par = 5, fn = fn_loglik, control = list(fnscale = -1), : one-dimensional optimization by Nelder-Mead is unreliable:
+## use &quot;Brent&quot; or optimize() directly</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="censored-data.html#cb52-1" aria-hidden="true" tabindex="-1"></a>lambda_estimate <span class="ot">&lt;-</span> res<span class="sc">$</span>par</span>
+<span id="cb52-2"><a href="censored-data.html#cb52-2" aria-hidden="true" tabindex="-1"></a>lambda_se <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">sqrt</span>(<span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> res<span class="sc">$</span>hessian))</span></code></pre></div>
+<p><img src="censored-data_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>추정된 파리미터값은 <span class="math inline">\(\hat{\lambda} = 6.5410156\)</span>이며 표준오차는 <span class="math inline">\(se(\hat{\lambda}) = 0.2599846\)</span>이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.</p>
+</div>
+</div>
+<div id="연속형-변수" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> 연속형 변수</h3>
+<p>실제값 <span class="math inline">\(y_i\)</span>가 분포함수 <span class="math inline">\(F(y)\)</span>로부터 얻어진다고 하자.</p>
+<p><span class="math display">\[
+y_i \overset{i.i.d.}{\sim} F(y)
+\]</span></p>
+<p>또한 분포함수 <span class="math inline">\(F(y)\)</span>에 대응하는 확률밀도함수를 <span class="math inline">\(f(y)\)</span>라 하자.</p>
+<p><span class="math display">\[
+f(y) = \frac{\partial F(y)}{\partial y}
+\]</span></p>
+<p>이 때, likelihood는 아래와 같이 정의된다.</p>
+<p><span class="math display">\[
+L(D) = \prod_{i = 1}^{N} f(\tilde{y}_i)^{1 - r_i} \left(1 - F(\tilde{y}_i)\right)^{r_i}
+\]</span></p>
+<p>즉, 정확한 실제값을 관측한 경우 (<span class="math inline">\(r_i = 0\)</span>), 확률밀도함수 <span class="math inline">\(f(y)\)</span>값이 해당 값을 관측할 likelihood이다. 반면, right censored data인 경우 (<span class="math inline">\(r_i = 1\)</span>), 확신할 수 있는 정보는 <span class="math inline">\(y_i \geq \tilde{y}_i\)</span>이므로,</p>
+<p><span class="math display">\[
+P(y_i \geq \tilde{y}_i) = 1 - P(y_i &lt; \tilde{y}_i)\\
+= 1 - F(\tilde{y}_i)
+\]</span>
+가 해당 관측값을 얻을 likelihood이다.</p>
+<p>연속형 변수에 대한 예제는 다음 절에서 left censored data를 다룰 때 함께 살펴보기로 하자.</p>
+</div>
+</div>
+<div id="left-censored-data" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Left censored data</h2>
+<p>Left censored data는 실제값이 존재하는 범위의 upper bound가 관측되는 경우이다. 즉, 실제값이 어떠한 값보다 작거나 같았다라는 사실을 관측할 수 있으나, 정확한 실제값을 측정할 수는 없는 경우이다. 본 절에서는 연속형 변수에 대해서만 설명하기로 한다.</p>
+<p>Right censored data와 left censored data가 모두 존재하는 다음과 같은 예를 생각해보자.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>구매자와 판매자 간에 각 거래에서 제품 가격은 판매자가 결정하여 제시한다고 가정하자. 구매자 각자는 본인이 희망하는 제품 가격이 상한이 있으며, 이를 희망가격이라 하자. 하지만, 이 희망가격은 판매자가 알 수 없으며, 따라서 판매자는 각 구매자의 희망 가격과는 독립적으로 제품 가격을 설정하여 제시한다. 이 때, 거래가 성사되기 위해서는 구매자가 희망했던 가격이 판매자가 제시한 제품 가격보다 높아야 한다. 즉, 구매자가 희망했던 가격보다 제품가격이 저렴할 때 거래가 성립한다. 만약 구매자가 희망했던 가격이 제품 가격보다 낮은 경우, 즉 제품 가격이 구매자의 희망보다 비싼 경우에는 거래가 성립하지 않는다.</td>
+</tr>
+</tbody>
+</table>
+<p>위 예에서, 판매자가 여러 구매자들과의 거래를 통해, 구매자들의 희망가격의 분포를 추정하려 한다고 하자. 판매자의 입장에서 관측할 수 있는 데이터는 판매자 본인이 제시했던 제품 가격과 거래가 성사되었는지의 여부이다. 이 때, 거래 성사 여부에 따라 관측된 데이터가 right censored data인지 left censored data인지를 알 수 있다.</p>
+<ul>
+<li>거래가 성사된 경우, 구매자의 희망가격(<span class="math inline">\(y_i\)</span>)의 정확한 값은 모르지만, 판매자의 제시가격(<span class="math inline">\(\tilde{y}_i\)</span>)보다 높았다는 사실을 알게 되므로, right censored data이다.</li>
+<li>거래가 성사되지 않은 경우, 구매자의 희망가격(<span class="math inline">\(y_i\)</span>)의 정확한 값은 모르지만, 판매자의 제시가격(<span class="math inline">\(\tilde{y}_i\)</span>)보다 낮았다는 사실을 알게 되므로, left censored data이다.</li>
+</ul>
+<p>앞 절에서 정의했던 수식 기호에 더하여, left censored data 지시변수를 아래와 같이 추가로 정의하자.</p>
+<ul>
+<li><span class="math inline">\(l_i\)</span>: <span class="math inline">\(i\)</span>번째 관측치가 left censored data인지 아닌지 여부에 대한 지시변수. <span class="math inline">\(i\)</span>번째 관측치가 left censored data라면 <span class="math inline">\(l_i = 1\)</span>, 아니라면 <span class="math inline">\(l_i = 0\)</span>으로 관측된다.</li>
+</ul>
+<p>이 때, 관심변수의 실제값 <span class="math inline">\(y_i\)</span>와 관측값 <span class="math inline">\(\tilde{y}_i\)</span>간의 관계는 지시변수 <span class="math inline">\(r_i\)</span>와 <span class="math inline">\(l_i\)</span>의 값에 따라 아래와 같다.</p>
+<p><span class="math display">\[
+\begin{cases}
+  y_i = \tilde{y}_i &amp; \text{if } \, l_i = 0 \, \text{ and } \, r_i = 0\\
+  y_i \geq \tilde{y}_i &amp; \text{if } \, l_i = 0 \, \text{ and } \, r_i = 1\\
+  y_i \leq \tilde{y}_i &amp; \text{if } \, l_i = 1 \, \text{ and } \, r_i = 0
+\end{cases}
+\]</span>
+전체 관측 데이터 <span class="math inline">\(D\)</span>는 아래와 같이 <span class="math inline">\(N\)</span>개의 <span class="math inline">\(\tilde{y}_i\)</span>와 <span class="math inline">\(l_i\)</span>, 그리고 <span class="math inline">\(r_i\)</span>의 쌍으로 이루어진다.</p>
+<p><span class="math display">\[
+D = \left\{(\tilde{y}_i, l_i, r_i): i = 1, \ldots, N\right\}
+\]</span></p>
+<p>이 때, likelihood는 아래와 같이 정의된다.</p>
+<p><span class="math display">\[
+L(D) = \prod_{i = 1}^{N} f(\tilde{y}_i)^{1 - l_i - r_i} F(\tilde{y}_i)^{l_i} \left(1 - F(\tilde{y}_i)\right)^{r_i}
+\]</span></p>
+<div id="예제-3" class="section level4" number="3.2.0.1">
+<h4><span class="header-section-number">3.2.0.1</span> 예제</h4>
+<p>앞에서 언급한 구매자의 희망가격 분포를 추정하는 예에 대해 실제 추정과정을 살펴보자.</p>
+<p>구매자 각자는 서로 다른 희망가격을 마음에 품고 있는데, 이는 서로 독립이며 평균(<span class="math inline">\(1 / \lambda\)</span>)이 10만원인 Exponential distribution을 따른다고 가정하자. 단, 판매자는 구매자의 평균 희망가격을 알지 못하고, 100명의 구매자와의 거래 시도를 통해 관측된 데이터를 이용하여 희망가격의 분포를 추정하려고 한다.</p>
+<p><span class="math display">\[
+y_i \overset{i.i.d.}{\sim} Exp(\lambda)
+\]</span></p>
+<p>판매자가 각 구매자에게 무작위로 서로 다른 가격을 제시하였다고 하자. 이 때, 각 구매자에게 제시된 가격은 서로 독립이며 평균이 9이고 표준편차가 2인 정규분포로부터 추출된 무작위 샘플이라 하자.</p>
+<p><span class="math display">\[
+\tilde{y}_i \overset{i.i.d.}{\sim} N(9, 2^2)
+\]</span></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="censored-data.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">31</span>)</span>
+<span id="cb53-2"><a href="censored-data.html#cb53-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb53-3"><a href="censored-data.html#cb53-3" aria-hidden="true" tabindex="-1"></a>lambda_true <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb53-4"><a href="censored-data.html#cb53-4" aria-hidden="true" tabindex="-1"></a>mu_tilde <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb53-5"><a href="censored-data.html#cb53-5" aria-hidden="true" tabindex="-1"></a>sigma_tilde <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb53-6"><a href="censored-data.html#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="censored-data.html#cb53-7" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb53-8"><a href="censored-data.html#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">customer =</span> <span class="fu">seq_len</span>(N),</span>
+<span id="cb53-9"><a href="censored-data.html#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper_limit =</span> <span class="fu">rexp</span>(N, lambda_true),</span>
+<span id="cb53-10"><a href="censored-data.html#cb53-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">offer =</span> <span class="fu">rnorm</span>(N, mu_tilde, sigma_tilde),</span>
+<span id="cb53-11"><a href="censored-data.html#cb53-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">is_accepted =</span> <span class="fu">if_else</span>(offer <span class="sc">&lt;=</span> upper_limit, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb53-12"><a href="censored-data.html#cb53-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">is_rejected =</span> <span class="fu">if_else</span>(offer <span class="sc">&gt;</span> upper_limit, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb53-13"><a href="censored-data.html#cb53-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-8">Table 3.2: </span>첫 열 명의 구매자와의 거래 결과</caption>
+<thead>
+<tr class="header">
+<th align="right">customer</th>
+<th align="right">upper_limit</th>
+<th align="right">offer</th>
+<th align="right">is_accepted</th>
+<th align="right">is_rejected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.4431583</td>
+<td align="right">10.908619</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2.9419262</td>
+<td align="right">4.507467</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">3.1340344</td>
+<td align="right">9.060761</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">17.6789979</td>
+<td align="right">9.804956</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">1.6851793</td>
+<td align="right">12.316684</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">6.6046450</td>
+<td align="right">5.295574</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">3.0373506</td>
+<td align="right">12.301354</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">42.3869027</td>
+<td align="right">7.171987</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">26.9941280</td>
+<td align="right">10.744140</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">7.6777810</td>
+<td align="right">10.346243</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>위 데이터에서 <code>is_accept</code>는 거래가 성사되었으면 1, 아니면 0을 지니며, right censored data 지시변수 <span class="math inline">\(r_i\)</span>에 대응한다. 또한 <code>is_rejected</code>는 거래가 성사되었으면 0, 아니면 1을 지니며, left censored data 지시변수 <span class="math inline">\(l_i\)</span>에 대응한다. 각 관측치는 left censored data이거나 right censored data이며, 판매자가 구매자의 희망가격을 정확히 아는 경우는 없다고 보는 것이 합리적일 것이다.</p>
+<p>따라서, likelihood function은 아래와 같이 정의된다.</p>
+<p><span class="math display">\[
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(1 - \exp(-\lambda \tilde{y}_i)\right)^{l_i} \left(\exp(-\lambda \tilde{y}_i)\right)^{r_i}
+\]</span></p>
+<p>그리고, log-likelihood function은 아래와 같이 정의된다.</p>
+<p><span class="math display">\[
+l(D \, | \, \lambda) = \sum_{i = 1}^{100} l_i \log \left(1 - \exp(-\lambda \tilde{y}_i)\right) - r_i \lambda \tilde{y}_i
+\]</span></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="censored-data.html#cb54-1" aria-hidden="true" tabindex="-1"></a>fn_loglik <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda, y, lc, rc) {</span>
+<span id="cb54-2"><a href="censored-data.html#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">pexp</span>(y, lambda, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> lc <span class="sc">+</span></span>
+<span id="cb54-3"><a href="censored-data.html#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pexp</span>(y, lambda, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> rc)</span>
+<span id="cb54-4"><a href="censored-data.html#cb54-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>위 log-likelihood function을 이용하여 수요분포 파라미터 <span class="math inline">\(\lambda\)</span>의 maximum likelihood estimate을 구해보자.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="censored-data.html#cb55-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> observed <span class="sc">%&gt;%</span> <span class="fu">pull</span>(offer)</span>
+<span id="cb55-2"><a href="censored-data.html#cb55-2" aria-hidden="true" tabindex="-1"></a>lc <span class="ot">&lt;-</span> observed <span class="sc">%&gt;%</span> <span class="fu">pull</span>(is_rejected)</span>
+<span id="cb55-3"><a href="censored-data.html#cb55-3" aria-hidden="true" tabindex="-1"></a>rc <span class="ot">&lt;-</span> observed <span class="sc">%&gt;%</span> <span class="fu">pull</span>(is_accepted)</span>
+<span id="cb55-4"><a href="censored-data.html#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="censored-data.html#cb55-5" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
+<span id="cb55-6"><a href="censored-data.html#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">20</span>,</span>
+<span id="cb55-7"><a href="censored-data.html#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> fn_loglik,</span>
+<span id="cb55-8"><a href="censored-data.html#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb55-9"><a href="censored-data.html#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb55-10"><a href="censored-data.html#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> y, <span class="at">lc =</span> lc, <span class="at">rc =</span> rc</span>
+<span id="cb55-11"><a href="censored-data.html#cb55-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## Warning in optim(par = 1/20, fn = fn_loglik, control = list(fnscale = -1), : one-dimensional optimization by Nelder-Mead is unreliable:
+## use &quot;Brent&quot; or optimize() directly</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="censored-data.html#cb57-1" aria-hidden="true" tabindex="-1"></a>lambda_estimate <span class="ot">&lt;-</span> res<span class="sc">$</span>par</span>
+<span id="cb57-2"><a href="censored-data.html#cb57-2" aria-hidden="true" tabindex="-1"></a>lambda_se <span class="ot">&lt;-</span> <span class="fu">drop</span>(<span class="fu">sqrt</span>(<span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> res<span class="sc">$</span>hessian))</span></code></pre></div>
+<p><img src="censored-data_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>추정된 파리미터값은 <span class="math inline">\(\hat{\lambda} = 0.0824023\)</span>이며 (즉, 추정된 평균 희망가격은 12.1355772만원이며) 표준오차는 <span class="math inline">\(se(\hat{\lambda}) = 0.0117518\)</span>이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.</p>
+</div>
+</div>
+<div id="interval-data" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Interval data</h2>
+<p>Interval data는 실제값이 존재하는 범위의 lower bound와 upper bound가 모두 관측되는 경우이다.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="discrete-choice-model.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

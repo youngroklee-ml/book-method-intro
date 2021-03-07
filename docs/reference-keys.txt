@@ -1,3 +1,5 @@
+tab:unnamed-chunk-3
+tab:unnamed-chunk-8
 quantile-regression
 univariate의-예
 quantile
@@ -39,3 +41,11 @@ choice-probability
 데이터-모델-1
 모델-추정-1
 확률-추정-1
+censored-data
+right-censored-data
+이산형-변수
+예제-2
+연속형-변수
+left-censored-data
+예제-3
+interval-data

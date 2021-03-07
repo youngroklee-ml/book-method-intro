@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-02-08" />
+<meta name="date" content="2021-03-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="quantile-regression.html"/>
-
+<link rel="next" href="censored-data.html"/>
 <script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -183,6 +183,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4.5" data-path="discrete-choice-model.html"><a href="discrete-choice-model.html#예제-1"><i class="fa fa-check"></i><b>2.4.5</b> 예제</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="censored-data.html"><a href="censored-data.html"><i class="fa fa-check"></i><b>3</b> Censored data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="censored-data.html"><a href="censored-data.html#right-censored-data"><i class="fa fa-check"></i><b>3.1</b> Right censored data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="censored-data.html"><a href="censored-data.html#이산형-변수"><i class="fa fa-check"></i><b>3.1.1</b> 이산형 변수</a></li>
+<li class="chapter" data-level="3.1.2" data-path="censored-data.html"><a href="censored-data.html#연속형-변수"><i class="fa fa-check"></i><b>3.1.2</b> 연속형 변수</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="censored-data.html"><a href="censored-data.html#left-censored-data"><i class="fa fa-check"></i><b>3.2</b> Left censored data</a></li>
+<li class="chapter" data-level="3.3" data-path="censored-data.html"><a href="censored-data.html#interval-data"><i class="fa fa-check"></i><b>3.3</b> Interval data</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -275,15 +285,6 @@ y_{ij} = 0, \; \forall j \notin A_i\\
 </div>
 <div id="데이터-예" class="section level3" number="2.1.5">
 <h3><span class="header-section-number">2.1.5</span> 데이터 예</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="discrete-choice-model.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
-<span id="cb21-2"><a href="discrete-choice-model.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>손님ID, <span class="sc">~</span>손님나이, <span class="sc">~</span>음식, <span class="sc">~</span>가격, <span class="sc">~</span>선택여부,</span>
-<span id="cb21-3"><a href="discrete-choice-model.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">40</span>, <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">8000</span>, <span class="dv">1</span>,</span>
-<span id="cb21-4"><a href="discrete-choice-model.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">40</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">7000</span>, <span class="dv">0</span>,</span>
-<span id="cb21-5"><a href="discrete-choice-model.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">5000</span>, <span class="dv">0</span>,</span>
-<span id="cb21-6"><a href="discrete-choice-model.html#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">5000</span>, <span class="dv">1</span>,</span>
-<span id="cb21-7"><a href="discrete-choice-model.html#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>, <span class="dv">70</span>, <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6500</span>, <span class="dv">1</span></span>
-<span id="cb21-8"><a href="discrete-choice-model.html#cb21-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-9"><a href="discrete-choice-model.html#cb21-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -529,10 +530,10 @@ z_i \sim U(5, 95)
 </ul></li>
 <li>Observable utility
 <span class="math display">\[\begin{eqnarray*}
-v_{i1} &amp;=&amp; 0 - 0.001 * x_{i1} + 0 * z_{i}\\
-v_{i2} &amp;=&amp; 4 - 0.001 * x_{i2} - 0.1 * z_{i}\\
-v_{i3} &amp;=&amp; 2 - 0.001 * x_{i3} + 0 * z_{i}\\
-v_{i4} &amp;=&amp; 6 - 0.001 * x_{i4} - 0.1 * z_{i}
+v_{i1} &amp;=&amp; 0 - 0.001 \times x_{i1} + 0 \times z_{i}\\
+v_{i2} &amp;=&amp; 4 - 0.001 \times x_{i2} - 0.1 \times z_{i}\\
+v_{i3} &amp;=&amp; 2 - 0.001 \times x_{i3} + 0 \times z_{i}\\
+v_{i4} &amp;=&amp; 6 - 0.001 \times x_{i4} - 0.1 \times z_{i}
 \end{eqnarray*}\]</span></li>
 <li>Unobservable utility
 <ul>
@@ -546,71 +547,71 @@ a_{i3} &amp;\sim&amp; Bernoulli(0.8)\\
 a_{i4} &amp;\sim&amp; Bernoulli(0.8)
 \end{eqnarray*}\]</span></li>
 </ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="discrete-choice-model.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
-<span id="cb22-2"><a href="discrete-choice-model.html#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="discrete-choice-model.html#cb22-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb22-4"><a href="discrete-choice-model.html#cb22-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span>)</span>
-<span id="cb22-5"><a href="discrete-choice-model.html#cb22-5" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
-<span id="cb22-6"><a href="discrete-choice-model.html#cb22-6" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>)</span>
-<span id="cb22-7"><a href="discrete-choice-model.html#cb22-7" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
-<span id="cb22-8"><a href="discrete-choice-model.html#cb22-8" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
-<span id="cb22-9"><a href="discrete-choice-model.html#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="discrete-choice-model.html#cb22-10" aria-hidden="true" tabindex="-1"></a>generate_price <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
-<span id="cb22-11"><a href="discrete-choice-model.html#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb22-12"><a href="discrete-choice-model.html#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
-<span id="cb22-13"><a href="discrete-choice-model.html#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">price1 =</span> <span class="fu">runif</span>(N, <span class="dv">5000</span>, <span class="dv">7000</span>),</span>
-<span id="cb22-14"><a href="discrete-choice-model.html#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">price2 =</span> <span class="fu">runif</span>(N, <span class="dv">5000</span>, price1),</span>
-<span id="cb22-15"><a href="discrete-choice-model.html#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">price3 =</span> price1 <span class="sc">+</span> <span class="fu">runif</span>(N, <span class="dv">2000</span>, <span class="dv">4000</span>),</span>
-<span id="cb22-16"><a href="discrete-choice-model.html#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">price4 =</span> price2 <span class="sc">+</span> price3 <span class="sc">-</span> price1 <span class="sc">+</span> <span class="fu">runif</span>(N, <span class="sc">-</span><span class="dv">500</span>, <span class="dv">0</span>)</span>
-<span id="cb22-17"><a href="discrete-choice-model.html#cb22-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-18"><a href="discrete-choice-model.html#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
-<span id="cb22-19"><a href="discrete-choice-model.html#cb22-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols =</span> price1<span class="sc">:</span>price4, </span>
-<span id="cb22-20"><a href="discrete-choice-model.html#cb22-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to =</span> <span class="st">&quot;alternative&quot;</span>, </span>
-<span id="cb22-21"><a href="discrete-choice-model.html#cb22-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_prefix =</span> <span class="st">&quot;price&quot;</span>,</span>
-<span id="cb22-22"><a href="discrete-choice-model.html#cb22-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">alternative =</span> as.integer),</span>
-<span id="cb22-23"><a href="discrete-choice-model.html#cb22-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">&quot;price&quot;</span></span>
-<span id="cb22-24"><a href="discrete-choice-model.html#cb22-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-25"><a href="discrete-choice-model.html#cb22-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-26"><a href="discrete-choice-model.html#cb22-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-27"><a href="discrete-choice-model.html#cb22-27" aria-hidden="true" tabindex="-1"></a>generate_age <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
-<span id="cb22-28"><a href="discrete-choice-model.html#cb22-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb22-29"><a href="discrete-choice-model.html#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
-<span id="cb22-30"><a href="discrete-choice-model.html#cb22-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">runif</span>(N, <span class="dv">5</span>, <span class="dv">95</span>)</span>
-<span id="cb22-31"><a href="discrete-choice-model.html#cb22-31" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb22-32"><a href="discrete-choice-model.html#cb22-32" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-33"><a href="discrete-choice-model.html#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-34"><a href="discrete-choice-model.html#cb22-34" aria-hidden="true" tabindex="-1"></a>generate_availability <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
-<span id="cb22-35"><a href="discrete-choice-model.html#cb22-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb22-36"><a href="discrete-choice-model.html#cb22-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
-<span id="cb22-37"><a href="discrete-choice-model.html#cb22-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail1 =</span> <span class="dv">1</span>,</span>
-<span id="cb22-38"><a href="discrete-choice-model.html#cb22-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail2 =</span> <span class="dv">1</span>,</span>
-<span id="cb22-39"><a href="discrete-choice-model.html#cb22-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail3 =</span> avail1 <span class="sc">*</span> <span class="fu">rbern</span>(N, <span class="fl">0.8</span>),</span>
-<span id="cb22-40"><a href="discrete-choice-model.html#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail4 =</span> avail2 <span class="sc">*</span> <span class="fu">rbern</span>(N, <span class="fl">0.8</span>)</span>
-<span id="cb22-41"><a href="discrete-choice-model.html#cb22-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-42"><a href="discrete-choice-model.html#cb22-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
-<span id="cb22-43"><a href="discrete-choice-model.html#cb22-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols =</span> avail1<span class="sc">:</span>avail4, </span>
-<span id="cb22-44"><a href="discrete-choice-model.html#cb22-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to =</span> <span class="st">&quot;alternative&quot;</span>, </span>
-<span id="cb22-45"><a href="discrete-choice-model.html#cb22-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_prefix =</span> <span class="st">&quot;avail&quot;</span>,</span>
-<span id="cb22-46"><a href="discrete-choice-model.html#cb22-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">alternative =</span> as.integer),</span>
-<span id="cb22-47"><a href="discrete-choice-model.html#cb22-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">&quot;avail&quot;</span></span>
-<span id="cb22-48"><a href="discrete-choice-model.html#cb22-48" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-49"><a href="discrete-choice-model.html#cb22-49" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-50"><a href="discrete-choice-model.html#cb22-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-51"><a href="discrete-choice-model.html#cb22-51" aria-hidden="true" tabindex="-1"></a>choice_df <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
-<span id="cb22-52"><a href="discrete-choice-model.html#cb22-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-53"><a href="discrete-choice-model.html#cb22-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_availability</span>(N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-54"><a href="discrete-choice-model.html#cb22-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-55"><a href="discrete-choice-model.html#cb22-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-56"><a href="discrete-choice-model.html#cb22-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span> </span>
-<span id="cb22-57"><a href="discrete-choice-model.html#cb22-57" aria-hidden="true" tabindex="-1"></a>           beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
-<span id="cb22-58"><a href="discrete-choice-model.html#cb22-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">e =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>()),</span>
-<span id="cb22-59"><a href="discrete-choice-model.html#cb22-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">u =</span> v <span class="sc">+</span> e</span>
-<span id="cb22-60"><a href="discrete-choice-model.html#cb22-60" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-61"><a href="discrete-choice-model.html#cb22-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative]) <span class="sc">%&gt;%</span></span>
-<span id="cb22-62"><a href="discrete-choice-model.html#cb22-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>avail) <span class="sc">%&gt;%</span></span>
-<span id="cb22-63"><a href="discrete-choice-model.html#cb22-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb22-64"><a href="discrete-choice-model.html#cb22-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-65"><a href="discrete-choice-model.html#cb22-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="discrete-choice-model.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb21-2"><a href="discrete-choice-model.html#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="discrete-choice-model.html#cb21-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb21-4"><a href="discrete-choice-model.html#cb21-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span>)</span>
+<span id="cb21-5"><a href="discrete-choice-model.html#cb21-5" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
+<span id="cb21-6"><a href="discrete-choice-model.html#cb21-6" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>)</span>
+<span id="cb21-7"><a href="discrete-choice-model.html#cb21-7" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
+<span id="cb21-8"><a href="discrete-choice-model.html#cb21-8" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb21-9"><a href="discrete-choice-model.html#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="discrete-choice-model.html#cb21-10" aria-hidden="true" tabindex="-1"></a>generate_price <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
+<span id="cb21-11"><a href="discrete-choice-model.html#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb21-12"><a href="discrete-choice-model.html#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
+<span id="cb21-13"><a href="discrete-choice-model.html#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">price1 =</span> <span class="fu">runif</span>(N, <span class="dv">5000</span>, <span class="dv">7000</span>),</span>
+<span id="cb21-14"><a href="discrete-choice-model.html#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">price2 =</span> <span class="fu">runif</span>(N, <span class="dv">5000</span>, price1),</span>
+<span id="cb21-15"><a href="discrete-choice-model.html#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">price3 =</span> price1 <span class="sc">+</span> <span class="fu">runif</span>(N, <span class="dv">2000</span>, <span class="dv">4000</span>),</span>
+<span id="cb21-16"><a href="discrete-choice-model.html#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">price4 =</span> price2 <span class="sc">+</span> price3 <span class="sc">-</span> price1 <span class="sc">+</span> <span class="fu">runif</span>(N, <span class="sc">-</span><span class="dv">500</span>, <span class="dv">0</span>)</span>
+<span id="cb21-17"><a href="discrete-choice-model.html#cb21-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-18"><a href="discrete-choice-model.html#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb21-19"><a href="discrete-choice-model.html#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols =</span> price1<span class="sc">:</span>price4, </span>
+<span id="cb21-20"><a href="discrete-choice-model.html#cb21-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to =</span> <span class="st">&quot;alternative&quot;</span>, </span>
+<span id="cb21-21"><a href="discrete-choice-model.html#cb21-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_prefix =</span> <span class="st">&quot;price&quot;</span>,</span>
+<span id="cb21-22"><a href="discrete-choice-model.html#cb21-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">alternative =</span> as.integer),</span>
+<span id="cb21-23"><a href="discrete-choice-model.html#cb21-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">&quot;price&quot;</span></span>
+<span id="cb21-24"><a href="discrete-choice-model.html#cb21-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-25"><a href="discrete-choice-model.html#cb21-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-26"><a href="discrete-choice-model.html#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="discrete-choice-model.html#cb21-27" aria-hidden="true" tabindex="-1"></a>generate_age <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
+<span id="cb21-28"><a href="discrete-choice-model.html#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb21-29"><a href="discrete-choice-model.html#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
+<span id="cb21-30"><a href="discrete-choice-model.html#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">runif</span>(N, <span class="dv">5</span>, <span class="dv">95</span>)</span>
+<span id="cb21-31"><a href="discrete-choice-model.html#cb21-31" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-32"><a href="discrete-choice-model.html#cb21-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-33"><a href="discrete-choice-model.html#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-34"><a href="discrete-choice-model.html#cb21-34" aria-hidden="true" tabindex="-1"></a>generate_availability <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
+<span id="cb21-35"><a href="discrete-choice-model.html#cb21-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb21-36"><a href="discrete-choice-model.html#cb21-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">i =</span> <span class="fu">seq_len</span>(N),</span>
+<span id="cb21-37"><a href="discrete-choice-model.html#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail1 =</span> <span class="dv">1</span>,</span>
+<span id="cb21-38"><a href="discrete-choice-model.html#cb21-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail2 =</span> <span class="dv">1</span>,</span>
+<span id="cb21-39"><a href="discrete-choice-model.html#cb21-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail3 =</span> avail1 <span class="sc">*</span> <span class="fu">rbern</span>(N, <span class="fl">0.8</span>),</span>
+<span id="cb21-40"><a href="discrete-choice-model.html#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">avail4 =</span> avail2 <span class="sc">*</span> <span class="fu">rbern</span>(N, <span class="fl">0.8</span>)</span>
+<span id="cb21-41"><a href="discrete-choice-model.html#cb21-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-42"><a href="discrete-choice-model.html#cb21-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb21-43"><a href="discrete-choice-model.html#cb21-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols =</span> avail1<span class="sc">:</span>avail4, </span>
+<span id="cb21-44"><a href="discrete-choice-model.html#cb21-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to =</span> <span class="st">&quot;alternative&quot;</span>, </span>
+<span id="cb21-45"><a href="discrete-choice-model.html#cb21-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_prefix =</span> <span class="st">&quot;avail&quot;</span>,</span>
+<span id="cb21-46"><a href="discrete-choice-model.html#cb21-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">alternative =</span> as.integer),</span>
+<span id="cb21-47"><a href="discrete-choice-model.html#cb21-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">&quot;avail&quot;</span></span>
+<span id="cb21-48"><a href="discrete-choice-model.html#cb21-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-49"><a href="discrete-choice-model.html#cb21-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-50"><a href="discrete-choice-model.html#cb21-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-51"><a href="discrete-choice-model.html#cb21-51" aria-hidden="true" tabindex="-1"></a>choice_df <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
+<span id="cb21-52"><a href="discrete-choice-model.html#cb21-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-53"><a href="discrete-choice-model.html#cb21-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_availability</span>(N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-54"><a href="discrete-choice-model.html#cb21-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-55"><a href="discrete-choice-model.html#cb21-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-56"><a href="discrete-choice-model.html#cb21-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span> </span>
+<span id="cb21-57"><a href="discrete-choice-model.html#cb21-57" aria-hidden="true" tabindex="-1"></a>           beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
+<span id="cb21-58"><a href="discrete-choice-model.html#cb21-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">e =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>()),</span>
+<span id="cb21-59"><a href="discrete-choice-model.html#cb21-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">u =</span> v <span class="sc">+</span> e</span>
+<span id="cb21-60"><a href="discrete-choice-model.html#cb21-60" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-61"><a href="discrete-choice-model.html#cb21-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative]) <span class="sc">%&gt;%</span></span>
+<span id="cb21-62"><a href="discrete-choice-model.html#cb21-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>avail) <span class="sc">%&gt;%</span></span>
+<span id="cb21-63"><a href="discrete-choice-model.html#cb21-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb21-64"><a href="discrete-choice-model.html#cb21-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-65"><a href="discrete-choice-model.html#cb21-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -618,14 +619,14 @@ a_{i4} &amp;\sim&amp; Bernoulli(0.8)
 <div id="모델-추정" class="section level4" number="2.3.4.2">
 <h4><span class="header-section-number">2.3.4.2</span> 모델 추정</h4>
 <p>R 패키지 <code>{mlogit}</code>의 함수 <code>mlogit()</code>을 이용하여 multinomial logit model을 추정할 수 있다.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="discrete-choice-model.html#cb23-1" aria-hidden="true" tabindex="-1"></a>fit_mnl <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> choice_df, </span>
-<span id="cb23-2"><a href="discrete-choice-model.html#cb23-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="discrete-choice-model.html#cb24-1" aria-hidden="true" tabindex="-1"></a>estimate_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb24-2"><a href="discrete-choice-model.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_mnl<span class="sc">$</span>coefficients),</span>
-<span id="cb24-3"><a href="discrete-choice-model.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_mnl),</span>
-<span id="cb24-4"><a href="discrete-choice-model.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_mnl<span class="sc">$</span>hessian))),</span>
-<span id="cb24-5"><a href="discrete-choice-model.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb24-6"><a href="discrete-choice-model.html#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="discrete-choice-model.html#cb22-1" aria-hidden="true" tabindex="-1"></a>fit_mnl <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> choice_df, </span>
+<span id="cb22-2"><a href="discrete-choice-model.html#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="discrete-choice-model.html#cb23-1" aria-hidden="true" tabindex="-1"></a>estimate_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb23-2"><a href="discrete-choice-model.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_mnl<span class="sc">$</span>coefficients),</span>
+<span id="cb23-3"><a href="discrete-choice-model.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_mnl),</span>
+<span id="cb23-4"><a href="discrete-choice-model.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_mnl<span class="sc">$</span>hessian))),</span>
+<span id="cb23-5"><a href="discrete-choice-model.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb23-6"><a href="discrete-choice-model.html#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -686,19 +687,19 @@ a_{i4} &amp;\sim&amp; Bernoulli(0.8)
 <div id="확률-추정" class="section level4" number="2.3.4.3">
 <h4><span class="header-section-number">2.3.4.3</span> 확률 추정</h4>
 <p>추정된 모형에 기반하여, 다음과 같은 메뉴판이 주어졌을 때 손님의 선택을 예측해보자.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="discrete-choice-model.html#cb25-1" aria-hidden="true" tabindex="-1"></a>alpha_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>, <span class="st">&quot;(Intercept):3&quot;</span>, <span class="st">&quot;(Intercept):4&quot;</span>)])</span>
-<span id="cb25-2"><a href="discrete-choice-model.html#cb25-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
-<span id="cb25-3"><a href="discrete-choice-model.html#cb25-3" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>)])</span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="discrete-choice-model.html#cb26-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb26-2"><a href="discrete-choice-model.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
-<span id="cb26-3"><a href="discrete-choice-model.html#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">7000</span>,</span>
-<span id="cb26-4"><a href="discrete-choice-model.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6000</span>,</span>
-<span id="cb26-5"><a href="discrete-choice-model.html#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">10000</span>,</span>
-<span id="cb26-6"><a href="discrete-choice-model.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">9000</span></span>
-<span id="cb26-7"><a href="discrete-choice-model.html#cb26-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb26-8"><a href="discrete-choice-model.html#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-9"><a href="discrete-choice-model.html#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
-<span id="cb26-10"><a href="discrete-choice-model.html#cb26-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="discrete-choice-model.html#cb24-1" aria-hidden="true" tabindex="-1"></a>alpha_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>, <span class="st">&quot;(Intercept):3&quot;</span>, <span class="st">&quot;(Intercept):4&quot;</span>)])</span>
+<span id="cb24-2"><a href="discrete-choice-model.html#cb24-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
+<span id="cb24-3"><a href="discrete-choice-model.html#cb24-3" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="discrete-choice-model.html#cb25-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb25-2"><a href="discrete-choice-model.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
+<span id="cb25-3"><a href="discrete-choice-model.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">7000</span>,</span>
+<span id="cb25-4"><a href="discrete-choice-model.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6000</span>,</span>
+<span id="cb25-5"><a href="discrete-choice-model.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">10000</span>,</span>
+<span id="cb25-6"><a href="discrete-choice-model.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">9000</span></span>
+<span id="cb25-7"><a href="discrete-choice-model.html#cb25-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="discrete-choice-model.html#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-9"><a href="discrete-choice-model.html#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
+<span id="cb25-10"><a href="discrete-choice-model.html#cb25-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -731,53 +732,53 @@ a_{i4} &amp;\sim&amp; Bernoulli(0.8)
 </tbody>
 </table>
 <p>이 때, 손님의 나이가 15세인 경우의 선택확률 예측은 아래와 같다.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="discrete-choice-model.html#cb27-1" aria-hidden="true" tabindex="-1"></a>pred_df1 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="discrete-choice-model.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="discrete-choice-model.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb27-4"><a href="discrete-choice-model.html#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
-<span id="cb27-5"><a href="discrete-choice-model.html#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
-<span id="cb27-6"><a href="discrete-choice-model.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="discrete-choice-model.html#cb26-1" aria-hidden="true" tabindex="-1"></a>pred_df1 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="discrete-choice-model.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="discrete-choice-model.html#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-4"><a href="discrete-choice-model.html#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
+<span id="cb26-5"><a href="discrete-choice-model.html#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
+<span id="cb26-6"><a href="discrete-choice-model.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 
 <div class="note">
 <strong>NOTE</strong>: 확률을 계산하는 식을 <code>p = exp(v) / sum(exp(v))</code> 대신 <code>p = exp(v - max(v)) / sum(exp(v - max(v)))</code>로 구현하였다. 두 계산방법은 이론적으로 동일한 확률값을 나타낸다. 컴퓨팅 과정에서 <code>v</code>값이 매우 크거나 매우 작을 경우, <code>exp(v)</code>값이 <code>Inf</code> 혹은 <code>0</code>으로 계산되어 확률값이 적절하게 계산되지 않을 수 있기 때문에, 그러한 가능성을 줄이기 위해서 <code>exp(v)</code> 대신 <code>exp(v - max(v))</code>을 사용하였다.
 </div>
 <p>반면, 손님의 나이가 45세인 경우의 선택확률 예측은 아래와 같다.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="discrete-choice-model.html#cb28-1" aria-hidden="true" tabindex="-1"></a>pred_df2 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
-<span id="cb28-2"><a href="discrete-choice-model.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb28-3"><a href="discrete-choice-model.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb28-4"><a href="discrete-choice-model.html#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
-<span id="cb28-5"><a href="discrete-choice-model.html#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
-<span id="cb28-6"><a href="discrete-choice-model.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="discrete-choice-model.html#cb27-1" aria-hidden="true" tabindex="-1"></a>pred_df2 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="discrete-choice-model.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="discrete-choice-model.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb27-4"><a href="discrete-choice-model.html#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
+<span id="cb27-5"><a href="discrete-choice-model.html#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
+<span id="cb27-6"><a href="discrete-choice-model.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>위 손님의 나이가 45세인 경우, 만약 삼선짜장이 메뉴에서 제외된다면, 선택확률은 아래와 같이 달라진다.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="discrete-choice-model.html#cb29-1" aria-hidden="true" tabindex="-1"></a>pred_df3 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="discrete-choice-model.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-3"><a href="discrete-choice-model.html#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-4"><a href="discrete-choice-model.html#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb29-5"><a href="discrete-choice-model.html#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
-<span id="cb29-6"><a href="discrete-choice-model.html#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
-<span id="cb29-7"><a href="discrete-choice-model.html#cb29-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="discrete-choice-model.html#cb28-1" aria-hidden="true" tabindex="-1"></a>pred_df3 <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="discrete-choice-model.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="discrete-choice-model.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="discrete-choice-model.html#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb28-5"><a href="discrete-choice-model.html#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
+<span id="cb28-6"><a href="discrete-choice-model.html#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
+<span id="cb28-7"><a href="discrete-choice-model.html#cb28-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>위에서 각 메뉴의 선택 확률은 기존 확률에 비례하여 증가한다. 따라서, 위 삼선짜장이 제외된 메뉴에서의 선택 확률의 예측은, 아래와 같이 삼선짜장이 포함된 메뉴에서 손님이 각 메뉴를 선택할 확률 예측값으로부터 산출할 수 있다.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="discrete-choice-model.html#cb30-1" aria-hidden="true" tabindex="-1"></a>pred_df4 <span class="ot">&lt;-</span> pred_df2 <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="discrete-choice-model.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-3"><a href="discrete-choice-model.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p =</span> p <span class="sc">/</span> <span class="fu">sum</span>(p))</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="discrete-choice-model.html#cb29-1" aria-hidden="true" tabindex="-1"></a>pred_df4 <span class="ot">&lt;-</span> pred_df2 <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="discrete-choice-model.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="discrete-choice-model.html#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p =</span> p <span class="sc">/</span> <span class="fu">sum</span>(p))</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="주어진-대안들을-선택하지-않을-확률" class="section level4" number="2.3.4.4">
 <h4><span class="header-section-number">2.3.4.4</span> 주어진 대안들을 선택하지 않을 확률</h4>
 <p>위 주어진 메뉴판에서 각 메뉴의 가격이 모두 3만원씩 올랐다고 가정해보자.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="discrete-choice-model.html#cb31-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation_2 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb31-2"><a href="discrete-choice-model.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
-<span id="cb31-3"><a href="discrete-choice-model.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">37000</span>,</span>
-<span id="cb31-4"><a href="discrete-choice-model.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">36000</span>,</span>
-<span id="cb31-5"><a href="discrete-choice-model.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">40000</span>,</span>
-<span id="cb31-6"><a href="discrete-choice-model.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">39000</span></span>
-<span id="cb31-7"><a href="discrete-choice-model.html#cb31-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-8"><a href="discrete-choice-model.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb31-9"><a href="discrete-choice-model.html#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
-<span id="cb31-10"><a href="discrete-choice-model.html#cb31-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="discrete-choice-model.html#cb30-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation_2 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb30-2"><a href="discrete-choice-model.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
+<span id="cb30-3"><a href="discrete-choice-model.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">37000</span>,</span>
+<span id="cb30-4"><a href="discrete-choice-model.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">36000</span>,</span>
+<span id="cb30-5"><a href="discrete-choice-model.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">40000</span>,</span>
+<span id="cb30-6"><a href="discrete-choice-model.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">39000</span></span>
+<span id="cb30-7"><a href="discrete-choice-model.html#cb30-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-8"><a href="discrete-choice-model.html#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb30-9"><a href="discrete-choice-model.html#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
+<span id="cb30-10"><a href="discrete-choice-model.html#cb30-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -809,12 +810,12 @@ a_{i4} &amp;\sim&amp; Bernoulli(0.8)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="discrete-choice-model.html#cb32-1" aria-hidden="true" tabindex="-1"></a>pred_df5 <span class="ot">&lt;-</span> new_choice_situation_2 <span class="sc">%&gt;%</span></span>
-<span id="cb32-2"><a href="discrete-choice-model.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="discrete-choice-model.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb32-4"><a href="discrete-choice-model.html#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
-<span id="cb32-5"><a href="discrete-choice-model.html#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
-<span id="cb32-6"><a href="discrete-choice-model.html#cb32-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="discrete-choice-model.html#cb31-1" aria-hidden="true" tabindex="-1"></a>pred_df5 <span class="ot">&lt;-</span> new_choice_situation_2 <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="discrete-choice-model.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="discrete-choice-model.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-4"><a href="discrete-choice-model.html#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age,</span>
+<span id="cb31-5"><a href="discrete-choice-model.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
+<span id="cb31-6"><a href="discrete-choice-model.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>위 결과와 같이, 각 메뉴를 선택할 확률은 모든 메뉴의 가격을 3만원씩 올리기 이전과 동일하다. 이는 utility가 가격에 따라 linear하게 증가하여, 두 메뉴의 가격의 차이가 변하지 않을 때는 두 메뉴 간의 효용성의 차이 또한 변하지 않기 때문이다.</p>
 <p><span class="math display">\[
@@ -836,42 +837,42 @@ a_{i5} &amp;=&amp; 1
 <li>어떠한 음식도 선택하지 않을 권리는 항상 손님에게 주어진다 (<span class="math inline">\(a_{i5} = 1\)</span>).</li>
 </ul>
 <p>위의 데이터 모델을 추가하여 학습데이터를 생성하고 선택 모형을 추정해보자.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="discrete-choice-model.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">22</span>)</span>
-<span id="cb33-2"><a href="discrete-choice-model.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="discrete-choice-model.html#cb33-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb33-4"><a href="discrete-choice-model.html#cb33-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span>, <span class="st">&quot;안 먹어&quot;</span> <span class="ot">=</span> <span class="dv">5</span>)</span>
-<span id="cb33-5"><a href="discrete-choice-model.html#cb33-5" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
-<span id="cb33-6"><a href="discrete-choice-model.html#cb33-6" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">10</span>)</span>
-<span id="cb33-7"><a href="discrete-choice-model.html#cb33-7" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
-<span id="cb33-8"><a href="discrete-choice-model.html#cb33-8" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>)</span>
-<span id="cb33-9"><a href="discrete-choice-model.html#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-10"><a href="discrete-choice-model.html#cb33-10" aria-hidden="true" tabindex="-1"></a>choice_df_2 <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
-<span id="cb33-11"><a href="discrete-choice-model.html#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(i, <span class="at">alternative =</span> <span class="fu">c</span>(1L<span class="sc">:</span>5L), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">price =</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb33-12"><a href="discrete-choice-model.html#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb33-13"><a href="discrete-choice-model.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
-<span id="cb33-14"><a href="discrete-choice-model.html#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">generate_availability</span>(N) <span class="sc">%&gt;%</span> <span class="fu">complete</span>(i, <span class="at">alternative =</span> <span class="fu">c</span>(1L<span class="sc">:</span>5L), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">avail =</span> <span class="dv">1</span>)),</span>
-<span id="cb33-15"><a href="discrete-choice-model.html#cb33-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)</span>
-<span id="cb33-16"><a href="discrete-choice-model.html#cb33-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb33-17"><a href="discrete-choice-model.html#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb33-18"><a href="discrete-choice-model.html#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb33-19"><a href="discrete-choice-model.html#cb33-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span></span>
-<span id="cb33-20"><a href="discrete-choice-model.html#cb33-20" aria-hidden="true" tabindex="-1"></a>      beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
-<span id="cb33-21"><a href="discrete-choice-model.html#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">e =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>()),</span>
-<span id="cb33-22"><a href="discrete-choice-model.html#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">u =</span> v <span class="sc">+</span> e</span>
-<span id="cb33-23"><a href="discrete-choice-model.html#cb33-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb33-24"><a href="discrete-choice-model.html#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative]) <span class="sc">%&gt;%</span></span>
-<span id="cb33-25"><a href="discrete-choice-model.html#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>avail) <span class="sc">%&gt;%</span></span>
-<span id="cb33-26"><a href="discrete-choice-model.html#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb33-27"><a href="discrete-choice-model.html#cb33-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
-<span id="cb33-28"><a href="discrete-choice-model.html#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="discrete-choice-model.html#cb34-1" aria-hidden="true" tabindex="-1"></a>fit_mnl_2 <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> choice_df_2, </span>
-<span id="cb34-2"><a href="discrete-choice-model.html#cb34-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="discrete-choice-model.html#cb35-1" aria-hidden="true" tabindex="-1"></a>estimate_df_2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb35-2"><a href="discrete-choice-model.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_mnl_2<span class="sc">$</span>coefficients),</span>
-<span id="cb35-3"><a href="discrete-choice-model.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_mnl_2),</span>
-<span id="cb35-4"><a href="discrete-choice-model.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_mnl_2<span class="sc">$</span>hessian))),</span>
-<span id="cb35-5"><a href="discrete-choice-model.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb35-6"><a href="discrete-choice-model.html#cb35-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="discrete-choice-model.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">22</span>)</span>
+<span id="cb32-2"><a href="discrete-choice-model.html#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="discrete-choice-model.html#cb32-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb32-4"><a href="discrete-choice-model.html#cb32-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span>, <span class="st">&quot;안 먹어&quot;</span> <span class="ot">=</span> <span class="dv">5</span>)</span>
+<span id="cb32-5"><a href="discrete-choice-model.html#cb32-5" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
+<span id="cb32-6"><a href="discrete-choice-model.html#cb32-6" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">10</span>)</span>
+<span id="cb32-7"><a href="discrete-choice-model.html#cb32-7" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
+<span id="cb32-8"><a href="discrete-choice-model.html#cb32-8" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>)</span>
+<span id="cb32-9"><a href="discrete-choice-model.html#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="discrete-choice-model.html#cb32-10" aria-hidden="true" tabindex="-1"></a>choice_df_2 <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
+<span id="cb32-11"><a href="discrete-choice-model.html#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(i, <span class="at">alternative =</span> <span class="fu">c</span>(1L<span class="sc">:</span>5L), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">price =</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-12"><a href="discrete-choice-model.html#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-13"><a href="discrete-choice-model.html#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb32-14"><a href="discrete-choice-model.html#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">generate_availability</span>(N) <span class="sc">%&gt;%</span> <span class="fu">complete</span>(i, <span class="at">alternative =</span> <span class="fu">c</span>(1L<span class="sc">:</span>5L), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">avail =</span> <span class="dv">1</span>)),</span>
+<span id="cb32-15"><a href="discrete-choice-model.html#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)</span>
+<span id="cb32-16"><a href="discrete-choice-model.html#cb32-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb32-17"><a href="discrete-choice-model.html#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-18"><a href="discrete-choice-model.html#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb32-19"><a href="discrete-choice-model.html#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span></span>
+<span id="cb32-20"><a href="discrete-choice-model.html#cb32-20" aria-hidden="true" tabindex="-1"></a>      beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
+<span id="cb32-21"><a href="discrete-choice-model.html#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">e =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>()),</span>
+<span id="cb32-22"><a href="discrete-choice-model.html#cb32-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">u =</span> v <span class="sc">+</span> e</span>
+<span id="cb32-23"><a href="discrete-choice-model.html#cb32-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb32-24"><a href="discrete-choice-model.html#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative]) <span class="sc">%&gt;%</span></span>
+<span id="cb32-25"><a href="discrete-choice-model.html#cb32-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>avail) <span class="sc">%&gt;%</span></span>
+<span id="cb32-26"><a href="discrete-choice-model.html#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb32-27"><a href="discrete-choice-model.html#cb32-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-28"><a href="discrete-choice-model.html#cb32-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="discrete-choice-model.html#cb33-1" aria-hidden="true" tabindex="-1"></a>fit_mnl_2 <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> choice_df_2, </span>
+<span id="cb33-2"><a href="discrete-choice-model.html#cb33-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="discrete-choice-model.html#cb34-1" aria-hidden="true" tabindex="-1"></a>estimate_df_2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb34-2"><a href="discrete-choice-model.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_mnl_2<span class="sc">$</span>coefficients),</span>
+<span id="cb34-3"><a href="discrete-choice-model.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_mnl_2),</span>
+<span id="cb34-4"><a href="discrete-choice-model.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_mnl_2<span class="sc">$</span>hessian))),</span>
+<span id="cb34-5"><a href="discrete-choice-model.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb34-6"><a href="discrete-choice-model.html#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -940,25 +941,25 @@ a_{i5} &amp;=&amp; 1
 </table>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>이제 추정된 모형을 토대로, 가격이 비싼 메뉴판이 주어졌을 때 손님의 선택 확률을 추정해보자.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="discrete-choice-model.html#cb36-1" aria-hidden="true" tabindex="-1"></a>alpha_hat_2 <span class="ot">&lt;-</span></span>
-<span id="cb36-2"><a href="discrete-choice-model.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>,</span>
-<span id="cb36-3"><a href="discrete-choice-model.html#cb36-3" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):3&quot;</span>,</span>
-<span id="cb36-4"><a href="discrete-choice-model.html#cb36-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):4&quot;</span>,</span>
-<span id="cb36-5"><a href="discrete-choice-model.html#cb36-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):5&quot;</span>)])</span>
-<span id="cb36-6"><a href="discrete-choice-model.html#cb36-6" aria-hidden="true" tabindex="-1"></a>beta_hat_2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
-<span id="cb36-7"><a href="discrete-choice-model.html#cb36-7" aria-hidden="true" tabindex="-1"></a>gamma_hat_2 <span class="ot">&lt;-</span></span>
-<span id="cb36-8"><a href="discrete-choice-model.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>, <span class="st">&quot;age:5&quot;</span>)])</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="discrete-choice-model.html#cb37-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation_3 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb37-2"><a href="discrete-choice-model.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
-<span id="cb37-3"><a href="discrete-choice-model.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">37000</span>,</span>
-<span id="cb37-4"><a href="discrete-choice-model.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">36000</span>,</span>
-<span id="cb37-5"><a href="discrete-choice-model.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">40000</span>,</span>
-<span id="cb37-6"><a href="discrete-choice-model.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">39000</span>,</span>
-<span id="cb37-7"><a href="discrete-choice-model.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;안 먹어&quot;</span>, <span class="dv">0</span></span>
-<span id="cb37-8"><a href="discrete-choice-model.html#cb37-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-9"><a href="discrete-choice-model.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-10"><a href="discrete-choice-model.html#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
-<span id="cb37-11"><a href="discrete-choice-model.html#cb37-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="discrete-choice-model.html#cb35-1" aria-hidden="true" tabindex="-1"></a>alpha_hat_2 <span class="ot">&lt;-</span></span>
+<span id="cb35-2"><a href="discrete-choice-model.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>,</span>
+<span id="cb35-3"><a href="discrete-choice-model.html#cb35-3" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):3&quot;</span>,</span>
+<span id="cb35-4"><a href="discrete-choice-model.html#cb35-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):4&quot;</span>,</span>
+<span id="cb35-5"><a href="discrete-choice-model.html#cb35-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;(Intercept):5&quot;</span>)])</span>
+<span id="cb35-6"><a href="discrete-choice-model.html#cb35-6" aria-hidden="true" tabindex="-1"></a>beta_hat_2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
+<span id="cb35-7"><a href="discrete-choice-model.html#cb35-7" aria-hidden="true" tabindex="-1"></a>gamma_hat_2 <span class="ot">&lt;-</span></span>
+<span id="cb35-8"><a href="discrete-choice-model.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_mnl_2)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>, <span class="st">&quot;age:5&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="discrete-choice-model.html#cb36-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation_3 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb36-2"><a href="discrete-choice-model.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
+<span id="cb36-3"><a href="discrete-choice-model.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">37000</span>,</span>
+<span id="cb36-4"><a href="discrete-choice-model.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">36000</span>,</span>
+<span id="cb36-5"><a href="discrete-choice-model.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">40000</span>,</span>
+<span id="cb36-6"><a href="discrete-choice-model.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">39000</span>,</span>
+<span id="cb36-7"><a href="discrete-choice-model.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;안 먹어&quot;</span>, <span class="dv">0</span></span>
+<span id="cb36-8"><a href="discrete-choice-model.html#cb36-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-9"><a href="discrete-choice-model.html#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-10"><a href="discrete-choice-model.html#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item]</span>
+<span id="cb36-11"><a href="discrete-choice-model.html#cb36-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -995,12 +996,12 @@ a_{i5} &amp;=&amp; 1
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="discrete-choice-model.html#cb38-1" aria-hidden="true" tabindex="-1"></a>pred_df6 <span class="ot">&lt;-</span> new_choice_situation_3 <span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="discrete-choice-model.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="discrete-choice-model.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb38-4"><a href="discrete-choice-model.html#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat_2[alternative] <span class="sc">+</span> beta_hat_2 <span class="sc">*</span> price <span class="sc">+</span> gamma_hat_2[alternative] <span class="sc">*</span> age,</span>
-<span id="cb38-5"><a href="discrete-choice-model.html#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
-<span id="cb38-6"><a href="discrete-choice-model.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="discrete-choice-model.html#cb37-1" aria-hidden="true" tabindex="-1"></a>pred_df6 <span class="ot">&lt;-</span> new_choice_situation_3 <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="discrete-choice-model.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="discrete-choice-model.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-4"><a href="discrete-choice-model.html#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat_2[alternative] <span class="sc">+</span> beta_hat_2 <span class="sc">*</span> price <span class="sc">+</span> gamma_hat_2[alternative] <span class="sc">*</span> age,</span>
+<span id="cb37-5"><a href="discrete-choice-model.html#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">-</span> <span class="fu">max</span>(v)))</span>
+<span id="cb37-6"><a href="discrete-choice-model.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>위 결과, 손님이 어떠한 음식도 주문하지 않고 음식점을 나설 확률이 100%에 근접하게 추정된다.</p>
 </div>
@@ -1112,56 +1113,56 @@ E\left[y_{ij} \, \left| \, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda
 <div class="note">
 <strong>TO DO</strong>: unobservale utility 데이터 모델 재검토 필요.
 </div>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="discrete-choice-model.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
-<span id="cb39-2"><a href="discrete-choice-model.html#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="discrete-choice-model.html#cb39-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb39-4"><a href="discrete-choice-model.html#cb39-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb39-5"><a href="discrete-choice-model.html#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb39-6"><a href="discrete-choice-model.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb39-7"><a href="discrete-choice-model.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb39-8"><a href="discrete-choice-model.html#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span></span>
-<span id="cb39-9"><a href="discrete-choice-model.html#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb39-10"><a href="discrete-choice-model.html#cb39-10" aria-hidden="true" tabindex="-1"></a>menu_nest <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb39-11"><a href="discrete-choice-model.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="st">&quot;짬뽕류&quot;</span>,</span>
-<span id="cb39-12"><a href="discrete-choice-model.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="st">&quot;짜장류&quot;</span>,</span>
-<span id="cb39-13"><a href="discrete-choice-model.html#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="st">&quot;짬뽕류&quot;</span>,</span>
-<span id="cb39-14"><a href="discrete-choice-model.html#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="st">&quot;짜장류&quot;</span></span>
-<span id="cb39-15"><a href="discrete-choice-model.html#cb39-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb39-16"><a href="discrete-choice-model.html#cb39-16" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
-<span id="cb39-17"><a href="discrete-choice-model.html#cb39-17" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>)</span>
-<span id="cb39-18"><a href="discrete-choice-model.html#cb39-18" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
-<span id="cb39-19"><a href="discrete-choice-model.html#cb39-19" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.1</span>)</span>
-<span id="cb39-20"><a href="discrete-choice-model.html#cb39-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-21"><a href="discrete-choice-model.html#cb39-21" aria-hidden="true" tabindex="-1"></a>nested_choice_df <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
-<span id="cb39-22"><a href="discrete-choice-model.html#cb39-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb39-23"><a href="discrete-choice-model.html#cb39-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_availability</span>(N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb39-24"><a href="discrete-choice-model.html#cb39-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb39-25"><a href="discrete-choice-model.html#cb39-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative],</span>
-<span id="cb39-26"><a href="discrete-choice-model.html#cb39-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">group =</span> menu_nest[menu_item]) <span class="sc">%&gt;%</span></span>
-<span id="cb39-27"><a href="discrete-choice-model.html#cb39-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span></span>
-<span id="cb39-28"><a href="discrete-choice-model.html#cb39-28" aria-hidden="true" tabindex="-1"></a>           beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
-<span id="cb39-29"><a href="discrete-choice-model.html#cb39-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_ijc =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>(), <span class="dv">0</span>, <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb39-30"><a href="discrete-choice-model.html#cb39-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i, group) <span class="sc">%&gt;%</span></span>
-<span id="cb39-31"><a href="discrete-choice-model.html#cb39-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">e_ic =</span> <span class="fu">rgumbel</span>(1L, <span class="dv">0</span>, <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb39-32"><a href="discrete-choice-model.html#cb39-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb39-33"><a href="discrete-choice-model.html#cb39-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">u =</span> v <span class="sc">+</span> e_ijc <span class="sc">+</span> e_ic) <span class="sc">%&gt;%</span></span>
-<span id="cb39-34"><a href="discrete-choice-model.html#cb39-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(avail, group)) <span class="sc">%&gt;%</span></span>
-<span id="cb39-35"><a href="discrete-choice-model.html#cb39-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb39-36"><a href="discrete-choice-model.html#cb39-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
-<span id="cb39-37"><a href="discrete-choice-model.html#cb39-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="discrete-choice-model.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb38-2"><a href="discrete-choice-model.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="discrete-choice-model.html#cb38-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb38-4"><a href="discrete-choice-model.html#cb38-4" aria-hidden="true" tabindex="-1"></a>menu <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb38-5"><a href="discrete-choice-model.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb38-6"><a href="discrete-choice-model.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb38-7"><a href="discrete-choice-model.html#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb38-8"><a href="discrete-choice-model.html#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb38-9"><a href="discrete-choice-model.html#cb38-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-10"><a href="discrete-choice-model.html#cb38-10" aria-hidden="true" tabindex="-1"></a>menu_nest <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb38-11"><a href="discrete-choice-model.html#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span> <span class="ot">=</span> <span class="st">&quot;짬뽕류&quot;</span>,</span>
+<span id="cb38-12"><a href="discrete-choice-model.html#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span> <span class="ot">=</span> <span class="st">&quot;짜장류&quot;</span>,</span>
+<span id="cb38-13"><a href="discrete-choice-model.html#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span> <span class="ot">=</span> <span class="st">&quot;짬뽕류&quot;</span>,</span>
+<span id="cb38-14"><a href="discrete-choice-model.html#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span> <span class="ot">=</span> <span class="st">&quot;짜장류&quot;</span></span>
+<span id="cb38-15"><a href="discrete-choice-model.html#cb38-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-16"><a href="discrete-choice-model.html#cb38-16" aria-hidden="true" tabindex="-1"></a>menu_name <span class="ot">&lt;-</span> <span class="fu">names</span>(menu)</span>
+<span id="cb38-17"><a href="discrete-choice-model.html#cb38-17" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>)</span>
+<span id="cb38-18"><a href="discrete-choice-model.html#cb38-18" aria-hidden="true" tabindex="-1"></a>beta_true <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.001</span></span>
+<span id="cb38-19"><a href="discrete-choice-model.html#cb38-19" aria-hidden="true" tabindex="-1"></a>gamma_true <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb38-20"><a href="discrete-choice-model.html#cb38-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-21"><a href="discrete-choice-model.html#cb38-21" aria-hidden="true" tabindex="-1"></a>nested_choice_df <span class="ot">&lt;-</span> <span class="fu">generate_price</span>(N) <span class="sc">%&gt;%</span></span>
+<span id="cb38-22"><a href="discrete-choice-model.html#cb38-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_age</span>(N), <span class="at">by =</span> <span class="st">&quot;i&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-23"><a href="discrete-choice-model.html#cb38-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">generate_availability</span>(N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;alternative&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-24"><a href="discrete-choice-model.html#cb38-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avail <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-25"><a href="discrete-choice-model.html#cb38-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">menu_item =</span> menu_name[alternative],</span>
+<span id="cb38-26"><a href="discrete-choice-model.html#cb38-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">group =</span> menu_nest[menu_item]) <span class="sc">%&gt;%</span></span>
+<span id="cb38-27"><a href="discrete-choice-model.html#cb38-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">v =</span> alpha_true[alternative] <span class="sc">+</span></span>
+<span id="cb38-28"><a href="discrete-choice-model.html#cb38-28" aria-hidden="true" tabindex="-1"></a>           beta_true <span class="sc">*</span> price <span class="sc">+</span> gamma_true[alternative] <span class="sc">*</span> age,</span>
+<span id="cb38-29"><a href="discrete-choice-model.html#cb38-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_ijc =</span> <span class="fu">rgumbel</span>(<span class="fu">n</span>(), <span class="dv">0</span>, <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb38-30"><a href="discrete-choice-model.html#cb38-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i, group) <span class="sc">%&gt;%</span></span>
+<span id="cb38-31"><a href="discrete-choice-model.html#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">e_ic =</span> <span class="fu">rgumbel</span>(1L, <span class="dv">0</span>, <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb38-32"><a href="discrete-choice-model.html#cb38-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb38-33"><a href="discrete-choice-model.html#cb38-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">u =</span> v <span class="sc">+</span> e_ijc <span class="sc">+</span> e_ic) <span class="sc">%&gt;%</span></span>
+<span id="cb38-34"><a href="discrete-choice-model.html#cb38-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(avail, group)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-35"><a href="discrete-choice-model.html#cb38-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb38-36"><a href="discrete-choice-model.html#cb38-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">if_else</span>(u <span class="sc">==</span> <span class="fu">max</span>(u), 1L, 0L)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-37"><a href="discrete-choice-model.html#cb38-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
 </div>
 <div id="모델-추정-1" class="section level4" number="2.4.5.2">
 <h4><span class="header-section-number">2.4.5.2</span> 모델 추정</h4>
 <p>Nested logit model 역시 R 패키지 <code>{mlogit}</code>의 함수 <code>mlogit()</code>을 이용하여 추정할 수 있다. 이 때, <code>nests</code> 파라미터값을 통해 <code>alt.var</code> 파라미터에 지정된 컬럼의 값을 묶는다.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="discrete-choice-model.html#cb40-1" aria-hidden="true" tabindex="-1"></a>fit_nest <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> nested_choice_df, </span>
-<span id="cb40-2"><a href="discrete-choice-model.html#cb40-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>,</span>
-<span id="cb40-3"><a href="discrete-choice-model.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nests =</span> <span class="fu">list</span>(<span class="st">&quot;짬뽕류&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="st">&quot;짜장류&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)))</span></code></pre></div>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="discrete-choice-model.html#cb41-1" aria-hidden="true" tabindex="-1"></a>estimate_nest_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb41-2"><a href="discrete-choice-model.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_nest<span class="sc">$</span>coefficients),</span>
-<span id="cb41-3"><a href="discrete-choice-model.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_nest),</span>
-<span id="cb41-4"><a href="discrete-choice-model.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_nest<span class="sc">$</span>hessian))),</span>
-<span id="cb41-5"><a href="discrete-choice-model.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>], <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))</span>
-<span id="cb41-6"><a href="discrete-choice-model.html#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="discrete-choice-model.html#cb39-1" aria-hidden="true" tabindex="-1"></a>fit_nest <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(choice <span class="sc">~</span> price <span class="sc">|</span> age, <span class="at">data =</span> nested_choice_df, </span>
+<span id="cb39-2"><a href="discrete-choice-model.html#cb39-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alt.var =</span> <span class="st">&quot;alternative&quot;</span>, <span class="at">chid.var =</span> <span class="st">&quot;i&quot;</span>,</span>
+<span id="cb39-3"><a href="discrete-choice-model.html#cb39-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nests =</span> <span class="fu">list</span>(<span class="st">&quot;짬뽕류&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="st">&quot;짜장류&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="discrete-choice-model.html#cb40-1" aria-hidden="true" tabindex="-1"></a>estimate_nest_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb40-2"><a href="discrete-choice-model.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">names</span>(fit_nest<span class="sc">$</span>coefficients),</span>
+<span id="cb40-3"><a href="discrete-choice-model.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">coef</span>(fit_nest),</span>
+<span id="cb40-4"><a href="discrete-choice-model.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">std.error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>fit_nest<span class="sc">$</span>hessian))),</span>
+<span id="cb40-5"><a href="discrete-choice-model.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">true =</span> <span class="fu">c</span>(alpha_true[<span class="sc">-</span><span class="dv">1</span>], beta_true, gamma_true[<span class="sc">-</span><span class="dv">1</span>], <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>))</span>
+<span id="cb40-6"><a href="discrete-choice-model.html#cb40-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1234,8 +1235,8 @@ E\left[y_{ij} \, \left| \, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda
 <strong>TO DO</strong>: TRUE 데이터 모델 재검토 필요.
 </div>
 <p>여기에서 사용된 데이터는 IIA 가정을 위배하므로, multinomial logit model은 nested logit model보다 데이터에 대한 설명력이 부족할 것이다. Log-likelihood ratio test를 이용하여 이를 확인하여 보자.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="discrete-choice-model.html#cb42-1" aria-hidden="true" tabindex="-1"></a>fit_mnl_wrong <span class="ot">&lt;-</span> fit_nest <span class="sc">%&gt;%</span> <span class="fu">update</span>(<span class="at">nests =</span> <span class="cn">NULL</span>)</span>
-<span id="cb42-2"><a href="discrete-choice-model.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(fit_nest, fit_mnl_wrong)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="discrete-choice-model.html#cb41-1" aria-hidden="true" tabindex="-1"></a>fit_mnl_wrong <span class="ot">&lt;-</span> fit_nest <span class="sc">%&gt;%</span> <span class="fu">update</span>(<span class="at">nests =</span> <span class="cn">NULL</span>)</span>
+<span id="cb41-2"><a href="discrete-choice-model.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(fit_nest, fit_mnl_wrong)</span></code></pre></div>
 <pre><code>## Likelihood ratio test
 ## 
 ## Model 1: choice ~ price | age
@@ -1250,21 +1251,21 @@ E\left[y_{ij} \, \left| \, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda
 <div id="확률-추정-1" class="section level4" number="2.4.5.3">
 <h4><span class="header-section-number">2.4.5.3</span> 확률 추정</h4>
 <p>추정된 모형에 기반하여, 다음과 같은 메뉴판이 주어졌을 때 손님의 선택을 예측해보자.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="discrete-choice-model.html#cb44-1" aria-hidden="true" tabindex="-1"></a>alpha_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>, <span class="st">&quot;(Intercept):3&quot;</span>, <span class="st">&quot;(Intercept):4&quot;</span>)])</span>
-<span id="cb44-2"><a href="discrete-choice-model.html#cb44-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
-<span id="cb44-3"><a href="discrete-choice-model.html#cb44-3" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>)])</span>
-<span id="cb44-4"><a href="discrete-choice-model.html#cb44-4" aria-hidden="true" tabindex="-1"></a>iv_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;iv:짬뽕류&quot;</span>, <span class="st">&quot;iv:짜장류&quot;</span>)] <span class="sc">%&gt;%</span> <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;짬뽕류&quot;</span>, <span class="st">&quot;짜장류&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="discrete-choice-model.html#cb45-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb45-2"><a href="discrete-choice-model.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
-<span id="cb45-3"><a href="discrete-choice-model.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">7000</span>,</span>
-<span id="cb45-4"><a href="discrete-choice-model.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6000</span>,</span>
-<span id="cb45-5"><a href="discrete-choice-model.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">10000</span>,</span>
-<span id="cb45-6"><a href="discrete-choice-model.html#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">9000</span></span>
-<span id="cb45-7"><a href="discrete-choice-model.html#cb45-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb45-8"><a href="discrete-choice-model.html#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb45-9"><a href="discrete-choice-model.html#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item],</span>
-<span id="cb45-10"><a href="discrete-choice-model.html#cb45-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> menu_nest[menu_item]</span>
-<span id="cb45-11"><a href="discrete-choice-model.html#cb45-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="discrete-choice-model.html#cb43-1" aria-hidden="true" tabindex="-1"></a>alpha_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;(Intercept):2&quot;</span>, <span class="st">&quot;(Intercept):3&quot;</span>, <span class="st">&quot;(Intercept):4&quot;</span>)])</span>
+<span id="cb43-2"><a href="discrete-choice-model.html#cb43-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;price&quot;</span>)]</span>
+<span id="cb43-3"><a href="discrete-choice-model.html#cb43-3" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;age:2&quot;</span>, <span class="st">&quot;age:3&quot;</span>, <span class="st">&quot;age:4&quot;</span>)])</span>
+<span id="cb43-4"><a href="discrete-choice-model.html#cb43-4" aria-hidden="true" tabindex="-1"></a>iv_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit_nest)[<span class="fu">c</span>(<span class="st">&quot;iv:짬뽕류&quot;</span>, <span class="st">&quot;iv:짜장류&quot;</span>)] <span class="sc">%&gt;%</span> <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;짬뽕류&quot;</span>, <span class="st">&quot;짜장류&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="discrete-choice-model.html#cb44-1" aria-hidden="true" tabindex="-1"></a>new_choice_situation <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb44-2"><a href="discrete-choice-model.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>menu_item, <span class="sc">~</span>price,</span>
+<span id="cb44-3"><a href="discrete-choice-model.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짬뽕&quot;</span>, <span class="dv">7000</span>,</span>
+<span id="cb44-4"><a href="discrete-choice-model.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;짜장면&quot;</span>, <span class="dv">6000</span>,</span>
+<span id="cb44-5"><a href="discrete-choice-model.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짬뽕&quot;</span>, <span class="dv">10000</span>,</span>
+<span id="cb44-6"><a href="discrete-choice-model.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;삼선짜장&quot;</span>, <span class="dv">9000</span></span>
+<span id="cb44-7"><a href="discrete-choice-model.html#cb44-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-8"><a href="discrete-choice-model.html#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb44-9"><a href="discrete-choice-model.html#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> menu[menu_item],</span>
+<span id="cb44-10"><a href="discrete-choice-model.html#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> menu_nest[menu_item]</span>
+<span id="cb44-11"><a href="discrete-choice-model.html#cb44-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1302,58 +1303,58 @@ E\left[y_{ij} \, \left| \, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda
 </tbody>
 </table>
 <p>반면, 손님의 나이가 45세인 경우의 선택확률 예측은 아래와 같다.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="discrete-choice-model.html#cb46-1" aria-hidden="true" tabindex="-1"></a>observable_utility <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
-<span id="cb46-2"><a href="discrete-choice-model.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-3"><a href="discrete-choice-model.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-4"><a href="discrete-choice-model.html#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
-<span id="cb46-5"><a href="discrete-choice-model.html#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age</span>
-<span id="cb46-6"><a href="discrete-choice-model.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-7"><a href="discrete-choice-model.html#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-8"><a href="discrete-choice-model.html#cb46-8" aria-hidden="true" tabindex="-1"></a>prob_within_nest <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
-<span id="cb46-9"><a href="discrete-choice-model.html#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb46-10"><a href="discrete-choice-model.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-11"><a href="discrete-choice-model.html#cb46-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_within_nest =</span> <span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda))</span>
-<span id="cb46-12"><a href="discrete-choice-model.html#cb46-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb46-13"><a href="discrete-choice-model.html#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb46-14"><a href="discrete-choice-model.html#cb46-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-15"><a href="discrete-choice-model.html#cb46-15" aria-hidden="true" tabindex="-1"></a>prob_nest <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
-<span id="cb46-16"><a href="discrete-choice-model.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb46-17"><a href="discrete-choice-model.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">v_nest =</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
-<span id="cb46-18"><a href="discrete-choice-model.html#cb46-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-19"><a href="discrete-choice-model.html#cb46-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
-<span id="cb46-20"><a href="discrete-choice-model.html#cb46-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_nest =</span> v_nest <span class="sc">^</span> lambda <span class="sc">/</span> <span class="fu">sum</span>(v_nest <span class="sc">^</span> lambda)</span>
-<span id="cb46-21"><a href="discrete-choice-model.html#cb46-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb46-22"><a href="discrete-choice-model.html#cb46-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lambda)</span>
-<span id="cb46-23"><a href="discrete-choice-model.html#cb46-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb46-24"><a href="discrete-choice-model.html#cb46-24" aria-hidden="true" tabindex="-1"></a>pred_df7 <span class="ot">&lt;-</span> prob_within_nest <span class="sc">%&gt;%</span></span>
-<span id="cb46-25"><a href="discrete-choice-model.html#cb46-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(prob_nest, <span class="at">by =</span> <span class="st">&quot;group&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-26"><a href="discrete-choice-model.html#cb46-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-27"><a href="discrete-choice-model.html#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_within_nest <span class="sc">*</span> p_nest</span>
-<span id="cb46-28"><a href="discrete-choice-model.html#cb46-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="discrete-choice-model.html#cb45-1" aria-hidden="true" tabindex="-1"></a>observable_utility <span class="ot">&lt;-</span> new_choice_situation <span class="sc">%&gt;%</span></span>
+<span id="cb45-2"><a href="discrete-choice-model.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">45</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="discrete-choice-model.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb45-4"><a href="discrete-choice-model.html#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
+<span id="cb45-5"><a href="discrete-choice-model.html#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">v =</span> alpha_hat[alternative] <span class="sc">+</span> beta_hat <span class="sc">*</span> price <span class="sc">+</span> gamma_hat[alternative] <span class="sc">*</span> age</span>
+<span id="cb45-6"><a href="discrete-choice-model.html#cb45-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb45-7"><a href="discrete-choice-model.html#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="discrete-choice-model.html#cb45-8" aria-hidden="true" tabindex="-1"></a>prob_within_nest <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
+<span id="cb45-9"><a href="discrete-choice-model.html#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb45-10"><a href="discrete-choice-model.html#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb45-11"><a href="discrete-choice-model.html#cb45-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_within_nest =</span> <span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda))</span>
+<span id="cb45-12"><a href="discrete-choice-model.html#cb45-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb45-13"><a href="discrete-choice-model.html#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb45-14"><a href="discrete-choice-model.html#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="discrete-choice-model.html#cb45-15" aria-hidden="true" tabindex="-1"></a>prob_nest <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
+<span id="cb45-16"><a href="discrete-choice-model.html#cb45-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb45-17"><a href="discrete-choice-model.html#cb45-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">v_nest =</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
+<span id="cb45-18"><a href="discrete-choice-model.html#cb45-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb45-19"><a href="discrete-choice-model.html#cb45-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
+<span id="cb45-20"><a href="discrete-choice-model.html#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_nest =</span> v_nest <span class="sc">^</span> lambda <span class="sc">/</span> <span class="fu">sum</span>(v_nest <span class="sc">^</span> lambda)</span>
+<span id="cb45-21"><a href="discrete-choice-model.html#cb45-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb45-22"><a href="discrete-choice-model.html#cb45-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lambda)</span>
+<span id="cb45-23"><a href="discrete-choice-model.html#cb45-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb45-24"><a href="discrete-choice-model.html#cb45-24" aria-hidden="true" tabindex="-1"></a>pred_df7 <span class="ot">&lt;-</span> prob_within_nest <span class="sc">%&gt;%</span></span>
+<span id="cb45-25"><a href="discrete-choice-model.html#cb45-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(prob_nest, <span class="at">by =</span> <span class="st">&quot;group&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-26"><a href="discrete-choice-model.html#cb45-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb45-27"><a href="discrete-choice-model.html#cb45-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_within_nest <span class="sc">*</span> p_nest</span>
+<span id="cb45-28"><a href="discrete-choice-model.html#cb45-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>만약 삼선짜장이 메뉴에서 제외된다면 않다면, 선택확률은 아래와 같이 달라진다.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="discrete-choice-model.html#cb47-1" aria-hidden="true" tabindex="-1"></a>observable_utility1 <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
-<span id="cb47-2"><a href="discrete-choice-model.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>)</span>
-<span id="cb47-3"><a href="discrete-choice-model.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="discrete-choice-model.html#cb47-4" aria-hidden="true" tabindex="-1"></a>prob_within_nest1 <span class="ot">&lt;-</span> observable_utility1 <span class="sc">%&gt;%</span></span>
-<span id="cb47-5"><a href="discrete-choice-model.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb47-6"><a href="discrete-choice-model.html#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_within_nest =</span> <span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
-<span id="cb47-7"><a href="discrete-choice-model.html#cb47-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb47-8"><a href="discrete-choice-model.html#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-9"><a href="discrete-choice-model.html#cb47-9" aria-hidden="true" tabindex="-1"></a>prob_nest1 <span class="ot">&lt;-</span> observable_utility1 <span class="sc">%&gt;%</span></span>
-<span id="cb47-10"><a href="discrete-choice-model.html#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb47-11"><a href="discrete-choice-model.html#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">v_nest =</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
-<span id="cb47-12"><a href="discrete-choice-model.html#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb47-13"><a href="discrete-choice-model.html#cb47-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
-<span id="cb47-14"><a href="discrete-choice-model.html#cb47-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_nest =</span> v_nest <span class="sc">^</span> lambda <span class="sc">/</span> <span class="fu">sum</span>(v_nest <span class="sc">^</span> lambda)</span>
-<span id="cb47-15"><a href="discrete-choice-model.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb47-16"><a href="discrete-choice-model.html#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lambda)</span>
-<span id="cb47-17"><a href="discrete-choice-model.html#cb47-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-18"><a href="discrete-choice-model.html#cb47-18" aria-hidden="true" tabindex="-1"></a>pred_df8 <span class="ot">&lt;-</span> prob_within_nest1 <span class="sc">%&gt;%</span></span>
-<span id="cb47-19"><a href="discrete-choice-model.html#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(prob_nest1, <span class="at">by =</span> <span class="st">&quot;group&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb47-20"><a href="discrete-choice-model.html#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb47-21"><a href="discrete-choice-model.html#cb47-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_within_nest <span class="sc">*</span> p_nest</span>
-<span id="cb47-22"><a href="discrete-choice-model.html#cb47-22" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="discrete-choice-model.html#cb46-1" aria-hidden="true" tabindex="-1"></a>observable_utility1 <span class="ot">&lt;-</span> observable_utility <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="discrete-choice-model.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(menu_item <span class="sc">!=</span> <span class="st">&quot;삼선짜장&quot;</span>)</span>
+<span id="cb46-3"><a href="discrete-choice-model.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="discrete-choice-model.html#cb46-4" aria-hidden="true" tabindex="-1"></a>prob_within_nest1 <span class="ot">&lt;-</span> observable_utility1 <span class="sc">%&gt;%</span></span>
+<span id="cb46-5"><a href="discrete-choice-model.html#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb46-6"><a href="discrete-choice-model.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_within_nest =</span> <span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>((v <span class="sc">-</span> <span class="fu">max</span>(v)) <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
+<span id="cb46-7"><a href="discrete-choice-model.html#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb46-8"><a href="discrete-choice-model.html#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="discrete-choice-model.html#cb46-9" aria-hidden="true" tabindex="-1"></a>prob_nest1 <span class="ot">&lt;-</span> observable_utility1 <span class="sc">%&gt;%</span></span>
+<span id="cb46-10"><a href="discrete-choice-model.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb46-11"><a href="discrete-choice-model.html#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">v_nest =</span> <span class="fu">sum</span>(<span class="fu">exp</span>(v <span class="sc">/</span> lambda))) <span class="sc">%&gt;%</span></span>
+<span id="cb46-12"><a href="discrete-choice-model.html#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb46-13"><a href="discrete-choice-model.html#cb46-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> iv_hat[group],</span>
+<span id="cb46-14"><a href="discrete-choice-model.html#cb46-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_nest =</span> v_nest <span class="sc">^</span> lambda <span class="sc">/</span> <span class="fu">sum</span>(v_nest <span class="sc">^</span> lambda)</span>
+<span id="cb46-15"><a href="discrete-choice-model.html#cb46-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb46-16"><a href="discrete-choice-model.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lambda)</span>
+<span id="cb46-17"><a href="discrete-choice-model.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-18"><a href="discrete-choice-model.html#cb46-18" aria-hidden="true" tabindex="-1"></a>pred_df8 <span class="ot">&lt;-</span> prob_within_nest1 <span class="sc">%&gt;%</span></span>
+<span id="cb46-19"><a href="discrete-choice-model.html#cb46-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(prob_nest1, <span class="at">by =</span> <span class="st">&quot;group&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-20"><a href="discrete-choice-model.html#cb46-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb46-21"><a href="discrete-choice-model.html#cb46-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_within_nest <span class="sc">*</span> p_nest</span>
+<span id="cb46-22"><a href="discrete-choice-model.html#cb46-22" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="02-discrete-choice-model_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p>이 때, multinomial logit model의 경우와 달리, 삼선짜장을 원했던 손님들 대부분이 짜장면을 선택할 것으로 예측됨을 볼 수 있다.</p>
 
@@ -1366,8 +1367,8 @@ E\left[y_{ij} \, \left| \, j \in M_c\right.\right] = \frac{\exp(v_{ij} / \lambda
           </div>
         </div>
       </div>
-<a href="quantile-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="quantile-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="censored-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

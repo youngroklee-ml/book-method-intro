@@ -1,7 +1,7 @@
 --- 
 title: "알아두면 유용한 데이터 분석 방법들"
 author: "이영록"
-date: "2021-02-08"
+date: "2021-03-07"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [packages.bib, book.bib]

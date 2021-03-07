@@ -1,6 +1,7 @@
 # Censored data  {#censored-data}
 
-```{r, message=FALSE}
+
+```r
 library(ggplot2)
 library(ggtext)
 library(ggrepel)
@@ -66,7 +67,8 @@ $$
 y_i \overset{i.i.d.}{\sim} Pois(7)
 $$
 
-```{r}
+
+```r
 set.seed(30)
 N <- 100
 lambda_true <- 7
@@ -79,13 +81,21 @@ observed <- tibble(
 ```
 
 
-```{r, echo=FALSE}
-observed %>%
-  slice(1:10) %>%
-  knitr::kable(
-    caption = "첫 열흘 동안의 판매량 기록"
-  )
-```
+
+Table: (\#tab:unnamed-chunk-3)첫 열흘 동안의 판매량 기록
+
+| day| daily_sales| sold_out|
+|---:|-----------:|--------:|
+|   1|           4|        0|
+|   2|           7|        0|
+|   3|           6|        0|
+|   4|           6|        0|
+|   5|           6|        0|
+|   6|           4|        0|
+|   7|          10|        1|
+|   8|           5|        0|
+|   9|          10|        1|
+|  10|           4|        0|
 
 위 데이터에서 `daily_sales`열이 $\tilde{y}_i$, `sold_out`열이 $r_i$ 값을 저장한다. 실제 수요값이 10인 경우, 관측된 판매량과 실제 수요가 일치하지만, 판매자의 입장에서는 실제 수요가 더 이상 없었을 것이라는 사실을 알 수가 없다. 실제 수요가 더 있었다 하더라도 수요자의 입장에서 구매할 수가 없었으므로, 판매량은 동일하게 10이며, 따라서 판매자의 입장에서는 판매량이 10인 경우 right censored data라고 가정한다.
 
@@ -109,7 +119,8 @@ logL(D \, | \, \lambda) = \sum_{i = 1}^{100} (1 - r_i) \left(\tilde{y}_i \log \l
 p = 1 - \sum_{k = 0}^{9} \frac{\lambda ^ {k} \exp(-\lambda)}{k!}
 $$
 
-```{r}
+
+```r
 fn_loglik <- function(lambda, y, rc) {
   sum(dpois(y, lambda, log = TRUE) * (1 - rc) +
     ppois(y, lambda, lower.tail = FALSE, log.p = TRUE) * rc)
@@ -119,7 +130,8 @@ fn_loglik <- function(lambda, y, rc) {
 위 log-likelihood function을 이용하여 수요분포 파라미터 $\lambda$의 maximum likelihood estimate을 구해보자.
 
 
-```{r}
+
+```r
 y <- observed %>% pull(daily_sales)
 rc <- observed %>% pull(sold_out)
 
@@ -130,50 +142,22 @@ res <- optim(
   hessian = TRUE,
   y = y, rc = rc
 )
+```
 
+```
+## Warning in optim(par = 5, fn = fn_loglik, control = list(fnscale = -1), : one-dimensional optimization by Nelder-Mead is unreliable:
+## use "Brent" or optimize() directly
+```
+
+```r
 lambda_estimate <- res$par
 lambda_se <- drop(sqrt(- 1 / res$hessian))
 ```
 
 
-```{r, echo=FALSE}
-bind_rows(
-  tibble(
-    demand = 0L:20L,
-    pmf = dpois(demand, lambda_true),
-    type = "True"
-  ),
-  tibble(
-    demand = 0L:20L,
-    pmf = dpois(demand, lambda_estimate),
-    pmf1 = dpois(demand, lambda_estimate - 1.96 * lambda_se),
-    pmf2 = dpois(demand, lambda_estimate + 1.96 * lambda_se),
-    pmf_min = pmin(pmf1, pmf2),
-    pmf_max = pmax(pmf1, pmf2),
-    type = "Estimated"
-  )
-) %>%
-  ggplot(aes(x = demand, y = pmf)) +
-  geom_line(aes(color = type)) +
-  geom_point(aes(color = type)) +
-  geom_ribbon(aes(ymin = pmf_min, ymax = pmf_max, fill = type),
-              data = . %>% filter(type == "Estimated"),
-              alpha = 0.2, show.legend = FALSE) +
-  scale_x_continuous(breaks = 0L:20, minor_breaks = NULL) +
-  scale_y_continuous(labels = scales::percent) +
-  labs(
-    x = NULL,
-    y = NULL,
-    color = NULL,
-    title = "Estimated vs. true demand distribution"
-  ) +
-  theme(
-    plot.title.position = "plot",
-    legend.position = "top"
-  )
-```
+<img src="censored-data_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
-추정된 파리미터값은 $\hat{\lambda} = `r lambda_estimate`$이며 표준오차는 $se(\hat{\lambda}) = `r lambda_se`$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
+추정된 파리미터값은 $\hat{\lambda} = 6.5410156$이며 표준오차는 $se(\hat{\lambda}) = 0.2599846$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
 
 
 
@@ -266,7 +250,8 @@ $$
 \tilde{y}_i \overset{i.i.d.}{\sim} N(9, 2^2)
 $$
 
-```{r}
+
+```r
 set.seed(31)
 N <- 100
 lambda_true <- 1 / 10
@@ -282,13 +267,21 @@ observed <- tibble(
 )
 ```
 
-```{r, echo=FALSE}
-observed %>%
-  slice(1:10) %>%
-  knitr::kable(
-    caption = "첫 열 명의 구매자와의 거래 결과"
-  )
-```
+
+Table: (\#tab:unnamed-chunk-8)첫 열 명의 구매자와의 거래 결과
+
+| customer| upper_limit|     offer| is_accepted| is_rejected|
+|--------:|-----------:|---------:|-----------:|-----------:|
+|        1|   0.4431583| 10.908619|           0|           1|
+|        2|   2.9419262|  4.507467|           0|           1|
+|        3|   3.1340344|  9.060761|           0|           1|
+|        4|  17.6789979|  9.804956|           1|           0|
+|        5|   1.6851793| 12.316684|           0|           1|
+|        6|   6.6046450|  5.295574|           1|           0|
+|        7|   3.0373506| 12.301354|           0|           1|
+|        8|  42.3869027|  7.171987|           1|           0|
+|        9|  26.9941280| 10.744140|           1|           0|
+|       10|   7.6777810| 10.346243|           0|           1|
 
 위 데이터에서 `is_accept`는 거래가 성사되었으면 1, 아니면 0을 지니며, right censored data 지시변수 $r_i$에 대응한다. 또한 `is_rejected`는 거래가 성사되었으면 0, 아니면 1을 지니며, left censored data 지시변수 $l_i$에 대응한다. 각 관측치는 left censored data이거나 right censored data이며, 판매자가 구매자의 희망가격을 정확히 아는 경우는 없다고 보는 것이 합리적일 것이다.
 
@@ -304,7 +297,8 @@ $$
 l(D \, | \, \lambda) = \sum_{i = 1}^{100} l_i \log \left(1 - \exp(-\lambda \tilde{y}_i)\right) - r_i \lambda \tilde{y}_i
 $$
 
-```{r}
+
+```r
 fn_loglik <- function(lambda, y, lc, rc) {
   sum(pexp(y, lambda, lower.tail = TRUE, log.p = TRUE) * lc +
     pexp(y, lambda, lower.tail = FALSE, log.p = TRUE) * rc)
@@ -313,7 +307,8 @@ fn_loglik <- function(lambda, y, lc, rc) {
 
 위 log-likelihood function을 이용하여 수요분포 파라미터 $\lambda$의 maximum likelihood estimate을 구해보자.
 
-```{r}
+
+```r
 y <- observed %>% pull(offer)
 lc <- observed %>% pull(is_rejected)
 rc <- observed %>% pull(is_accepted)
@@ -325,49 +320,22 @@ res <- optim(
   hessian = TRUE,
   y = y, lc = lc, rc = rc
 )
+```
 
+```
+## Warning in optim(par = 1/20, fn = fn_loglik, control = list(fnscale = -1), : one-dimensional optimization by Nelder-Mead is unreliable:
+## use "Brent" or optimize() directly
+```
+
+```r
 lambda_estimate <- res$par
 lambda_se <- drop(sqrt(- 1 / res$hessian))
 ```
 
-```{r, echo=FALSE}
-bind_rows(
-  tibble(
-    price = seq(0.1, 20, by = 0.1),
-    pdf = dexp(price, lambda_true),
-    type = "True"
-  ),
-  tibble(
-    price = seq(0.1, 20, by = 0.1),
-    pdf = dexp(price, lambda_estimate),
-    pdf1 = dexp(price, lambda_estimate - 1.96 * lambda_se),
-    pdf2 = dexp(price, lambda_estimate + 1.96 * lambda_se),
-    pdf_min = pmin(pdf1, pdf2),
-    pdf_max = pmax(pdf1, pdf2),
-    type = "Estimated"
-  )
-) %>%
-  ggplot(aes(x = price, y = pdf)) +
-  geom_line(aes(color = type)) +
-  geom_ribbon(aes(ymin = pdf_min, ymax = pdf_max, fill = type),
-              data = . %>% filter(type == "Estimated"),
-              alpha = 0.2, show.legend = FALSE) +
-  scale_x_continuous(breaks = 0L:20, minor_breaks = NULL) +
-  scale_y_continuous() +
-  labs(
-    x = NULL,
-    y = NULL,
-    color = NULL,
-    title = "Estimated vs. true demand distribution"
-  ) +
-  theme(
-    plot.title.position = "plot",
-    legend.position = "top"
-  )
-```
+<img src="censored-data_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 
-추정된 파리미터값은 $\hat{\lambda} = `r lambda_estimate`$이며 (즉, 추정된 평균 희망가격은 `r 1 / lambda_estimate`만원이며) 표준오차는 $se(\hat{\lambda}) = `r lambda_se`$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
+추정된 파리미터값은 $\hat{\lambda} = 0.0824023$이며 (즉, 추정된 평균 희망가격은 12.1355772만원이며) 표준오차는 $se(\hat{\lambda}) = 0.0117518$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
 
 
 
