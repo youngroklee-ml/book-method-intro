@@ -1,0 +1,224 @@
+# Maximum likelihood estimation for censored data {#censored-data}
+
+```{r, message=FALSE}
+library(ggplot2)
+library(ggtext)
+library(ggrepel)
+library(gt)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(rlang)
+library(purrr)
+```
+
+확률분포나 통계모형을 추정할 때 가장 흔히 사용되는 방법이 최우추정법(maximum likelihood estimation)이다. 이 때 likelihood는 주어진 데이터가 어떠한 확률분포로부터 관측될 결합확률(joint probability)을 뜻한다. 이 때, likelihood 함수는  주어진 데이터의 성격에 맞게 정의되어야 한다.
+
+기초 통계 수업에서는 주로 정확한(precise) 값이 관측된다고 가정한다. 하지만, 경우에 따라 분포를 알고자 하는 값이 정확하게 관측되지 못하고, 단지 정확한 실제값이 어떤 범위 내에 존재하는지만 알 수 있는 경우가 있다. 예를 들어, 매일 아침 10개의 재고가 존재하는 제품에 대해 기록된 일간 판매량을 토대로 일간 수요의 분포를 추정한다고 하자. 이 때, 제품 재고 10개가 모두 소진된 날의 경우, 판매량은 10개이지만 실제 수요는 "10개보다 크거나 같았다"와 같이 정확한 수요값이 존재했을 범위를 고려하는 것이 합리적인데, 이는 재고가 더 많이 존재했을 경우 더 많은 판매가 이루어졌을 가능성이 있기 때문이다. 이러한 경우, 관측된 범위 데이터를 **censored data**라 한다. 본 장에서는 이러한 censored data가 존재할 때 최우추정법을 위한 likelihood 함수를 어떻게 정의하는지 살펴보자.
+
+
+## Right censored data
+
+Right censored data는 실제값이 존재하는 범위의 lower bound가 관측되는 경우이다. 바로 앞에서 언급한 예와 같이, 재고량이 10개인 제품이 모두 판매되어 품절되었을 때, 제품에 대한 수요에 대한 lower bound 10은 관측되지만, 실제 수요가 11개였을지 20개였을 지는 알 수 없는 경우이다.
+
+아래와 같이 데이터를 정의해보자.
+
+- $N$: 전체 관측 데이터 수.
+- $y_i$: $i$번째 관측치에 대응하는 실제값. 이 변수는 항상 관측 가능한 변수가 아니다. 예를 들어, $i$번째 날짜에 해당 일자에 대한 재고 10개가 모두 판매되어 품절되었을 경우, 재고가 충분했다면 15개가 판매되었을 것이라면 $y_i = 15$이지만, 이 실제값은 관측 가능한 값이 아니다. 
+- $\tilde{y}_i$: $i$번째 관측치에 대응하는 관측값. 위에서 언급한 경우와 같이 $i$번째 날짜에 해당 일자에 대한 재고 10개가 모두 판매되어 품절되었을 경우, $\tilde{y}_i = 10$으로 관측된다.
+- $r_i$: $i$번째 관측치가 right censored data인지 아닌지 여부에 대한 지시변수. $i$번째 관측치가 right censored data라면 $r_i = 1$, 아니라면 $r_i = 0$으로 관측된다. 이 지시변수는 항상 관측 가능한 값이다. 예를 들어, $i$번째 날짜에 재고가 소진되어 더 이상 제품 판매가 불가능했다면, $r_i = 1$로 관측된다.
+
+이 때, $y_i$와 $\tilde{y}_i$는 $r_i$값에 따라 아래와 같은 관계를 보인다.
+
+$$
+\begin{cases}
+  y_i = \tilde{y}_i & \text{if } r_i = 0 \\
+  y_i \geq \tilde{y}_i & \text{if } r_i = 1
+\end{cases}
+$$
+
+전체 관측 데이터 $D$는 아래와 같이 $N$개의 $\tilde{y}_i$와 $r_i$의 쌍으로 이루어진다.
+
+$$
+D = \left\{(\tilde{y}_i, r_i): i = 1, \ldots, N\right\}
+$$
+
+해당 관측 데이터에 대한 likelihood값의 계산은 실제값 변수 $Y$가 이산형(discrete) 변수인지 연속형(continuous) 변수인지에 따라 달라진다.
+
+
+### 이산형 변수
+
+변수 $Y$에 대한 확률질량함수 $P(Y = y)$를 이용하여 관측 데이터의 likelihood를 아래와 같이 정의된다.
+
+$$
+L(D) = \prod_{i = 1}^{N} P(Y = \tilde{y}_i)^{1 - r_i} \left(1 - P(Y < \tilde{y}_i)\right)^{r_i}\\
+= \prod_{i = 1}^{N} P(Y = \tilde{y}_i)^{1 - r_i} P(Y \geq \tilde{y}_i)^{r_i}
+$$
+
+즉, 정확한 실제값을 관측한 경우 ($r_i = 0$), 확률질량함수 $P(Y = \tilde{y}_i)$값이 해당 값을 관측할 likelihood이다. 반면, right censored data인 경우 ($r_i = 1$), 관측된 정보는 "$y_i$가 $\tilde{y}_i$보다 작지 않다"이므로, 변수 $Y$가 $\tilde{y}_i$보다 작지 않을 확률 $1 - P(y_i < \tilde{y}_i)$를 likelihood로 사용한다.
+
+
+#### 예제
+
+유통기한이 단 하루인 제품이 있다고 하자. 100일동안 매일 아침 가게 문을 열 때 제품을 10개를 생산해서 준비해두고, 매일 저녁 가게 문을 닫을 때까지 제품이 몇 개 팔렸는지를 기록해두었다 하자. 각 날짜의 제품의 수요는 서로 독립이며 평균($\lambda$)이 7인 Poisson distribution을 따른다고 가정하자. 단, 판매자는 이를 알지 못하고, 100일동안 관측된 데이터를 이용하여 수요의 분포를 추정하려고 한다.
+
+$$
+y_i \overset{i.i.d.}{\sim} Pois(7)
+$$
+
+```{r}
+set.seed(30)
+N <- 100
+lambda_true <- 7
+daily_inventory <- 10L
+observed <- tibble(
+  day = seq_len(N),
+  daily_sales = pmin(rpois(N, 7), daily_inventory),
+  sold_out = if_else(daily_sales < daily_inventory, 0, 1)
+)
+```
+
+
+```{r, echo=FALSE}
+observed %>%
+  slice(1:10) %>%
+  knitr::kable(
+    caption = "첫 열흘 동안의 판매량 기록"
+  )
+```
+
+위 데이터에서 `daily_sales`열이 $\tilde{y}_i$, `sold_out`열이 $r_i$ 값을 저장한다. 실제 수요값이 10인 경우, 관측된 판매량과 실제 수요가 일치하지만, 판매자의 입장에서는 실제 수요가 더 이상 없었을 것이라는 사실을 알 수가 없다. 실제 수요가 더 있었다 하더라도 수요자의 입장에서 구매할 수가 없었으므로, 판매량은 동일하게 10이며, 따라서 판매자의 입장에서는 판매량이 10인 경우 right censored data라고 가정한다.
+
+위 데이터를 이용하여 Poisson distribution의 파라미터 $\lambda$의 maximum likelihood estimate을 구해보자. 우선, likelihood function을 아래와 같이 정의한다.
+
+$$
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(\frac{\lambda ^ {\tilde{y}_i} \exp(-\lambda)}{\tilde{y}_i!}\right)^{1 - r_i} \left(1 - \sum_{k = 0}^{\tilde{y}_i - 1} \frac{\lambda ^ {k} \exp(-\lambda)}{k!} \right) ^ {r_i}
+$$
+
+이 때, 주어진 데이터 모형으로부터 $r_i = 1$ 일 때 $\tilde{y}_i$값은 항상 10임을 추론할 수 있으므로, likelihood function은 아래와 같이 정리할 수 있다.
+
+$$
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(\frac{\lambda ^ {\tilde{y}_i} \exp(-\lambda)}{\tilde{y}_i!}\right)^{1 - r_i} \, p^{r_i}\\
+p = 1 - \sum_{k = 0}^{9} \frac{\lambda ^ {k} \exp(-\lambda)}{k!}
+$$
+
+Log-likelihood function은 아래와 같이 정리된다.
+
+$$
+logL(D \, | \, \lambda) = \sum_{i = 1}^{100} (1 - r_i) \left(\tilde{y}_i \log \lambda - \lambda - \sum_{k = 1} ^ {\tilde{y}_i} \log k\right) + r_i \log p\\
+p = 1 - \sum_{k = 0}^{9} \frac{\lambda ^ {k} \exp(-\lambda)}{k!}
+$$
+
+```{r}
+fn_loglik <- function(lambda, y, rc) {
+  sum(dpois(y, lambda, log = TRUE) * (1 - rc) +
+    ppois(y, lambda, lower.tail = FALSE, log.p = TRUE) * rc)
+}
+```
+
+위 log-likelihood function을 이용하여 수요분포 파라미터 $\lambda$의 maximum likelihood estimate을 구해보자.
+
+
+```{r}
+y <- observed %>% pull(daily_sales)
+rc <- observed %>% pull(sold_out)
+
+res <- optim(
+  par = 5,
+  fn = fn_loglik,
+  control = list(fnscale = -1),
+  hessian = TRUE,
+  y = y, rc = rc
+)
+
+lambda_estimate <- res$par
+lambda_se <- drop(sqrt(- 1 / res$hessian))
+```
+
+
+```{r, echo=FALSE}
+bind_rows(
+  tibble(
+    demand = 0L:20L,
+    pmf = dpois(demand, lambda_true),
+    type = "True"
+  ),
+  tibble(
+    demand = 0L:20L,
+    pmf = dpois(demand, lambda_estimate),
+    pmf1 = dpois(demand, lambda_estimate - 1.96 * lambda_se),
+    pmf2 = dpois(demand, lambda_estimate + 1.96 * lambda_se),
+    pmf_min = pmin(pmf1, pmf2),
+    pmf_max = pmax(pmf1, pmf2),
+    type = "Estimated"
+  )
+) %>%
+  ggplot(aes(x = demand, y = pmf)) +
+  geom_line(aes(color = type)) +
+  geom_point(aes(color = type)) +
+  geom_ribbon(aes(ymin = pmf_min, ymax = pmf_max, fill = type),
+              data = . %>% filter(type == "Estimated"),
+              alpha = 0.2, show.legend = FALSE) +
+  scale_x_continuous(breaks = 0L:20, minor_breaks = NULL) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    x = NULL,
+    y = NULL,
+    color = NULL,
+    title = "Estimated vs. true demand distribution"
+  ) +
+  theme(
+    plot.title.position = "plot",
+    legend.position = "top"
+  )
+```
+
+추정된 파리미터값은 $\hat{\lambda} = `r lambda_estimate`$이며 표준오차는 $se(\hat{\lambda}) = `r lambda_se`$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
+
+
+
+### 연속형 변수
+
+실제값 $y_i$가 분포함수 $F(y)$로부터 얻어진다고 하자.
+
+$$
+y_i \overset{i.i.d.}{\sim} F(y)
+$$
+
+또한 분포함수 $F(y)$에 대응하는 확률밀도함수를 $f(y)$라 하자. 
+
+$$
+f(y) = \frac{\partial F(y)}{\partial y}
+$$
+
+이 때, likelihood는 아래와 같이 정의된다.
+
+$$
+L(D) = \prod_{i = 1}^{N} f(\tilde{y}_i)^{1 - r_i} \left(1 - F(\tilde{y}_i)\right)^{r_i}
+$$
+
+즉, 정확한 실제값을 관측한 경우 ($r_i = 0$), 확률밀도함수 $f(y)$값이 해당 값을 관측할 likelihood이다. 반면, right censored data인 경우 ($r_i = 1$), 확신할 수 있는 정보는 $y_i \geq \tilde{y}_i$이므로, 
+
+$$
+P(y_i \geq \tilde{y}_i) = 1 - P(y_i < \tilde{y}_i)\\
+= 1 - F(\tilde{y}_i)
+$$
+가 해당 관측값을 얻을 likelihood이다.
+
+연속형 변수에 대한 예제는 다음 절에서 left censored data를 다룰 때 함께 살펴보기로 하자.
+
+
+
+
+## Left censored data
+
+
+
+## Interval data
+
+
+Interval data는 실제값이 존재하는 범위의 lower bound와 upper bound가 모두 관측되는 경우이다.
+
+
+
+
