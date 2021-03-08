@@ -234,7 +234,7 @@ $$
 L(D) = \prod_{i = 1}^{N} f(\tilde{y}_i)^{1 - l_i - r_i} F(\tilde{y}_i)^{l_i} \left(1 - F(\tilde{y}_i)\right)^{r_i}
 $$
 
-#### 예제
+### 예제
 
 앞에서 언급한 구매자의 희망가격 분포를 추정하는 예에 대해 실제 추정과정을 살펴보자.
 
@@ -244,44 +244,44 @@ $$
 y_i \overset{i.i.d.}{\sim} Exp(\lambda)
 $$
 
-판매자가 각 구매자에게 무작위로 서로 다른 가격을 제시하였다고 하자. 이 때, 각 구매자에게 제시된 가격은 서로 독립이며 평균이 9이고 표준편차가 2인 정규분포로부터 추출된 무작위 샘플이라 하자.
+판매자가 각 구매자에게 무작위로 서로 다른 가격을 제시하였다고 하자. 이 때, 각 구매자에게 제시된 가격은 서로 독립이며 10만원과 15만원 사이에서 uniform하게 무작위로 추출된 샘플이라 하자.
 
 $$
-\tilde{y}_i \overset{i.i.d.}{\sim} N(9, 2^2)
+\tilde{y}_i \overset{i.i.d.}{\sim} U(10, 15)
 $$
 
 
 ```r
-set.seed(31)
+set.seed(3)
 N <- 100
 lambda_true <- 1 / 10
-mu_tilde <- 9
-sigma_tilde <- 2
+min_tilde <- 10
+max_tilde <- 15
 
 observed <- tibble(
   customer = seq_len(N),
-  upper_limit = rexp(N, lambda_true),
-  offer = rnorm(N, mu_tilde, sigma_tilde),
-  is_accepted = if_else(offer <= upper_limit, 1, 0),
-  is_rejected = if_else(offer > upper_limit, 1, 0)
+  budget = rexp(N, lambda_true),
+  offer = runif(N, min_tilde, max_tilde),
+  is_accepted = if_else(offer <= budget, 1, 0),
+  is_rejected = if_else(offer > budget, 1, 0)
 )
 ```
 
 
 Table: (\#tab:unnamed-chunk-8)첫 열 명의 구매자와의 거래 결과
 
-| customer| upper_limit|     offer| is_accepted| is_rejected|
-|--------:|-----------:|---------:|-----------:|-----------:|
-|        1|   0.4431583| 10.908619|           0|           1|
-|        2|   2.9419262|  4.507467|           0|           1|
-|        3|   3.1340344|  9.060761|           0|           1|
-|        4|  17.6789979|  9.804956|           1|           0|
-|        5|   1.6851793| 12.316684|           0|           1|
-|        6|   6.6046450|  5.295574|           1|           0|
-|        7|   3.0373506| 12.301354|           0|           1|
-|        8|  42.3869027|  7.171987|           1|           0|
-|        9|  26.9941280| 10.744140|           1|           0|
-|       10|   7.6777810| 10.346243|           0|           1|
+| customer| budget| offer| is_accepted| is_rejected|
+|--------:|------:|-----:|-----------:|-----------:|
+|        1|  17.31| 11.31|           1|           0|
+|        2|   6.15| 10.81|           0|           1|
+|        3|  12.33| 10.53|           1|           0|
+|        4|  10.04| 12.19|           0|           1|
+|        5|   2.04| 10.19|           0|           1|
+|        6|   2.09| 14.79|           0|           1|
+|        7|  22.84| 12.54|           1|           0|
+|        8|   0.10| 11.81|           0|           1|
+|        9|   0.68| 14.40|           0|           1|
+|       10|   1.14| 13.77|           0|           1|
 
 위 데이터에서 `is_accept`는 거래가 성사되었으면 1, 아니면 0을 지니며, right censored data 지시변수 $r_i$에 대응한다. 또한 `is_rejected`는 거래가 성사되었으면 0, 아니면 1을 지니며, left censored data 지시변수 $l_i$에 대응한다. 각 관측치는 left censored data이거나 right censored data이며, 판매자가 구매자의 희망가격을 정확히 아는 경우는 없다고 보는 것이 합리적일 것이다.
 
@@ -335,15 +335,287 @@ lambda_se <- drop(sqrt(- 1 / res$hessian))
 <img src="censored-data_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 
-추정된 파리미터값은 $\hat{\lambda} = 0.0824023$이며 (즉, 추정된 평균 희망가격은 12.1355772만원이며) 표준오차는 $se(\hat{\lambda}) = 0.0117518$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
+추정된 파리미터값은 $\hat{\lambda} = 0.0901563$이며 (즉, 추정된 평균 희망가격은 11.0918544만원이며) 표준오차는 $se(\hat{\lambda}) = 0.011626$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
 
 
 
 ## Interval data
 
+Interval data는 실제값이 존재하는 범위의 lower bound와 upper bound가 모두 관측되는 경우이다. 
 
-Interval data는 실제값이 존재하는 범위의 lower bound와 upper bound가 모두 관측되는 경우이다.
+앞 절에서 살펴본 구매자 희망가격 분포 추정 예를 아래와 같이 확장시켜보자.
+
+---
+판매자가 첫 번째 제시한 가격이 구매자의 희망가격보다 높아 거래가 이루어지지 않았을 경우, 판매자가 제품 가격을 낮추어 다시 거래를 시도할 기회가 한 번 있다. 두 번째 거래 시도에서도 거래가 성사되지 않는다면 구매자는 구매를 포기한다.
+---
+
+만약 두 번째 시도에서 거래가 성사되었다면, 이는 구매자의 희망가격이 판매자가 첫 번째 제시한 가격보다는 낮았고 두 번째 제시한 가격보다는 높았다는 뜻이다. 이 때, 판매자는 여전히 구매자의 정확한 희망가격을 알 수는 없으나, 그 희망가격이 존재하는 lower bound와 upper bound를 알 수 있다.
+
+연속형 변수를 다루는 경우에 대해, 관측 데이터를 아래와 같이 다시 정의해보자.
+
+$$
+D = \left\{({lb}_i, {ub}_i): {lb}_i \leq {ub}_i,  i = 1, \ldots, N\right\}
+$$
+
+이 때, ${lb}_i$ 와 ${ub}_i$는 각각 $y_i$가 존재하는 범위의 lower bound와 upper bound이다.
+
+$$
+{lb}_i \leq y_i \leq {ub}_i
+$$
+
+만약 ${lb}_i = {ub}_i$라면, 관측된 데이터가 실제 변수값 $y_i$를 정확하게 표현하나, ${lb}_i < {ub}_i$라면 실제 변수값은 정확하게 관측되지 않은 경우이다. 관측값이 범위를 나타내는지에 대한 지시변수 $b_i$를 아래와 같이 정의하자.
+
+$$
+b_i = \begin{cases}
+  1 & \text{if } \, {lb}_i < {ub}_i\\
+  0 & \text{if } \, {lb}_i = {ub}_i
+\end{cases}
+$$
+
+이 때, likelihood는 아래와 같이 표현할 수 있다.
+
+$$
+L(D) = \prod_{i = 1}^{N} f(\tilde{lb}_i)^{1 - b_i} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right)^{b_i}
+$$
+
+만약, 모든 $i$에 대해 ${lb}_i < {ub}_i$라면, 위 식은 아래와 같이 단순하게 정리될 수 있다.
+
+$$
+L(D) = \prod_{i = 1}^{N} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right),  \; \text{if } \, {lb}_i < {ub}_i \, \text{ for all } \, i
+$$
+
+### 예제
+
+앞에서 언급한 확장된 예에서, $i$번째 구매자에 대해 $\tilde{y}_i^{(1)}$과 $\tilde{y}_i^{(2)}$를 각각 첫 번째와 두 번째 거래 시도에서 판매자가 제시한 제품 가격이라 하자. $\tilde{y}_i^{(1)}$는 모든 구매자에 대해 관측되는 데이터이며, $\tilde{y}_i^{(2)}$는 $y_i < \tilde{y}_i^{(1)}$인 경우에만 추가로 관측되는 데이터로, $\tilde{y}_i^{(2)} < \tilde{y}_i^{(1)}$이다. 
+
+앞 left censored data의 예제에서와 같이 구매자의 희망가격 분포는 평균($1 / \lambda$)이 10만원인 Exponential distribution이며, 판매자는 각 구매자에게 10만원과 15만원 사이에서 uniform하게 무작위로 추출된 가격을 첫 번째 거래 시도에서 제시한다. 이 때, 거래가 성사되지 않을 경우, 판매자는 가격을 30퍼센트 낮추어 새로운 가격으로 다시 제시한다. 다만, 구매자는 판매자가 가격을 낮출 의도가 있다는 것을 모르고 있으며, 첫 번째 거래 시도에서 판매자가 제시한 가격이 구매자의 희망가격보다 낮으면 즉시 구매한다고 가정하자.
 
 
+$$
+\tilde{y}_i^{(2)} = 0.7 \tilde{y}_i^{(1)}, \; \text{if } \, y_i < \tilde{y}_i^{(1)}
+$$
+
+이 때, 거래 결과에 따라 아래와 같은 변수값을 갖는다. 
+
+- 첫 번째 거래 시도에서 거래가 성사된 경우: ${lb}_i = \tilde{y}_i^{(1)}$, ${ub}_i = \infty$
+- 두 번째 거래 시도에서 거래가 성사된 경우: ${lb}_i = \tilde{y}_i^{(2)}$, ${ub}_i = \tilde{y}_i^{(1)}$
+- 거래가 실패한 경우: ${lb}_i = 0$, ${ub}_i = \tilde{y}_i^{(2)}$
+
+따라서, 첫 번째 거래 시도에서 거래가 성사된 경우에는 right censored data, 두 번째 거래 시도에서조차 거래가 실패한 경우에는 left censored data가 관측된다고 볼 수 있다.
+
+
+
+```r
+set.seed(3)
+N <- 100
+lambda_true <- 1 / 10
+min_tilde <- 10
+max_tilde <- 15
+discount <- 0.3
+
+observed <- tibble(
+  customer = seq_len(N),
+  budget = rexp(N, lambda_true),
+  first_offer = runif(N, min_tilde, max_tilde),
+  is_first_accepted = if_else(first_offer <= budget, 1, 0),
+  second_offer = if_else(is_first_accepted == 1, NA_real_, first_offer * (1 - discount)),
+  is_second_accepted = if_else(second_offer <= budget, 1, 0),
+  is_rejected = 1 - pmax(is_first_accepted, is_second_accepted, na.rm = TRUE)
+) %>%
+  mutate(
+    lower_bound = if_else(
+      is_first_accepted == 1,
+      first_offer,
+      if_else(is_second_accepted == 1, second_offer, 0)
+    ),
+    upper_bound = if_else(
+      is_first_accepted == 1,
+      Inf,
+      if_else(is_second_accepted == 1, first_offer, second_offer)
+    )
+  )
+```
+
+<table class="table" style="font-size: 9px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">(\#tab:unnamed-chunk-13)첫 열 명의 구매자와의 거래 결과</caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> customer </th>
+   <th style="text-align:right;"> budget </th>
+   <th style="text-align:right;"> first_offer </th>
+   <th style="text-align:right;"> is_first_accepted </th>
+   <th style="text-align:right;"> second_offer </th>
+   <th style="text-align:right;"> is_second_accepted </th>
+   <th style="text-align:right;"> is_rejected </th>
+   <th style="text-align:right;"> lower_bound </th>
+   <th style="text-align:right;"> upper_bound </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 17.31 </td>
+   <td style="text-align:right;"> 11.31 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 11.31 </td>
+   <td style="text-align:right;"> Inf </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 6.15 </td>
+   <td style="text-align:right;"> 10.81 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 7.57 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 7.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 12.33 </td>
+   <td style="text-align:right;"> 10.53 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 10.53 </td>
+   <td style="text-align:right;"> Inf </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 10.04 </td>
+   <td style="text-align:right;"> 12.19 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 8.53 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 8.53 </td>
+   <td style="text-align:right;"> 12.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 2.04 </td>
+   <td style="text-align:right;"> 10.19 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 7.13 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 7.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 2.09 </td>
+   <td style="text-align:right;"> 14.79 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 10.36 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 10.36 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> 22.84 </td>
+   <td style="text-align:right;"> 12.54 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 12.54 </td>
+   <td style="text-align:right;"> Inf </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 0.10 </td>
+   <td style="text-align:right;"> 11.81 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 8.27 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 8.27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 0.68 </td>
+   <td style="text-align:right;"> 14.40 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 10.08 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 10.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 1.14 </td>
+   <td style="text-align:right;"> 13.77 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 9.64 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 9.64 </td>
+  </tr>
+</tbody>
+</table>
+
+이 때, likelihood function과 log-likelihood function은 아래와 같이 정의된다.
+
+$$
+L(D \, | \, \lambda) = \prod_{i = 1}^{100} \left(1 - \exp(-\lambda \, {ub}_i)\right) - \left(1 - \exp(-\lambda \, {lb}_i)\right)\\
+= \prod_{i = 1}^{100} \left(\exp(-\lambda \, {lb}_i) - \exp(-\lambda \, {ub}_i)\right)
+$$
+
+$$
+l(D \, | \, \lambda) = \sum_{i = 1}^{100} \log \left(\exp(-\lambda \, {lb}_i) - \exp(-\lambda \, {ub}_i)\right)
+$$
+
+
+
+
+```r
+fn_loglik <- function(lambda, lb, ub) {
+  sum(log(
+    pexp(ub, lambda) - pexp(lb, lambda)
+  ))
+}
+```
+
+위 log-likelihood function을 이용하여 수요분포 파라미터 $\lambda$의 maximum likelihood estimate을 구해보자.
+
+
+```r
+lb <- observed %>% pull(lower_bound)
+ub <- observed %>% pull(upper_bound)
+
+res <- optim(
+  par = 1 / 20,
+  fn = fn_loglik,
+  control = list(fnscale = -1),
+  hessian = TRUE,
+  lb = lb, ub = ub
+)
+```
+
+```
+## Warning in optim(par = 1/20, fn = fn_loglik, control = list(fnscale = -1), : one-dimensional optimization by Nelder-Mead is unreliable:
+## use "Brent" or optimize() directly
+```
+
+```r
+lambda_estimate <- res$par
+lambda_se <- drop(sqrt(- 1 / res$hessian))
+```
+
+<img src="censored-data_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+
+
+추정된 파리미터값은 $\hat{\lambda} = 0.0903516$이며 (즉, 추정된 평균 희망가격은 11.0678772만원이며) 표준오차는 $se(\hat{\lambda}) = 0.0112916$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
 
 

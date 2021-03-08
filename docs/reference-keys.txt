@@ -1,5 +1,6 @@
 tab:unnamed-chunk-3
 tab:unnamed-chunk-8
+tab:unnamed-chunk-13
 quantile-regression
 univariate의-예
 quantile
@@ -49,3 +50,4 @@ right-censored-data
 left-censored-data
 예제-3
 interval-data
+예제-4
