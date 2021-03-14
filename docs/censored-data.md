@@ -3,9 +3,6 @@
 
 ```r
 library(ggplot2)
-library(ggtext)
-library(ggrepel)
-library(gt)
 library(dplyr)
 library(tidyr)
 library(stringr)
@@ -13,7 +10,7 @@ library(rlang)
 library(purrr)
 ```
 
-확률분포나 통계모형을 추정할 때 가장 흔히 사용되는 방법이 최우추정법(maximum likelihood estimation)이다. 이 때 likelihood는 주어진 데이터가 어떠한 확률분포로부터 관측될 결합확률(joint probability)을 뜻한다. 이 때, likelihood 함수는  주어진 데이터의 성격에 맞게 정의되어야 한다.
+확률분포나 통계모형을 추정할 때 가장 흔히 사용되는 방법이 최우추정법(maximum likelihood estimation)이다. 이 때 likelihood는 주어진 데이터가 어떠한 확률분포로부터 관측될 결합확률(joint probability)로, 주어진 데이터의 성격에 맞게 정의되어야 한다.
 
 기초 통계 수업에서는 주로 정확한(precise) 값이 관측된다고 가정한다. 하지만, 경우에 따라 분포를 알고자 하는 값이 정확하게 관측되지 못하고, 단지 정확한 실제값이 어떤 범위 내에 존재하는지만 알 수 있는 경우가 있다. 예를 들어, 매일 아침 10개의 재고가 존재하는 제품에 대해 기록된 일간 판매량을 토대로 일간 수요의 분포를 추정한다고 하자. 이 때, 제품 재고 10개가 모두 소진된 날의 경우, 판매량은 10개이지만 실제 수요는 "10개보다 크거나 같았다"와 같이 정확한 수요값이 존재했을 범위를 고려하는 것이 합리적인데, 이는 재고가 더 많이 존재했을 경우 더 많은 판매가 이루어졌을 가능성이 있기 때문이다. 이러한 경우, 관측된 범위 데이터를 **censored data**라 한다. 본 장에서는 이러한 censored data가 존재할 때 최우추정법을 위한 likelihood 함수를 어떻게 정의하는지 살펴보자.
 
@@ -69,7 +66,7 @@ $$
 
 
 ```r
-set.seed(30)
+set.seed(32)
 N <- 100
 lambda_true <- 7
 daily_inventory <- 10L
@@ -86,16 +83,16 @@ Table: (\#tab:unnamed-chunk-3)첫 열흘 동안의 판매량 기록
 
 | day| daily_sales| sold_out|
 |---:|-----------:|--------:|
-|   1|           4|        0|
+|   1|           7|        0|
 |   2|           7|        0|
-|   3|           6|        0|
-|   4|           6|        0|
-|   5|           6|        0|
-|   6|           4|        0|
-|   7|          10|        1|
-|   8|           5|        0|
-|   9|          10|        1|
-|  10|           4|        0|
+|   3|           9|        0|
+|   4|           8|        0|
+|   5|           4|        0|
+|   6|          10|        1|
+|   7|           9|        0|
+|   8|          10|        1|
+|   9|           8|        0|
+|  10|           6|        0|
 
 위 데이터에서 `daily_sales`열이 $\tilde{y}_i$, `sold_out`열이 $r_i$ 값을 저장한다. 실제 수요값이 10인 경우, 관측된 판매량과 실제 수요가 일치하지만, 판매자의 입장에서는 실제 수요가 더 이상 없었을 것이라는 사실을 알 수가 없다. 실제 수요가 더 있었다 하더라도 수요자의 입장에서 구매할 수가 없었으므로, 판매량은 동일하게 10이며, 따라서 판매자의 입장에서는 판매량이 10인 경우 right censored data라고 가정한다.
 
@@ -123,7 +120,7 @@ $$
 ```r
 fn_loglik <- function(lambda, y, rc) {
   sum(dpois(y, lambda, log = TRUE) * (1 - rc) +
-    ppois(y, lambda, lower.tail = FALSE, log.p = TRUE) * rc)
+    ppois(y - 1L, lambda, lower.tail = FALSE, log.p = TRUE) * rc)
 }
 ```
 
@@ -157,7 +154,7 @@ lambda_se <- drop(sqrt(- 1 / res$hessian))
 
 <img src="censored-data_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
-추정된 파리미터값은 $\hat{\lambda} = 6.5410156$이며 표준오차는 $se(\hat{\lambda}) = 0.2599846$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
+추정된 파리미터값은 $\hat{\lambda} = 7.1835938$이며 표준오차는 $se(\hat{\lambda}) = 0.27553$이다. 추정된 95% 신뢰구간은 위 그래프에서 실제 분포를 포함하는 것을 볼 수 있다.
 
 
 
