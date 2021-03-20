@@ -360,10 +360,10 @@ $$
 {lb}_i \leq y_i \leq {ub}_i
 $$
 
-만약 ${lb}_i = {ub}_i$라면, 관측된 데이터가 실제 변수값 $y_i$를 정확하게 표현하나, ${lb}_i < {ub}_i$라면 실제 변수값은 정확하게 관측되지 않은 경우이다. 관측값이 범위를 나타내는지에 대한 지시변수 $b_i$를 아래와 같이 정의하자.
+만약 ${lb}_i = {ub}_i$라면, 관측된 데이터가 실제 변수값 $y_i$를 정확하게 표현하나, ${lb}_i < {ub}_i$라면 실제 변수값은 정확하게 관측되지 않은 경우이다. 관측값이 범위를 나타내는지에 대한 지시변수 $a_i$를 아래와 같이 정의하자.
 
 $$
-b_i = \begin{cases}
+a_i = \begin{cases}
   1 & \text{if } \, {lb}_i < {ub}_i\\
   0 & \text{if } \, {lb}_i = {ub}_i
 \end{cases}
@@ -372,13 +372,13 @@ $$
 이 때, likelihood는 아래와 같이 표현할 수 있다.
 
 $$
-L(D) = \prod_{i = 1}^{N} f(\tilde{lb}_i)^{1 - b_i} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right)^{b_i}
+L(D) = \prod_{i = 1}^{N} f({lb}_i)^{1 - a_i} \left(F({ub}_i) - F({lb}_i)\right)^{a_i}
 $$
 
 만약, 모든 $i$에 대해 ${lb}_i < {ub}_i$라면, 위 식은 아래와 같이 단순하게 정리될 수 있다.
 
 $$
-L(D) = \prod_{i = 1}^{N} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right),  \; \text{if } \, {lb}_i < {ub}_i \, \text{ for all } \, i
+L(D) = \prod_{i = 1}^{N} \left(F({ub}_i) - F({lb}_i)\right),  \; \text{if } \, {lb}_i < {ub}_i \, \text{ for all } \, i
 $$
 
 ### 예제

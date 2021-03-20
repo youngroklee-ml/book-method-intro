@@ -24,7 +24,7 @@
 <meta name="author" content="이영록" />
 
 
-<meta name="date" content="2021-03-14" />
+<meta name="date" content="2021-03-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -596,20 +596,20 @@ D = \left\{({lb}_i, {ub}_i): {lb}_i \leq {ub}_i,  i = 1, \ldots, N\right\}
 <p><span class="math display">\[
 {lb}_i \leq y_i \leq {ub}_i
 \]</span></p>
-<p>만약 <span class="math inline">\({lb}_i = {ub}_i\)</span>라면, 관측된 데이터가 실제 변수값 <span class="math inline">\(y_i\)</span>를 정확하게 표현하나, <span class="math inline">\({lb}_i &lt; {ub}_i\)</span>라면 실제 변수값은 정확하게 관측되지 않은 경우이다. 관측값이 범위를 나타내는지에 대한 지시변수 <span class="math inline">\(b_i\)</span>를 아래와 같이 정의하자.</p>
+<p>만약 <span class="math inline">\({lb}_i = {ub}_i\)</span>라면, 관측된 데이터가 실제 변수값 <span class="math inline">\(y_i\)</span>를 정확하게 표현하나, <span class="math inline">\({lb}_i &lt; {ub}_i\)</span>라면 실제 변수값은 정확하게 관측되지 않은 경우이다. 관측값이 범위를 나타내는지에 대한 지시변수 <span class="math inline">\(a_i\)</span>를 아래와 같이 정의하자.</p>
 <p><span class="math display">\[
-b_i = \begin{cases}
+a_i = \begin{cases}
   1 &amp; \text{if } \, {lb}_i &lt; {ub}_i\\
   0 &amp; \text{if } \, {lb}_i = {ub}_i
 \end{cases}
 \]</span></p>
 <p>이 때, likelihood는 아래와 같이 표현할 수 있다.</p>
 <p><span class="math display">\[
-L(D) = \prod_{i = 1}^{N} f(\tilde{lb}_i)^{1 - b_i} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right)^{b_i}
+L(D) = \prod_{i = 1}^{N} f({lb}_i)^{1 - a_i} \left(F({ub}_i) - F({lb}_i)\right)^{a_i}
 \]</span></p>
 <p>만약, 모든 <span class="math inline">\(i\)</span>에 대해 <span class="math inline">\({lb}_i &lt; {ub}_i\)</span>라면, 위 식은 아래와 같이 단순하게 정리될 수 있다.</p>
 <p><span class="math display">\[
-L(D) = \prod_{i = 1}^{N} \left(F(\tilde{ub}_i) - F(\tilde{lb}_i)\right),  \; \text{if } \, {lb}_i &lt; {ub}_i \, \text{ for all } \, i
+L(D) = \prod_{i = 1}^{N} \left(F({ub}_i) - F({lb}_i)\right),  \; \text{if } \, {lb}_i &lt; {ub}_i \, \text{ for all } \, i
 \]</span></p>
 <div id="예제-4" class="section level3" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> 예제</h3>
